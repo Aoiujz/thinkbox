@@ -2,9 +2,10 @@
  +-------------------------------------------------------------------
  * jQuery ThinkBox - 弹出层插件 - http://zjzit.cn/thinkbox
  +-------------------------------------------------------------------
- * @version        1.0.0beta
- * @since          2012.06.26
- * @author         麦当苗儿 <zuojiazi.cn@vip.qq.com>
+ * @version    1.0.0beta
+ * @since      2012.06.26
+ * @author     麦当苗儿 <zuojiazi.cn@vip.qq.com>
+ * @github     https://github.com/Aoiujz/ThinkBox.git
  +-------------------------------------------------------------------
  */
 ;(function($){
@@ -274,7 +275,7 @@
 		var box = this.box();
 			s = _getSize.call(this),
 			v = viewport(),
-			o = box.has('fixed') ? [0, 0] : [v.left, v.top],
+			o = box.hasClass('fixed') ? [0, 0] : [v.left, v.top],
 			x = o[0] + v.width / 2,
 			y = o[1] + v.height / 2;
 		_moveTo.call(this, x - s[0] / 2, y - s[1] / 2);

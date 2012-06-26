@@ -5,7 +5,7 @@
 <title>ThinkBox - jquery 弹出框插件</title>
 <link type="text/css" href="../css/ThinkBox.css" rel="stylesheet" />
 <script type="text/javascript" src="../jquery-1.7.2.min.js"></script>
-<script type="text/javascript" src="../jquery.ThinkBox.min.js"></script>
+<script type="text/javascript" src="../jquery.ThinkBox.js"></script>
 <style type="text/css">
 html,body{ margin:0; padding: 0; font-size:14px; font-family: "微软雅黑"; background-color: #EEE}
 .box{ width: 940px; margin: 0 auto; background-color: #FFF; padding: 30px}
@@ -150,7 +150,7 @@ $(function(){
 	});
 	
 	//example 13
-	$('#example-13').ThinkBox({'title' : 'Example-13', 'event':'click', 'center':true, 'fixed' : true});
+	$('#example-13').ThinkBox({'title' : 'Example-13', 'event':'click', 'center':true, 'fixed' : false});
 	
 });
 </script>
@@ -445,10 +445,12 @@ $('#example-13').ThinkBox({'title' : 'Example-13', 'event':'click', 'center':tru
     <div class="title"><b>x </b>: 0 (int)</div>
     <div class="msg">
     	<p>对话框 x 坐标。 当 center 属性为 true 时此属性无效。</p>
+        <p>此参数可以是一个函数，但返回值必须为整型，函数的 this 指针指向弹出框DOM对象。</p>
     </div>
     <div class="title"><b>y </b>: 0 (int)</div>
     <div class="msg">
     	<p>对话框 y 坐标。 当 center 属性为 true 时此属性无效。</p>
+        <p>此参数可以是一个函数，但返回值必须为整型，函数的 this 指针指向弹出框DOM对象。</p>
     </div>
     <div class="title"><b>locate </b>: ['left', 'top'] (array)</div>
     <div class="msg">

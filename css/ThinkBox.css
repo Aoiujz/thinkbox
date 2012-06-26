@@ -12,20 +12,23 @@
 .ThinkBox-wrapper.fixed{
 	position:fixed;
 }
-
-/* 模态窗口背景样式 */ 
 .ThinkBox-modal-blackout{
 	position:absolute;
-	background-color: #000;
 	left:0; 
 	top:0;
-	opacity: .5;
-	filter:alpha(opacity=50);
-} 
+}
 
 /**********************************************
  **************** 默认皮肤样式 ****************
  **********************************************/
+ 
+/* 默认模态窗口背景样式 */ 
+.ThinkBox-modal-blackout.default{
+	background-color: #000;
+	opacity: .5;
+	filter:alpha(opacity=50);
+} 
+
 /* 默认边框样式 */
 .ThinkBox-wrapper.default .box-top-left, 
 .ThinkBox-wrapper.default .box-top-right, 
@@ -122,9 +125,11 @@
 .ThinkBox-wrapper.default .ThinkBox-close:hover{
 	background-color: #ce2312;
 }
+
 /**********************************************
  *************** 无边框皮肤样式 ***************
  **********************************************/
+ 
 /* 无边框皮肤边框样式 */
 .ThinkBox-wrapper.bordernone .box-top-left, 
 .ThinkBox-wrapper.bordernone .box-top-right, 

@@ -117,6 +117,9 @@
 		//显示弹出框
 		this.show = _show;
 		
+		//如果当前显示则隐藏，如果当前隐藏则显示
+		this.toggle = function(){visible ? self.hide() : self.show()};
+		
 		// 获取弹出框内容对象
 		this.getContent = function(){return $('.ThinkBox-content', box)};
 		
@@ -126,6 +129,16 @@
 			visible && _setSize.call(box);
 			_setLocate.call(self); //设置弹出框显示位置
 			return self;
+		};
+		
+		//获取内容区域的尺寸
+		this.getSize = function(){
+			return _getSize.call(self);	
+		};
+		
+		//动态改变弹出层内容区域的大小
+		this.setSize = function(width, height){
+			$('.ThinkBox-inner', box).css({'width' : width, 'height' : height})	
 		};
 		
 		/* 显示弹出框 */
@@ -404,7 +417,7 @@
 	$.extend($.ThinkBox, {
 		// 以一个URL加载内容并以ThinBox对话框的形式展现
 		load : function(url, opt){
-			var options = {'title' : '加载外部类容', 'type' : 'GET', 'dataType' : 'text', 'cache' : false, 'parseData':undefined};
+			var options = {'type' : 'GET', 'dataType' : 'text', 'cache' : false, 'parseData':undefined};
 			$.extend(options, opt || {});
 			var self = $.ThinkBox('<div class="ThinkBox-load-loading"></div>', options);
 			if(!self.getContent().children().is('.ThinkBox-load-loading')) return self;
@@ -469,7 +482,7 @@
 		'msg' : function(msg, opt){
 			var html = '<div class="ThinkBox-msg">' + msg + '</div>';
 			var options = {
-				'modal' : false, 'drag' : false, 'escHide' : false, 'close' : true, 'delayClose' : 0, 'center':false, 'title' : '消息',
+				'drag' : false, 'escHide' : false, 'delayClose' : 0, 'center':false, 'title' : '消息',
 				'x' : 0, 'y' : 0, 'locate' : ['right', 'bottom'], 'show' : ['slideDown', 'slow'], 'hide' : ['slideUp', 'slow']
 			};
 			$.extend(options, opt || {});
@@ -534,7 +547,7 @@
 					break;
 				case 'toggle':
 					var box = self.data('ThinkBox');
-					(box && box.visible()) ? box.hide() : box.show();
+					box && box.toggle();
 					break;
 				default:
 					var options = {'fixed' : false, 'center': false, 'modal' : false, 'drag' : false}, offset = self.offset();

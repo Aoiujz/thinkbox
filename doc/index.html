@@ -1,0 +1,635 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>ThinkBox - jquery 弹出框插件</title>
+<link type="text/css" href="../css/ThinkBox.css" rel="stylesheet" />
+<script type="text/javascript" src="../jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../jquery.ThinkBox.min.js"></script>
+<style type="text/css">
+html,body{ margin:0; padding: 0; font-size:14px; font-family: "微软雅黑"; background-color: #EEE}
+.box{ width: 940px; margin: 0 auto; background-color: #FFF; padding: 30px}
+.header{ height: 50px; border-bottom: 1px solid #CCC}
+.header h1{ margin: 0; padding:0 10px; float: left;line-height: 50px; }
+.header .author{ float: right; height: 25px; line-height: 25px; padding: 25px 10px 0 0; color: #CCC}
+.options, .functions, .example { padding: 20px;}
+.options h3, .functions h3, .example h3{ margin: 0; padding:0}
+.options a, .functions a, .example a{ color: #00F}
+
+.options .title{ line-height: 25px; height: 25px; padding-top: 10px; color:#CCC}
+.options .title b{ color: #000;}
+.options .msg{ padding: 0 10px; margin:0}
+.options .msg p{ padding:0; margin:0; color:#666}
+
+.functions .title{ line-height: 25px; height: 25px; padding-top: 10px; font-weight: 700}
+.functions .title b{ color: #000;}
+.functions .msg{ padding: 0 10px; margin:0}
+.functions .msg p{ padding:0; margin:0; color:#666}
+
+.example .title{ line-height: 25px; height: 25px; padding-top: 10px}
+.example .code{ padding: 6px; line-height: 16px; font-size: 12px; color: #666}
+.example .code pre{ margin: 0; padding: 6px; border: 1px solid #EEE; border-left-width: 4px; background-color: #FFC;font-family: "Courier New", Courier, monospace}
+.example .msg{ padding: 0 10px; margin:0}
+.example .msg p{ padding:0; margin:0; color: #F00}
+</style>
+<script type="text/javascript">
+$(function(){
+	//example 1
+	$('#example-1').click(function(){
+		$.ThinkBox(
+			'<div style="width: 300px;padding:10px">我是用弹出层显示的，<br/>按ESC键可以将我关闭！</div>', 
+			{'title' : 'Example-1'}
+		);	
+	});
+	$('#example-1-1').click(function(){
+		$.ThinkBox(
+			'#example-1-2', 
+			{'title' : 'Example-1'}
+		);	
+	});
+	
+	//example 2
+	$('#example-2').click(function(){
+		$.ThinkBox(
+			'<div style="width: 300px;padding:10px">我是用弹出层显示的，<br/>我不允许同时被弹出多个，<br/>按ESC键可以将我关闭！</div>', 
+			{'title' : 'Example-2', 'dataEle':this}
+		);	
+	});
+	
+	//example 3
+	$('#example-3').click(function(){
+		$.ThinkBox(
+			'<div style="width: 300px;padding:10px">我是用弹出层显示的，<br/>我不允许同时被弹出多个且不能被拖动！</div>',
+			{'title' : 'Example-3', 'dataEle' : this, 'modal' : true, 'drag' : false, 'escHide' : false}
+		);
+	});
+	
+	//example 4
+	var example_4_box = null;
+	$('#example-4').click(function(){
+		example_4_box = $.ThinkBox(
+			'<div style="width: 300px; height: 100px; padding:10px">哈哈！我终于可以显示啦。。。</div>',
+			{'title' : 'Example-4', 'dataEle' : this, 'display' : false}
+	    );
+	});
+	$('#example-4-1').click(function(){
+		example_4_box && example_4_box.show()
+	});
+	
+	//example 5
+	$('#example-5').click(function(){
+		$.ThinkBox(
+			'<div style="width: 300px;padding:10px">我是用弹出层显示的，<br/>2秒后我会自动关闭！</div>',
+			{'title' : 'Example-5', 'dataEle' : this, 'delayClose' : 2000}
+		);
+	});
+	
+	//example 6
+	$('#example-6').click(function(){
+		$.ThinkBox.load('load.html', {'title' : 'Example-6', 'dataEle' : this});
+	});
+	
+	//example 7
+	$('#example-7').click(function(){
+		$.ThinkBox.iframe('iframe.html', {'title' : 'Example-7', 'dataEle' : this, 'width' : 400, 'height' : 200});
+	});
+	
+	//example 8
+	$('#example-8').click(function(){
+		$.ThinkBox.tips('我是提示信息...', 0); //第二个参数 type 目前的可选值有 0|error, 1|success, loading
+	});
+	$('#example-8-1').click(function(){
+		$.ThinkBox.success('我是成功提示信息！');
+	});
+	$('#example-8-2').click(function(){
+		$.ThinkBox.error('我是失败提示信息！');
+	});
+	$('#example-8-3').click(function(){
+		var loading = $.ThinkBox.loading('我是loading提示信息！');
+		setTimeout(function(){loading.hide()}, 2000); //加载成功后关闭提示信息
+	});
+	
+	//example 9
+	$('#example-9').click(function(){
+		$.ThinkBox.msg('<div style="padding:10px; width:250px; height:150px">有新消息啦！。。。</div>', {'dataEle' : this});	
+	});
+	$('#example-9-1').click(function(){
+		$.ThinkBox.msg(
+			'<div style="padding:10px; width:250px; height:150px">有新消息啦！。。。</div>', 
+			{'dataEle' : this, 'locate' : ['left', 'bottom'], 'delayClose' : 1000}
+		);	
+	});
+	
+	//example 10
+	$('#example-10').click(function(){
+		$.ThinkBox.alert('你确定吗？', {'dataEle' : this, 'okClick' : function(){alert('已经确定！');this.hide()}});	
+	});
+	
+	//example 11
+	$('#example-11').click(function(){
+		$.ThinkBox.confirm(
+			'确定or取消？', 
+			{
+				'dataEle' : this,
+                'okClick' : function(){
+					alert('你选择了确定！');
+				},
+				'cancelClick' : function(){
+					alert('你选择了取消！');
+				}
+			}
+		);	
+	});
+	
+	//example 12
+	$('#example-12').ThinkBox({'event' : 'click'});
+	$('#example-12-1').ThinkBox({'event' : 'click', 'title' : null, 'close' : false});
+	$('#example-12-2').ThinkBox({'event' : 'hover', 'title' : null, 'close' : false});
+	$(document).mousedown(function(){
+		$('#example-12,#example-12-1').ThinkBox('hide'); //关闭
+	});
+	
+	//example 13
+	$('#example-13').ThinkBox({'title' : 'Example-13', 'event':'click', 'center':true, 'fixed' : true});
+	
+});
+</script>
+</head>
+
+<body>
+<div class="box">
+<div class="header">
+	<h1>jQuery ThinkBox 弹出层插件 API 详解</h1>
+    <div class="author">Powered by 麦当苗儿 &lt;zuojiazi.cn@gmail.com&gt;</div>
+</div>
+
+<div class="example">
+	<h3>插件使用方法</h3>
+    <div class="title">引入文件</div>
+    <div class="code">
+<pre>
+&lt;link type="text/css" href="ThinkBox/css/ThinkBox.css" rel="stylesheet" /&gt;
+&lt;script type="text/javascript" src="ThinkBox/jquery-1.7.2.min.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="ThinkBox/jquery.ThinkBox.min.js"&gt;&lt;/script&gt;
+</pre>
+    </div>
+    <div class="msg">
+    	<p> - 使用ThinkBox弹出框必须引入以上三个文件。</p>
+        <p> - jQuery版本必须大于 1.7</p>
+    </div>
+    <div class="title">调用弹出框方法 <a href="#method">弹出层调用方法 (Method)</a></div>
+    <div class="code">
+<pre>
+&lt;script type="text/javascript"&gt;
+$(function(){
+    $.ThinkBox([options]); //调用弹出层基础方法；
+    $.ThinkBox.load(url, [options]); //调用弹出层扩展方法
+    $('a').ThinkBox([options]); //调用弹出层 $.fn 扩展方法；
+});
+&lt;/script&gt;
+</pre>
+    </div>
+</div>
+
+<div class="example">
+	<h3>插件基础方法 $.ThinkBox() 的使用示例</h3>
+    <!-- Example-1 -->
+    <div class="title">Example-1: 
+    	<a id="example-1" href="javascript:;">用弹出层展示指定内容</a>&nbsp;&nbsp;&nbsp;
+        <a id="example-1-1" href="javascript:;">使用选择器弹出页面指定元素</a>
+    </div>
+    <div id="example-1-2" style="display: none; padding: 10px; width: 300px; height: 100px">我是一个DIV，潜伏在Example 1的后面，不小心暴露了。。。</div>
+    <div class="code">
+<pre>
+$('#example-1').click(function(){
+    $.ThinkBox(
+        '&lt;div style="width: 300px;padding:10px"&gt;我是用弹出层显示的，&lt;br/&gt;按ESC键可以将我关闭！&lt;/div&gt;', 
+        {'title' : 'Example-1'}
+    );	
+});
+$('#example-1-1').click(function(){
+    $.ThinkBox(
+        '#example-1-2', 
+        {'title' : 'Example-1'}
+    );	
+});
+</pre>
+    </div>
+    <!-- END Example-1 -->
+    <!-- Example-2 -->
+    <div class="title">Example-2: <a id="example-2" href="javascript:;">用弹出层展示指定内容，禁止弹出多个</a></div>
+    <div class="code">
+<pre>
+$('#example-2').click(function(){
+    $.ThinkBox(
+    	'&lt;div style="width: 300px;padding:10px"&gt;我是用弹出层显示的，我不允许同时被弹出多个，&lt;br/&gt;按ESC键可以将我关闭！&lt;/div&gt;',
+        {'title' : 'Example-2', 'dataEle':this}
+    );	
+});
+</pre>
+    </div>
+    <div class="msg">
+    	<p> - 设置弹出层对象缓存对象属性 dataEle 后，只允许弹出一个相同缓存对象的弹出层</p>
+        <p> - dataEle 属性必须是一个jQuery选择器或DOM对象</p>
+    </div>
+    <!-- END Example-2 -->
+    <!-- Example-3 -->
+    <div class="title">Example-3: <a id="example-3" href="javascript:;">用弹出层展示指定内容，带有遮罩背景且不能拖动</a></div>
+    <div class="code">
+<pre>
+$('#example-3').click(function(){
+    $.ThinkBox(
+    	'&lt;div style="width: 300px;padding:10px"&gt;我是用弹出层显示的，&lt;br/&gt;我不允许同时被弹出多个且不能被拖动！&lt;/div&gt;',
+        {'title' : 'Example-3', 'dataEle':this, 'modal' : true, 'drag':false, 'escHide':false}
+    );
+});
+</pre>
+    </div>
+    <!-- END Example-3 -->
+    <!-- Example-4 -->
+    <div class="title">Example-4: <a id="example-4" href="javascript:;">创建但不显示&nbsp;</a>&nbsp;&nbsp;&nbsp;<a id="example-4-1" href="javascript:;">点击显示</a></div>
+    <div class="code">
+<pre>
+var example_4_box = null;
+$('#example-4').click(function(){
+    example_4_box = $.ThinkBox(
+        '&lt;div style="width: 300px; height: 100px; padding:10px"&gt;哈哈！我终于可以显示啦。。。&lt;/div&gt;',
+        {'title' : 'Example-4', 'dataEle': this, 'display' : false}
+    );
+});
+$('#example-4-1').click(function(){
+    example_4_box && example_4_box.show()
+});
+</pre>
+    </div>
+    <!-- END Example-4 -->
+    <!-- Example-5 -->
+    <div class="title">Example-5: <a id="example-5" href="javascript:;">弹出指定类容，2秒后自动关闭</a></div>
+    <div class="code">
+<pre>
+$('#example-5').click(function(){
+    $.ThinkBox(
+        '&lt;div style="width: 300px;padding:10px"&gt;我是用弹出层显示的，&lt;br/&gt;2秒后我会自动关闭！&lt;/div&gt;',
+        {'title' : 'Example-5', 'dataEle' : this, 'delayClose' : 2000}
+    );
+});
+</pre>
+    </div>
+    <!-- END Example-5 -->
+</div>
+<div class="example">
+	<h3>插件扩展方法的使用示例</h3>
+    <!-- Example-6 -->
+    <div class="title">Example-6: <a id="example-6" href="javascript:;">加载外部的html文件并用弹出层展示</a></div>
+    <div class="code">
+<pre>
+$('#example-6').click(function(){
+    $.ThinkBox.load('load.html', {'title' : 'Example-6', 'dataEle' : this});
+});
+</pre>
+    </div>
+    <!-- END Example-6 -->
+    <!-- Example-7 -->
+    <div class="title">Example-7: <a id="example-7" href="javascript:;">通过iframe加载完成网页显示</a></div>
+    <div class="code">
+<pre>
+$('#example-7').click(function(){
+    $.ThinkBox.iframe('iframe.html', {'title' : 'Example-7', 'dataEle' : this, 'width' : 400, 'height' : 200});
+});
+</pre>
+    </div>
+    <div class="msg">
+    	<p> - 由于在iframe加载完成之前没法获取到它的宽度和高度，这里必须手动指定宽度和高度。</p>
+    </div>
+    <!-- END Example-7 -->
+    <!-- Example-8 -->
+    <div class="title">Example-8: 
+    	<a id="example-8" href="javascript:;">显示提示信息</a>&nbsp;&nbsp;&nbsp;
+        <a id="example-8-1" href="javascript:;">成功提示</a>&nbsp;&nbsp;&nbsp;
+        <a id="example-8-2" href="javascript:;">失败提示</a>&nbsp;&nbsp;&nbsp;
+        <a id="example-8-3" href="javascript:;">加载中</a>
+    </div>
+    <div class="code">
+<pre>
+$('#example-8').click(function(){
+    $.ThinkBox.tips('我是提示信息...', 0); //第二个参数 type 目前的可选值有 0|error, 1|success, loading
+});
+$('#example-8-1').click(function(){
+    $.ThinkBox.success('我是成功提示信息！');
+});
+$('#example-8-2').click(function(){
+    $.ThinkBox.error('我是失败提示信息！');
+});
+$('#example-8-3').click(function(){
+    var loading = $.ThinkBox.loading('我是loading提示信息！');
+    setTimeout(function(){loading.hide()}, 2000); //加载成功后关闭loading信息
+});
+</pre>
+    </div>
+    <div class="msg">
+    	<p> - loading提示一般会在数据加载完成后关闭，这里用延时来模拟。</p>
+    </div>
+    <!-- END Example-8 -->
+    <!-- Example-9 -->
+    <div class="title">Example-9: 
+    	<a id="example-9" href="javascript:;">消息框</a>&nbsp;&nbsp;&nbsp;
+        <a id="example-9-1" href="javascript:;">左下角显示，1秒后自动关闭</a>&nbsp;&nbsp;&nbsp;
+    </div>
+    <div class="code">
+<pre>
+$('#example-9').click(function(){
+    $.ThinkBox.msg('&lt;div style="padding:10px; width:250px; height:150px"&gt;有新消息啦！。。。&lt;/div&gt;', {'dataEle' : this});	
+});
+$('#example-9-1').click(function(){
+    $.ThinkBox.msg(
+    	'&lt;div style="padding:10px; width:250px; height:150px"&gt;有新消息啦！。。。&lt;/div&gt;', 
+        {'dataEle' : this, 'locate' : ['left', 'bottom'], 'delayClose' : 1000}
+    );	
+});
+</pre>
+    </div>
+    <!-- END Example-9 -->
+    <!-- Example-10 -->
+    <div class="title">Example-10: <a id="example-10" href="javascript:;">alert提示框</a></div>
+    <div class="code">
+<pre>
+$('#example-10').click(function(){
+    $.ThinkBox.alert('你确定吗？', {'okClick' : function(){alert('已经确定！');this.hide()}});	
+});
+</pre>
+    </div>
+    <div class="msg">
+    	<p> - 和原生javascript中的alert不同的是，$.ThinkBox.alert()没法阻止程序的执行，所以你必须将确定后的处理过程写入到okClick属性中去。</p>
+    </div>
+    <!-- END Example-10 -->
+    <!-- Example-11 -->
+    <div class="title">Example-11: <a id="example-11" href="javascript:;">confirm提示框</a></div>
+    <div class="code">
+<pre>
+$('#example-11').click(function(){
+    $.ThinkBox.confirm(
+        '确定or取消？', 
+        {
+            'dataEle' : this,
+            'okClick' : function(){
+                alert('你选择了确定！');
+            },
+            'cancelClick' : function(){
+                alert('你选择了取消！');
+            }
+        }
+    );	
+});
+</pre>
+    </div>
+    <div class="msg">
+    	<p> - 和原生javascript中的confirm不同的是，$.ThinkBox.confirm()没法阻止程序的执行。</p>
+        <p> - 所以你必须将确定或取消后的处理过程写入到okClick或cancelClick属性中去。</p>
+    </div>
+    <!-- END Example-11 -->
+</div>
+<div class="example">
+	<h3>插件 $.fn.ThinkBox() 方法的使用示例</h3>
+	<!-- Example-12 -->
+    <div class="title">Example-12: 
+    	<a id="example-12" href="href.html">自动加载 a 标签的 href 连接并用弹出层展现</a>&nbsp;&nbsp;&nbsp;
+    	<a id="example-12-1" href="href.html">不显示标题栏和关闭按钮</a>&nbsp;&nbsp;&nbsp;
+        <a id="example-12-2" href="href.html">hover触发</a>
+    </div>
+    <div class="code">
+<pre>
+$('#example-12').ThinkBox({'event' : 'click'});
+$('#example-12-1').ThinkBox({'event' : 'click', 'title' : null, 'close' : false});
+$('#example-12-2').ThinkBox({'event' : 'hover', 'title' : null, 'close' : false});
+$(document).mousedown(function(){
+    $('#example-12,#example-12-1').ThinkBox('hide'); //关闭
+});
+</pre>
+    </div>
+    <!-- END Example-12 -->
+	<!-- Example-13 -->
+    <div class="title">Example-13: 
+    	<a id="example-13" href="#example-13-1">在屏幕中心弹出指定选择器对象</a>
+    </div>
+    <div id="example-13-1" style="display:none; width: 300px; padding: 10px">
+    	我是一个隐藏的div，一不小心被弹出框给显示了。。。
+    </div>
+    <div class="code">
+<pre>
+$('#example-13').ThinkBox({'title' : 'Example-13', 'event':'click', 'center':true});
+/* 隐藏的DIV源码 */
+&lt;div id="example-13-1" style="display:none; width: 300px; padding: 10px"&gt;
+    我是一个隐藏的div，一不小心被弹出框给显示了。。。
+&lt;/div&gt;
+</pre>
+    </div>
+    <!-- END Example-13 -->
+</div>
+
+<div class="options">
+	<h3>插件默认配置项 (options)<a name="options"></a></h3>
+    <div class="title"><b>title </b>: null (string)</div>
+    <div class="msg">
+    	<p>弹出层标题，只有设置了标题才能显示标题栏， null 为不显示标题栏。</p>
+        <p>如果需要显示空的标题栏，请设置为  title : '' 。</p>
+    </div>
+    <div class="title"><b>fixed </b>: true (boolean)</div>
+    <div class="msg">
+    	<p>是否使用固定定位(fixed)而不是绝对定位(absolute)，固定定位的对话框不受浏览器滚动条影响。</p>
+        <p>IE6不支持固定定位，其永远表现为绝对定位。</p>
+    </div>
+    <div class="title"><b>center </b>: true (boolean)</div>
+    <div class="msg">
+    	<p>对话框是否屏幕中心显示。</p>
+    </div>
+    <div class="title"><b>x </b>: 0 (int)</div>
+    <div class="msg">
+    	<p>对话框 x 坐标。 当 center 属性为 true 时此属性无效。</p>
+    </div>
+    <div class="title"><b>y </b>: 0 (int)</div>
+    <div class="msg">
+    	<p>对话框 y 坐标。 当 center 属性为 true 时此属性无效。</p>
+    </div>
+    <div class="title"><b>locate </b>: ['left', 'top'] (array)</div>
+    <div class="msg">
+    	<p>弹出框位置属性，决定以上 x，y 属性相对于屏幕的位置。</p>
+    	<p>可选值 ['left', 'top']，['right', 'top']，['left','bottom']，['right','bottom']。</p>
+    </div>
+    <div class="title"><b>modal </b>: false (boolean)</div>
+    <div class="msg">
+    	<p>对话框是否设置为模态。</p>
+        <p>模态时，会显示一个遮罩层，阻止页面的其他元素接受事件。</p>
+    </div>
+    <div class="title"><b>modalClose </b>: true (boolean)</div>
+    <div class="msg">
+    	<p>点击模态背景是否关闭弹出框</p>
+    </div>
+    <div class="title"><b>resize </b>: true (boolean)</div>
+    <div class="msg">
+    	<p>是否在窗口大小改变时重新定位弹出框位置。</p>
+    </div>
+    <div class="title"><b>unload </b>: false (boolean)</div>
+    <div class="msg">
+    	<p>隐藏后是否卸载弹出框元素。</p>
+        <p>及时更新信息建议开启，这样会每次弹出时加载新的内容。</p>
+    </div>
+    <div class="title"><b>close </b>: true (boolean)</div>
+    <div class="msg">
+    	<p>显示关闭按钮。</p>
+    </div>
+    <div class="title"><b>escHide </b>: true (boolean)</div>
+    <div class="msg">
+    	<p>按ESC是否关闭弹出框。</p>
+    </div>
+    <div class="title"><b>delayClose </b>: 0 (int)</div>
+    <div class="msg">
+    	<p>延时自动关闭弹出框 0表示不自动关闭。</p>
+    </div>
+    <div class="title"><b>drag </b>: true (boolean)</div>
+    <div class="msg">
+    	<p>点击标题栏是否允许拖动。</p>
+    </div>
+    <div class="title"><b>display </b>: true (boolean)</div>
+    <div class="msg">
+    	<p>是否在创建后立即显示。</p>
+    </div>
+    <div class="title"><b>width </b>: '' (int)</div>
+    <div class="msg">
+    	<p>弹出框内容区域宽度，   ''表示自适应。</p>
+    </div>
+    <div class="title"><b>height </b>: '' (int)</div>
+    <div class="msg">
+    	<p>弹出框内容区域高度， ''表示自适应。</p>
+    </div>
+    <div class="title"><b>dataEle </b>: '' (object)</div>
+    <div class="msg">
+    	<p>弹出框缓存元素，设置此属性的弹出框只允许同时存在一个。</p>
+    	<p>该属性只能是一个jQuery选择器或DOM的jQuery对象。</p>
+    </div>
+    <div class="title"><b>show </b>: ['fadeIn', 'normal'] (array)</div>
+    <div class="msg">
+    	<p>弹出层显示效果参数。</p>
+    	<p>此参数第一个元素目前只支持 'show', 'fadeIn', 'slideDown'。</p>
+        <p>此参数第二个元素请参考jQuery中对应的效果参数。</p>
+    </div>
+    <div class="title"><b>hide </b>: ['fadeOut', 'normal'] (array)</div>
+    <div class="msg">
+    	<p>弹出层隐藏效果参数。</p>
+    	<p>此参数第一个元素目前只支持 'hide', 'fadeOut', 'slideUp'。</p>
+        <p>此参数第二个元素请参考jQuery中对应的效果参数。</p>
+    </div>
+    <div class="title"><b>style </b>: 'default' (string)</div>
+    <div class="msg">
+    	<p>弹出层主题名称。</p>
+    </div>
+    <div class="title"><b>beforeShow </b>: undefined (function)</div>
+    <div class="msg">
+    	<p>弹出层显示前的回调方法。</p>
+    </div>
+    <div class="title"><b>afterShow </b>: undefined (function)</div>
+    <div class="msg">
+    	<p>弹出层显示后的回调方法。</p>
+    </div>
+    <div class="title"><b>afterHide </b>: undefined (function)</div>
+    <div class="msg">
+    	<p>弹出层隐藏后的回调方法。</p>
+    </div>
+    <div class="title"><b>beforeUnload </b>: undefined (function)</div>
+    <div class="msg">
+    	<p>弹出层卸载前的回调方法。</p>
+    </div>
+    <div class="title"><b>afterDrag </b>: undefined (function)</div>
+    <div class="msg">
+    	<p>弹出层拖动停止后的回调方法。</p>
+    </div>
+</div>
+
+<div class="functions">
+	<h3>弹出层调用方法 (Method)<a name="method"></a></h3>
+    <div class="title">$.ThinkBox(content, [options])</div>
+    <div class="msg">
+    	<p>这是一个插件底层基础方法，用于创建一个弹出层。以下所有扩展方法都是调用此方法来创建弹出层。</p>
+    	<p>content - 弹出层展示的内容，可以是一个HTML片段或DOM元素或jQuery选择器。</p>
+        <p>options - 可选。弹出层的配置项，默认值参考<a href="#options">插件默认配置项 (options)</a>。</p>
+        <p><a href="#example-1">Example-1</a> <a href="#example-2">Example-2</a> <a href="#example-3">Example-3</a> <a href="#example-4">Example-4</a> <a href="#example-5">Example-5</a></p>
+    </div>
+    <div class="title">$.ThinkBox.load(url, [opt])</div>
+    <div class="msg">
+    	<p>加载外部内容并通过弹出层展示。</p>
+    	<p>url - 加载外部内容的URL。</p>
+        <p>opt - 可选。弹出层标准配置项和私有配置项，标准配置项默认值参考<a href="#options">插件默认配置项 (options)</a>。</p>
+        <p><a href="#example-6">Example-6</a></p>
+    </div>
+    <div class="title">$.ThinkBox.iframe(url, [opt])</div>
+    <div class="msg">
+    	<p>用iframe加载外部内容并通过弹出层展示。此方法可以用于加载跨域内容。</p>
+    	<p>url - 加载外部内容的URL。</p>
+        <p>opt - 可选。弹出层标准配置项和私有配置项，标准配置项默认值参考<a href="#options">插件默认配置项 (options)</a>。</p>
+        <p><a href="#example-7">Example-7</a></p>
+    </div>
+    <div class="title">$.ThinkBox.tips(msg, type, [opt])</div>
+    <div class="msg">
+    	<p>显示提示信息。</p>
+        <p>别名 - $.ThinkBox.success(msg, [opt])，显示成功提示信息。</p>
+        <p>别名 - $.ThinkBox.error(msg, [opt])，显示错误提示信息。</p>
+        <p>别名 - $.ThinkBox.loading(msg, [opt])，显示loading提示信息。</p>
+    	<p>msg - 提示信息内容。纯文本。</p>
+        <p>type - 提示信息类型，可选值有 0|error, 1|success, loading</p>
+        <p>opt - 可选。弹出层标准配置项和私有配置项，标准配置项默认值参考<a href="#options">插件默认配置项 (options)</a>。</p>
+        <p><a href="#example-8">Example-8</a></p>
+    </div>
+    <div class="title">$.ThinkBox.msg(msg, [opt])</div>
+    <div class="msg">
+    	<p>显示页面消息框。</p>
+    	<p>msg - 消息内容，和$.ThinkBox()的content参数相同。</p>
+        <p>opt - 可选。弹出层标准配置项和私有配置项，标准配置项默认值参考<a href="#options">插件默认配置项 (options)</a>。</p>
+        <p><a href="#example-9">Example-9</a></p>
+    </div>
+    <div class="title">$.ThinkBox.alert(msg, [opt])</div>
+    <div class="msg">
+    	<p>弹出警告提示框。</p>
+    	<p>msg - 提示内容，纯文本。</p>
+        <p>opt - 可选。弹出层标准配置项和私有配置项，标准配置项默认值参考<a href="#options">插件默认配置项 (options)</a>。</p>
+        <p><a href="#example-10">Example-10</a></p>
+    </div>
+    <div class="title">$.ThinkBox.confirm(msg, [opt])</div>
+    <div class="msg">
+    	<p>弹出确认提示框。</p>
+    	<p>msg - 提示内容，纯文本。</p>
+        <p>opt - 可选。弹出层标准配置项和私有配置项，标准配置项默认值参考<a href="#options">插件默认配置项 (options)</a>。</p>
+        <p><a href="#example-11">Example-11</a></p>
+    </div>
+    <div class="title">$.ThinkBox.get(selector)</div>
+    <div class="msg">
+    	<p>在弹出层里面获取当前弹出层对象。</p>
+    	<p>selector - 弹出层内部任意DOM元素选择器。</p>
+    </div>
+    <div class="title">$.fn.ThinkBox([opt])</div>
+    <div class="msg">
+    	<p>当前选择器对象必须含有 href 属性，href 属性可以是一个URL或一个以 # 号开头的选择器。</p>
+        <p>当 href 属性以 # 号开头是则以弹出层的形式展现对应的ID对象。</p>
+        <p>当 href 属为一个URL则用 load 方式加载内容并用弹出层展示。</p>
+    	<p>opt - 可选。弹出层标准配置项和私有配置项，标准配置项默认值参考<a href="#options">插件默认配置项 (options)</a>。</p>
+        <p><a href="#example-12">Example-12</a></p>
+    </div>
+    <div class="title">$.fn.ThinkBox('get')</div>
+    <div class="msg">
+    	<p>获取当前对象上绑定弹出层对象。如果该对象上未绑定弹出层，则返回 null。</p>
+    </div>
+    <div class="title">$.fn.ThinkBox('show')</div>
+    <div class="msg">
+    	<p>显示当前对象上绑定的弹出层。</p>
+    </div>
+    <div class="title">$.fn.ThinkBox('hide')</div>
+    <div class="msg">
+    	<p>关闭当前对象上绑定的弹出层。</p>
+    </div>
+    <div class="title">$.fn.ThinkBox('toggle')</div>
+    <div class="msg">
+    	<p>如果当前对象上绑定的弹出层是显示的则将其关闭，如果当前对象上显示的弹出层是关闭的则将其显示。</p>
+    </div>
+</div>
+
+</div>
+</body>
+</html>

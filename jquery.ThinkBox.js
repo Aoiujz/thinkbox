@@ -550,9 +550,9 @@
 					box && box.toggle();
 					break;
 				default:
-					var options = {'fixed' : false, 'center': false, 'modal' : false, 'drag' : false}, offset = self.offset();
+					var options = {'dataEle' : this, 'fixed' : false, 'center': false, 'modal' : false, 'drag' : false};
 					opt = $.isPlainObject(opt) ? opt : {};
-					$.extend(options, {'dataEle' : this, 'x' : offset.left, 'y' : offset.top + self.outerHeight()}, opt);
+					$.extend(options, {'x' : function(){return self.offset().left}, 'y' : function(){return self.offset().top + self.outerHeight()}}, opt);
 					if(options.event){
 						var event = options.event;
 						delete options.event;

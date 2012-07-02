@@ -577,6 +577,8 @@
 			var href = this.attr('href');
 			if(href.substr(0, 1) == '#'){
 				$.ThinkBox(href, options);
+			} else if(href.substr(0, 7) == 'http://' || href.substr(0, 8) == 'https://'){
+				$.ThinkBox.iframe(href, options);
 			} else {
 				$.ThinkBox.load(href, options);
 			}

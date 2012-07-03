@@ -5,7 +5,7 @@
 <title>ThinkBox - jquery 弹出框插件</title>
 <link type="text/css" href="../css/ThinkBox.css" rel="stylesheet" />
 <script type="text/javascript" src="../jquery-1.7.2.min.js"></script>
-<script type="text/javascript" src="../jquery.ThinkBox.min.js"></script>
+<script type="text/javascript" src="../jquery.ThinkBox.js"></script>
 <style type="text/css">
 html,body{ margin:0; padding: 0; font-size:14px; font-family: "微软雅黑"; background-color: #EEE}
 .box{ width: 940px; margin: 0 auto; background-color: #FFF; padding: 30px}
@@ -713,7 +713,8 @@ $('#example-13').ThinkBox({'title' : 'Example-13', 'event':'click', 'center':tru
     <div class="msg">
     	<p>当前选择器对象必须含有 href 属性，href 属性可以是一个URL或一个以 # 号开头的选择器。</p>
         <p class="note"> - 当 href 属性以 # 号开头是则以弹出层的形式展现对应的ID对象。</p>
-        <p class="note"> - 当 href 属为一个URL则用 load 方式加载内容并用弹出层展示。</p>
+        <p class="note"> - 当 href 属为一个 http 开头的绝对 URL 则用 iframe 方式加载内容并用弹出层展示。</p>
+        <p class="note"> - 当 href 属为一个相对路径 URL 则用 load 方式加载内容并用弹出层展示。</p>
     	<p>opt - 可选。弹出层标准配置项和私有配置项，标准配置项默认值参考<a href="#options">插件默认配置项 (options)</a>。</p>
         <p><a href="#example-12">Example-12</a></p>
         <table border="0" cellspacing="1" cellpadding="0">

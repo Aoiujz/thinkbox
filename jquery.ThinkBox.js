@@ -251,7 +251,7 @@
 		var options = this.options(), box = this.box();
 		content = $('<div/>')
 					.addClass('ThinkBox-content')
-					.append($(content).clone().show());
+					.append($(content).clone(true, true).show());
 		$('.ThinkBox-content', box).remove(); // 卸载原容器中的内容
 		$('.ThinkBox-inner', box)
 			.css({'width' : options.width, 'height' : options.height}) // 设置弹出框内容的宽和高

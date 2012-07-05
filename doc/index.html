@@ -553,14 +553,14 @@ $('#example-13').ThinkBox({'title' : 'Example-13', 'event':'click', 'center':tru
 
 <div class="functions">
 	<h3>弹出层调用方法 (Method)<a name="method"></a></h3>
-    <div class="title">$.ThinkBox(content, [options])</div>
+    <div class="title">$.ThinkBox(content [, options])</div>
     <div class="msg">
     	<p>这是一个插件底层基础方法，用于创建一个弹出层。以下所有扩展方法都是调用此方法来创建弹出层。</p>
     	<p>content - 弹出层展示的内容，可以是一个HTML片段或DOM元素或jQuery选择器。</p>
         <p>options - 可选。弹出层的配置项，默认值参考<a href="#options">插件默认配置项 (options)</a>。</p>
         <p><a href="#example-1">Example-1</a> <a href="#example-2">Example-2</a> <a href="#example-3">Example-3</a> <a href="#example-4">Example-4</a> <a href="#example-5">Example-5</a></p>
     </div>
-    <div class="title">$.ThinkBox.load(url, [opt])</div>
+    <div class="title">$.ThinkBox.load(url [, opt])</div>
     <div class="msg">
     	<p>加载外部内容并通过弹出层展示。</p>
     	<p>url - 加载外部内容的URL。</p>
@@ -599,7 +599,7 @@ $('#example-13').ThinkBox({'title' : 'Example-13', 'event':'click', 'center':tru
             </tr>
         </table>
     </div>
-    <div class="title">$.ThinkBox.iframe(url, [opt])</div>
+    <div class="title">$.ThinkBox.iframe(url [, opt])</div>
     <div class="msg">
     	<p>用iframe加载外部内容并通过弹出层展示。此方法可以用于加载跨域内容。</p>
     	<p>url - 加载外部内容的URL。</p>
@@ -620,7 +620,7 @@ $('#example-13').ThinkBox({'title' : 'Example-13', 'event':'click', 'center':tru
             </tr>
         </table>
     </div>
-    <div class="title">$.ThinkBox.tips(msg, type, [opt])</div>
+    <div class="title">$.ThinkBox.tips(msg, type [, opt])</div>
     <div class="msg">
     	<p>显示提示信息。</p>
         <p class="note"> - 别名： $.ThinkBox.success(msg, [opt])，显示成功提示信息。</p>
@@ -631,14 +631,14 @@ $('#example-13').ThinkBox({'title' : 'Example-13', 'event':'click', 'center':tru
         <p>opt - 可选。弹出层标准配置项，标准配置项默认值参考<a href="#options">插件默认配置项 (options)</a>。</p>
         <p><a href="#example-8">Example-8</a></p>
     </div>
-    <div class="title">$.ThinkBox.msg(msg, [opt])</div>
+    <div class="title">$.ThinkBox.msg(msg [, opt])</div>
     <div class="msg">
     	<p>显示页面消息框。</p>
     	<p>msg - 消息内容，和$.ThinkBox()的content参数相同。</p>
         <p>opt - 可选。弹出层标准配置项，标准配置项默认值参考<a href="#options">插件默认配置项 (options)</a>。</p>
         <p><a href="#example-9">Example-9</a></p>
     </div>
-    <div class="title">$.ThinkBox.alert(msg, [opt])</div>
+    <div class="title">$.ThinkBox.alert(msg [, opt])</div>
     <div class="msg">
     	<p>弹出警告提示框。</p>
     	<p>msg - 提示内容，纯文本。</p>
@@ -665,7 +665,7 @@ $('#example-13').ThinkBox({'title' : 'Example-13', 'event':'click', 'center':tru
             </tr>
         </table>
     </div>
-    <div class="title">$.ThinkBox.confirm(msg, [opt])</div>
+    <div class="title">$.ThinkBox.confirm(msg [, opt])</div>
     <div class="msg">
     	<p>弹出确认提示框。</p>
     	<p>msg - 提示内容，纯文本。</p>

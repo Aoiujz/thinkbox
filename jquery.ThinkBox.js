@@ -141,6 +141,12 @@
 			$('.ThinkBox-inner', box).css({'width' : width, 'height' : height})	
 		};
 		
+		//重置弹出框的尺寸
+		this.resize = function(){
+			_setSize.call(box);
+			$(window).resize();
+		};
+		
 		/* 显示弹出框 */
 		function _show() {
 			if(visible) return this;

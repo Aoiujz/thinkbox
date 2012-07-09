@@ -549,6 +549,14 @@ $('#example-13').ThinkBox({'title' : 'Example-13', 'event':'click', 'center':tru
     <div class="msg">
     	<p>弹出层拖动停止后的回调方法。</p>
     </div>
+    <div class="title"><b>mouseover </b>: undefined (function)</div>
+    <div class="msg">
+    	<p>鼠标移入弹出层的回调函数。</p>
+    </div>
+    <div class="title"><b>mouseout </b>: undefined (function)</div>
+    <div class="msg">
+    	<p>鼠标移出弹出层的回调函数。</p>
+    </div>
 </div>
 
 <div class="functions">
@@ -730,6 +738,12 @@ $('#example-13').ThinkBox({'title' : 'Example-13', 'event':'click', 'center':tru
                 <td>undefied</td>
                 <td>触发ThinkBox显示的事件</td>
             </tr>
+            <tr>
+                <td>boxoutClose</td>
+                <td>boolean</td>
+                <td>false</td>
+                <td>鼠标移入弹出框时是否不关闭弹出层（仅 event 为 hover 时有效）</td>
+            </tr>
         </table>
     </div>
     <div class="title">$.fn.ThinkBox('get')</div>
@@ -792,7 +806,6 @@ $('#example-13').ThinkBox({'title' : 'Example-13', 'event':'click', 'center':tru
         <p class="note"> - 当你手动改变弹出框内容至之后，如果需要弹出框自适应内容大小，可以是用此方法。</p>
     </div>
 </div>
-
 </div>
 </body>
 </html>

@@ -563,7 +563,7 @@
 						var event = options.event;
 						delete options.event;
 						if(event == 'hover'){
-							var outClose = options.boxoutClose || true, timeout = null;
+							var outClose = options.boxoutClose || false, timeout = null;
 							delete options.boxoutClose;
 							options.mouseover = function(){clearTimeout(timeout);timeout = null};
 							options.mouseout  = function(){this.hide()};

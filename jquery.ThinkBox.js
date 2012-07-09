@@ -574,12 +574,16 @@
 					opt = $.isPlainObject(opt) ? opt : {};
 					$.extend(options, {'x' : function(){return self.offset().left}, 'y' : function(){return self.offset().top + self.outerHeight()}}, opt);
 					if(options.event){
-						var event = options.event, outClose = options.outClose;
-						delete options.event, delete options.outClose;
+						var event = options.event;
+						delete options.event;
 						if(event == 'hover'){
+							var outClose = options.boxoutClose || false, timeout = null;
+							delete options.boxoutClose;
+							options.mouseover = function(){clearTimeout(timeout);timeout = null};
+							options.mouseout  = function(){this.hide()};
 							self.hover(
 								function(){_.call(self, options)},
-								function(){self.ThinkBox('hide')}
+								function(){outClose ? timeout = timeout || setTimeout(function(){timeout = null; self.ThinkBox('hide')}, 50) : self.ThinkBox('hide')}
 							);
 						} else {
 							self.bind(event, function(){

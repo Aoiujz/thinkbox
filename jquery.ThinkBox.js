@@ -37,8 +37,8 @@
 		'afterHide'   : undefined, //隐藏后的回调方法
 		'beforeUnload': undefined, //卸载前的回调方法
 		'afterDrag'   : undefined, //拖动停止后的回调方法
-		'mouseover'   : undefined, //鼠标移入弹出框触发的事件
-		'mouseout'    : undefined  //鼠标移出弹出框出发的事件
+		'mouseover'   : undefined, //鼠标移入弹出层的回调方法
+		'mouseout'    : undefined  //鼠标移出弹出层的回调方法
 	};
 	
 	/* 弹出框层叠高度 */
@@ -96,7 +96,7 @@
 		options.dataEle && $(options.dataEle).data('ThinkBox', this); //缓存弹出框，防止弹出多个
 		
 		//给box绑定事件
-		box.hover(function(){$(self).trigger('boxover')},function(){$(self).trigger('boxout')})
+		box.hover(function(){_fire.call(self, options.mouseover)},function(){_fire.call(self, options.mouseout)})
 		   .mousedown(function(event){_setCurrent.call(self);event.stopPropagation()})
 		   .click(function(event){event.stopPropagation()});
 		
@@ -117,10 +117,6 @@
 		
 		// 按ESC键关闭弹出框
 		self.escHide = options.escHide;
-		
-		//给弹出框绑定事件
-		$.isFunction(options.mouseover) && $(this).bind('boxover', options.mouseover);
-		$.isFunction(options.mouseout)  && $(this).bind('boxout',  options.mouseout);
 		
 		//显示弹出框
 		options.display && _show();
@@ -160,16 +156,6 @@
 			_setSize.call(box);
 			$(window).resize();
 		};
-		
-		//给弹出框绑定mouseover事件
-		this.mouseover = function(fn){
-			return fn ? $(self).bind('boxover', fn) : $(self).trigger('boxover');
-		}
-		
-		//给弹出框绑定mouseout事件
-		this.mouseout = function(fn){
-			return fn ? $(self).bind('boxout', fn) : $(self).trigger('boxout');
-		}
 		
 		/* 显示弹出框 */
 		function _show() {
@@ -577,7 +563,7 @@
 						var event = options.event;
 						delete options.event;
 						if(event == 'hover'){
-							var outClose = options.boxoutClose || false, timeout = null;
+							var outClose = options.boxoutClose || true, timeout = null;
 							delete options.boxoutClose;
 							options.mouseover = function(){clearTimeout(timeout);timeout = null};
 							options.mouseout  = function(){this.hide()};

@@ -36,7 +36,9 @@
 		'afterShow'   : undefined, //显示后的回调方法
 		'afterHide'   : undefined, //隐藏后的回调方法
 		'beforeUnload': undefined, //卸载前的回调方法
-		'afterDrag'   : undefined  //拖动停止后的回调方法
+		'afterDrag'   : undefined, //拖动停止后的回调方法
+		'mouseover'   : undefined, //鼠标移入弹出框触发的事件
+		'mouseout'    : undefined  //鼠标移出弹出框出发的事件
 	};
 	
 	/* 弹出框层叠高度 */
@@ -88,10 +90,15 @@
 	 +----------------------------------------------------------
 	 */
 	var ThinkBox = function(element, options){
-		var self = this, visible = false, modal = null;;
+		var self = this, visible = false, modal = null;
 		var options = $.extend({}, defaults, options || {});
 		var box = $(wrapper).addClass(options.style).data('ThinkBox', this); //创建弹出框容器
 		options.dataEle && $(options.dataEle).data('ThinkBox', this); //缓存弹出框，防止弹出多个
+		
+		//给box绑定事件
+		box.hover(function(){$(self).trigger('boxover')},function(){$(self).trigger('boxout')})
+		   .mousedown(function(event){_setCurrent.call(self);event.stopPropagation()})
+		   .click(function(event){event.stopPropagation()});
 		
 		this.box = function(){return box};//获取弹出框容器
 		this.options = function(){return options};//获取弹出框配置列表
@@ -107,6 +114,13 @@
 		options.fixed && ($.browser.msie && $.browser.version < 7 ? options.fixed = false : box.addClass('fixed'));
 		_setLocate.call(this); //设置弹出框显示位置
 		options.resize && $(window).resize(function(){_setLocate.call(self)});
+		
+		// 按ESC键关闭弹出框
+		self.escHide = options.escHide;
+		
+		//给弹出框绑定事件
+		$.isFunction(options.mouseover) && $(this).bind('boxover', options.mouseover);
+		$.isFunction(options.mouseout)  && $(this).bind('boxout',  options.mouseout);
 		
 		//显示弹出框
 		options.display && _show();
@@ -147,14 +161,21 @@
 			$(window).resize();
 		};
 		
+		//给弹出框绑定mouseover事件
+		this.mouseover = function(fn){
+			return fn ? $(self).bind('boxover', fn) : $(self).trigger('boxover');
+		}
+		
+		//给弹出框绑定mouseout事件
+		this.mouseout = function(fn){
+			return fn ? $(self).bind('boxout', fn) : $(self).trigger('boxout');
+		}
+		
 		/* 显示弹出框 */
 		function _show() {
 			if(visible) return this;
 			// 安装模态背景
 			options.modal && (modal = _setupModal.call(self));
-	
-			// 按ESC键关闭弹出框
-			self.escHide = options.escHide;
 			
 			_fire.call(self, options.beforeShow); //调用显示之前回调函数
 			
@@ -364,15 +385,8 @@
 	
 	/* 设置为当前选中的弹出框对象 */
 	function _setCurrent(){
-		var box = this.box(), self = this;
-		box.mousedown(function(event){
-			current = self;
-			_toTop.call(box);
-			event.stopPropagation();
-		}).mousedown();	
-		box.click(function(event){
-			event.stopPropagation();
-		});	
+		current = this;
+		_toTop.call(this.box());
 	}
 	
 	/* 获取屏幕可视区域的大小和位置 */
@@ -560,8 +574,8 @@
 					opt = $.isPlainObject(opt) ? opt : {};
 					$.extend(options, {'x' : function(){return self.offset().left}, 'y' : function(){return self.offset().top + self.outerHeight()}}, opt);
 					if(options.event){
-						var event = options.event;
-						delete options.event;
+						var event = options.event, outClose = options.outClose;
+						delete options.event, delete options.outClose;
 						if(event == 'hover'){
 							self.hover(
 								function(){_.call(self, options)},

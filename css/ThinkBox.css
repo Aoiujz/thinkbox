@@ -121,6 +121,8 @@
 	top: 10px;
 	right: 10px;
 	cursor: pointer;
+    overflow: hidden;
+    line-height: 100px;
 }
 .ThinkBox-wrapper.default .ThinkBox-close:hover{
 	background-color: #ce2312;

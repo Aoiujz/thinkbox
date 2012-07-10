@@ -20,7 +20,7 @@
 		'modalClose'  : true,     // 点击模态背景是否关闭弹出框
 		'resize'      : true,     // 是否在窗口大小改变时重新定位弹出框位置
 		'unload'      : false,    // 隐藏后是否卸载
-		'close'       : true,     // 显示关闭按钮
+		'close'       : '[关闭]',  // 关闭按钮显示文字，留空则不显示关闭按钮
 		'escHide'     : true,     // 按ESC是否关闭弹出框
 		'delayClose'  : 0,        // 延时自动关闭弹出框 0表示不自动关闭
 		'drag'        : true,     // 点击标题框是否允许拖动
@@ -246,8 +246,8 @@
 	
 	/* 安装关闭按钮 */
 	function _setupCloseBtn(){
-		var self = this;
-		$('<a class="ThinkBox-close"></a>')
+		var self = this, options = this.options();
+		$('<a class="ThinkBox-close">' + options.close + '</a>')
 			.click(function(event){self.hide();event.stopPropagation()})
 			.mousedown(function(event){event.stopPropagation()})
 			.appendTo($('.ThinkBox-inner', this.box()));
@@ -425,8 +425,8 @@
 		load : function(url, opt){
 			var options = {'type' : 'GET', 'dataType' : 'text', 'cache' : false, 'parseData':undefined};
 			$.extend(options, opt || {});
-			var self = $.ThinkBox('<div class="ThinkBox-load-loading"></div>', options);
-			if(!self.getContent().children().is('.ThinkBox-load-loading')) return self;
+			var self = $.ThinkBox('<div class="ThinkBox-load-loading">加载中...</div>', options);
+			if(!self.getContent().children().is('.ThinkBox-load-loading')) return self; //防止发起多次不必要的请求
 			var ajax = {
 				url     : url,
 				type    : options.type,

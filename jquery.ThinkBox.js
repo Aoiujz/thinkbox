@@ -100,20 +100,19 @@
 		   .mousedown(function(event){_setCurrent.call(self);event.stopPropagation()})
 		   .click(function(event){event.stopPropagation()});
 		
-		this.box = function(){return box};//获取弹出框容器
-		this.options = function(){return options};//获取弹出框配置列表
-		this.visible = function(){return visible};//获取弹出框visible
+		this.box = function(){return box};//获取弹出框DOM对象
+		this.visible = function(){return visible};//获取弹出框可见性
 		
-		_setContent.call(this, element || '<div></div>'); //设置内容
-		options.title !== null && _setupTitleBar.call(this); // 安装标题栏
-		options.button && _setupToolsBar.call(this)
-		options.close && _setupCloseBtn.call(self); // 安装关闭按钮
+		_setContent.call(this, element || '<div></div>', options.width, options.height); //设置内容
+		options.title !== null && _setupTitleBar.call(this, options.title, options.drag, options.fixed, options.afterDrag); // 安装标题栏
+		options.button && _setupToolsBar.call(this, options.button)
+		options.close && _setupCloseBtn.call(self, options.close); // 安装关闭按钮
 		box.css('display', 'none').appendTo('body'); //放入body
 		
 		//设置弹出框fixed属性
 		options.fixed && ($.browser.msie && $.browser.version < 7 ? options.fixed = false : box.addClass('fixed'));
-		_setLocate.call(this); //设置弹出框显示位置
-		options.resize && $(window).resize(function(){_setLocate.call(self)});
+		_setLocate.call(this, options.center, options.x, options.y, options.locate); //设置弹出框显示位置
+		options.resize && $(window).resize(function(){_setLocate.call(self, options.center, options.x, options.y)});
 		
 		// 按ESC键关闭弹出框
 		self.escHide = options.escHide;
@@ -135,9 +134,9 @@
 		
 		//动态添加内容
 		this.setContent = function(content){
-			_setContent.call(self, content);
+			_setContent.call(self, content, options.width, options.height);
 			visible && _setSize.call(box);
-			_setLocate.call(self); //设置弹出框显示位置
+			_setLocate.call(self, options.center, options.x, options.y, options.locate); //设置弹出框显示位置
 			return self;
 		};
 		
@@ -161,7 +160,7 @@
 		function _show() {
 			if(visible) return this;
 			// 安装模态背景
-			options.modal && (modal = _setupModal.call(self));
+			options.modal && (modal = _setupModal.call(self, options.style, options.modalClose));
 			
 			_fire.call(self, options.beforeShow); //调用显示之前回调函数
 			
@@ -206,34 +205,33 @@
 			function _() {
 				visible = false;
 				_fire.call(self, options.afterHide); //隐藏后的回调方法
-				options.unload && _unload.call(self);
+				options.unload && _unload.call(self, options.beforeUnload, options.dataEle);
 			}
 		}
 	};
 	
 	/* 安装标题栏 */
-	function _setupTitleBar() {
-		var options = this.options();
+	function _setupTitleBar(title, drag, fixed, afterDrag) {
 		var bar     = $(titleBar);
 		var title   = $('.ThinkBox-title-inner', bar)
-						.html('<span>' + options.title + '</span>');
-		if (options.drag) {
+						.html('<span>' + title + '</span>');
+		if (drag) {
 			title.addClass('dragging');
 			title[0].onselectstart = function() {return false}; //禁止选中文字
 			title[0].unselectable = 'on'; // 禁止获取焦点
 			title[0].style.MozUserSelect = 'none'; // 禁止火狐选中文字
-			_drag.call(this, title);
+			_drag.call(this, title, fixed, afterDrag);
 		}
 		$('tr', this.box()).first().after(bar);
 	}
 	
 	/* 安装工具栏 */
-	function _setupToolsBar() {
-		var options = this.options(), self = this;
+	function _setupToolsBar(buttons) {
+		var self = this;
 		var bar     = $(toolsBar);
 		var tools   = $('.ThinkBox-tools-inner', bar);
 		var button  = null;
-		$.each(options.button, function(key, value){
+		$.each(buttons, function(key, value){
 			button = $('<input/>')
 				.attr('type', 'button')
 				.addClass(key)
@@ -245,73 +243,74 @@
 	}
 	
 	/* 安装关闭按钮 */
-	function _setupCloseBtn(){
-		var self = this, options = this.options();
-		$('<a class="ThinkBox-close">' + options.close + '</a>')
+	function _setupCloseBtn(close){
+		var self = this;
+		$('<a class="ThinkBox-close">' + close + '</a>')
 			.click(function(event){self.hide();event.stopPropagation()})
 			.mousedown(function(event){event.stopPropagation()})
 			.appendTo($('.ThinkBox-inner', this.box()));
 	}
 	
 	/* 设置弹出框容器中的内容 */
-	function _setContent(content) {
-		var options = this.options(), box = this.box();
+	function _setContent(content, width, height) {
+		var box = this.box();
 		content = $('<div/>')
 					.addClass('ThinkBox-content')
 					.append($(content).clone(true, true).show());
 		$('.ThinkBox-content', box).remove(); // 卸载原容器中的内容
 		$('.ThinkBox-inner', box)
-			.css({'width' : options.width, 'height' : options.height}) // 设置弹出框内容的宽和高
+			.css({'width' : width, 'height' : height}) // 设置弹出框内容的宽和高
 			.append(content); // 添加新内容
 	}
 	
 	/* 设置弹出框初始位置 */
-	function _setLocate(){
-		var options = this.options(), box = this.box();
-		options.center ? 
-		_moveToCenter.call(this) : 
+	function _setLocate(center, x, y, locate){
+		var box = this.box();
+		center ? 
+		_moveToCenter.call(this, locate) : 
 		_moveTo.call(
 			this,
-			$.isNumeric(options.x) ? options.x : ($.isFunction(options.x) ? options.x.call(box) : 0), 
-			$.isNumeric(options.y) ? options.y : ($.isFunction(options.y) ? options.y.call(box) : 0)
+			$.isNumeric(x) ? x : ($.isFunction(x) ? x.call(box) : 0), 
+			$.isNumeric(y) ? y : ($.isFunction(y) ? y.call(box) : 0),
+			locate
 		);
 	}
 	
 	/* 拖动弹出框 */
-	function _drag(title){
-		var draging = null, box = this.box(), options = this.options(), self = this;
+	function _drag(title, fixed, afterDrag){
+		var draging = null, box = this.box(), self = this;
 		$(document).mousemove(function(event){
 			draging && box.css({left: event.pageX - draging[0], top: event.pageY - draging[1]});
 		});
 		title.mousedown(function(event) {
 			var offset = box.offset();
-			if(options.fixed){
+			if(fixed){
 				offset.left -= $(window).scrollLeft();
 				offset.top -= $(window).scrollTop();
 			}
 			draging = [event.pageX - offset.left, event.pageY - offset.top];
 		}).mouseup(function() {
 			draging = null;
-			_fire.call(self, options.afterDrag); //拖动后的回调函数
+			_fire.call(self, afterDrag); //拖动后的回调函数
 		});
 	}
 	
 	/* 移动弹出框到屏幕中心 */
-	function _moveToCenter() {
+	function _moveToCenter(locate) {
 		var box = this.box();
 			s = _getSize.call(this),
 			v = viewport(),
 			o = box.hasClass('fixed') ? [0, 0] : [v.left, v.top],
 			x = o[0] + v.width / 2,
 			y = o[1] + v.height / 2;
-		_moveTo.call(this, x - s[0] / 2, y - s[1] / 2);
+		_moveTo.call(this, x - s[0] / 2, y - s[1] / 2, locate);
 	}
 	
 	/* 移动弹出框到指定的坐标 */
-	function _moveTo(x, y) {
-		var box = this.box(), options = this.options();
-		$.isNumeric(x) && (options.locate[0] == 'left' ? box.css({'left' : x}) : box.css({'right' : x}));
-		$.isNumeric(y) && (options.locate[1] == 'top' ? box.css({'top' : y}) : box.css({'bottom' : y}));
+	function _moveTo(x, y, locate) {
+		var box = this.box();
+		$.isNumeric(x) && (locate[0] == 'left' ? box.css({'left' : x}) : box.css({'right' : x}));
+		$.isNumeric(y) && (locate[1] == 'top' ? box.css({'top' : y}) : box.css({'bottom' : y}));
 	}
 	
 	/* 获取弹出框的尺寸 */
@@ -334,17 +333,16 @@
 	}
 	
 	/* 安装模态背景 */
-	function _setupModal(){
-		var options = this.options();
+	function _setupModal(style, modalClose){
 		var modal = $('<div class="ThinkBox-modal-blackout"></div>')
-					.addClass(options.style)
+					.addClass(style)
 					.css({
 						'zIndex' : zIndex++, 
 						'width'  : $(document).width(), 
 						'height' : $(document).height()
 					})
 					.click(function(event){
-						options.modalClose && current && current.hide();
+						modalClose && current && current.hide();
 						event.stopPropagation();
 					})
 					.mousedown(function(event){event.stopPropagation()})
@@ -362,11 +360,10 @@
 	}
 	
 	/* 卸载弹出框容器 */
-	function _unload(){
-		var options = this.options();
-		_fire.call(this, options.beforeUnload); //卸载前的回调方法
+	function _unload(beforeUnload, dataEle){
+		_fire.call(this, beforeUnload); //卸载前的回调方法
 		this.box().remove();
-		options.dataEle && $(options.dataEle).removeData('ThinkBox');
+		dataEle && $(dataEle).removeData('ThinkBox');
 	}
 	
 	/* 设置为当前选中的弹出框对象 */

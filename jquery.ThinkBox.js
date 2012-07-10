@@ -425,11 +425,11 @@
 			var self = $.ThinkBox('<div class="ThinkBox-load-loading">加载中...</div>', options);
 			if(!self.getContent().children().is('.ThinkBox-load-loading')) return self; //防止发起多次不必要的请求
 			var ajax = {
-				url     : url,
-				type    : options.type,
-				dataType: options.dataType,
-				cache   : options.cache,
-				success : function(data) {
+				'url'     : url,
+				'type'    : options.type,
+				'dataType': options.dataType,
+				'cache'   : options.cache,
+				'success' : function(data) {
 					$.isFunction(options.parseData) && (data = options.parseData(data));
 
 					//删除ThinkBox不需要的参数

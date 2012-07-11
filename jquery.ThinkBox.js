@@ -92,7 +92,7 @@
 	var ThinkBox = function(element, options){
 		var self = this, visible = false, modal = null;
 		var options = $.extend({}, defaults, options || {});
-		var box = $(wrapper).addClass(options.style).data('ThinkBox', this); //创建弹出框容器
+		var box = $(wrapper).addClass('ThinkBox-' + options.style).data('ThinkBox', this); //创建弹出框容器
 		options.dataEle && $(options.dataEle).data('ThinkBox', this); //缓存弹出框，防止弹出多个
 		
 		//给box绑定事件
@@ -236,7 +236,7 @@
 				.attr('type', 'button')
 				.addClass(key)
 				.val(value[0])
-				.click(function(){self.hide(); _fire.call(self, value[1])})
+				.click(function(){_fire.call(this, value[1], self)})
 				.appendTo(tools);
 		})
 		$('tr', this.box).last().before(bar);
@@ -335,7 +335,7 @@
 	/* 安装模态背景 */
 	function _setupModal(style, modalClose){
 		var modal = $('<div class="ThinkBox-modal-blackout"></div>')
-					.addClass(style)
+					.addClass('ThinkBox-modal-blackout-' + style)
 					.css({
 						'zIndex' : zIndex++, 
 						'width'  : $(document).width(), 
@@ -382,8 +382,8 @@
 	}
 	
 	/* 调用回调函数 */
-	function _fire(event){
-		$.isFunction(event) && event.call(this);
+	function _fire(event, arg){
+		$.isFunction(event) && event.call(this, arg);
 	}
 	
 	/* 删除options中不必要的参数 */

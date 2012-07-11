@@ -23,17 +23,17 @@
  **********************************************/
  
 /* 默认模态窗口背景样式 */ 
-.ThinkBox-modal-blackout.default{
+.ThinkBox-modal-blackout-default{
 	background-color: #000;
 	opacity: .5;
 	filter:alpha(opacity=50);
 } 
 
 /* 默认边框样式 */
-.ThinkBox-wrapper.default .box-top-left, 
-.ThinkBox-wrapper.default .box-top-right, 
-.ThinkBox-wrapper.default .box-bottom-right, 
-.ThinkBox-wrapper.default .box-bottom-left{
+.ThinkBox-default .box-top-left, 
+.ThinkBox-default .box-top-right, 
+.ThinkBox-default .box-bottom-right, 
+.ThinkBox-default .box-bottom-left{
 	width: 6px;
 	height: 6px;
 	padding: 0;
@@ -41,16 +41,16 @@
 	opacity:0.1;
 	filter:alpha(opacity=10);
 }
-.ThinkBox-wrapper.default .box-top, 
-.ThinkBox-wrapper.default .box-bottom{
+.ThinkBox-default .box-top, 
+.ThinkBox-default .box-bottom{
 	height: 6px;
 	background-color:#000;
 	opacity:0.1;
 	filter:alpha(opacity=10);
 	padding:0
 }
-.ThinkBox-wrapper.default .box-left, 
-.ThinkBox-wrapper.default .box-right{
+.ThinkBox-default .box-left, 
+.ThinkBox-default .box-right{
 	width: 6px;
 	background-color:#000;
 	opacity:0.1; 
@@ -59,15 +59,15 @@
 }
 
 /* 默认标题栏样式 */
-.ThinkBox-wrapper.default .ThinkBox-title .box-title-left, 
-.ThinkBox-wrapper.default .ThinkBox-title .box-title-right{
+.ThinkBox-default .ThinkBox-title .box-title-left, 
+.ThinkBox-default .ThinkBox-title .box-title-right{
     width: 6px;
 	background-color:#000;
 	opacity:0.1; 
 	filter:alpha(opacity=10);
 	padding:0;
 }
-.ThinkBox-wrapper.default .ThinkBox-title-inner{
+.ThinkBox-default .ThinkBox-title-inner{
 	background-color:#fafafa;
     padding-left: 6px;
 	text-align: left;
@@ -76,25 +76,25 @@
     color: #ff0099; 
     font-weight: bold;
 }
-.ThinkBox-wrapper.default .ThinkBox-title-inner.dragging{
+.ThinkBox-default .ThinkBox-title-inner.dragging{
 	cursor:move;
 }
-.ThinkBox-wrapper.default .ThinkBox-title-inner span{
+.ThinkBox-default .ThinkBox-title-inner span{
 	font-size:14px;
 	margin:0;
 	padding:0;
 }
 
 /* 默工具栏样式 */
-.ThinkBox-wrapper.default .ThinkBox-tools .box-tools-left, 
-.ThinkBox-wrapper.default .ThinkBox-tools .box-tools-right{
+.ThinkBox-default .ThinkBox-tools .box-tools-left, 
+.ThinkBox-default .ThinkBox-tools .box-tools-right{
     width: 6px;
 	background-color:#000;
 	opacity:0.1; 
 	filter:alpha(opacity=10);
 	padding:0;
 }
-.ThinkBox-wrapper.default .ThinkBox-tools-inner{
+.ThinkBox-default .ThinkBox-tools-inner{
 	background-color:#fafafa;
     padding-left: 6px;
 	text-align: left;
@@ -105,7 +105,7 @@
 
 
 /* 默认内容区域样式 */
-.ThinkBox-wrapper.default .ThinkBox-inner{
+.ThinkBox-default .ThinkBox-inner{
 	background-color:#FFF;
 	padding:0;
 	vertical-align: top;
@@ -113,7 +113,7 @@
 }
 
 /* 默认关闭按钮样式 */
-.ThinkBox-wrapper.default .ThinkBox-close{
+.ThinkBox-default .ThinkBox-close{
 	height: 12px;
 	width: 12px;
 	background: url(../img/close.gif) #aaa no-repeat center center;
@@ -124,7 +124,7 @@
     overflow: hidden;
     line-height: 100px;
 }
-.ThinkBox-wrapper.default .ThinkBox-close:hover{
+.ThinkBox-default .ThinkBox-close:hover{
 	background-color: #ce2312;
 }
 
@@ -133,21 +133,21 @@
  **********************************************/
  
 /* 无边框皮肤边框样式 */
-.ThinkBox-wrapper.bordernone .box-top-left, 
-.ThinkBox-wrapper.bordernone .box-top-right, 
-.ThinkBox-wrapper.bordernone .box-bottom-right, 
-.ThinkBox-wrapper.bordernone .box-bottom-left{
+.ThinkBox-bordernone .box-top-left, 
+.ThinkBox-bordernone .box-top-right, 
+.ThinkBox-bordernone .box-bottom-right, 
+.ThinkBox-bordernone .box-bottom-left{
 	width: 0;
 	height: 0;
 	padding: 0;
 }
-.ThinkBox-wrapper.bordernone .box-top, 
-.ThinkBox-wrapper.bordernone .box-bottom{
+.ThinkBox-bordernone .box-top, 
+.ThinkBox-bordernone .box-bottom{
 	height: 0;
 	padding:0
 }
-.ThinkBox-wrapper.bordernone .box-left, 
-.ThinkBox-wrapper.bordernone .box-right{
+.ThinkBox-bordernone .box-left, 
+.ThinkBox-bordernone .box-right{
 	width: 0;
 	padding:0
 }

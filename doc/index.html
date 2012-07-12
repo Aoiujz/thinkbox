@@ -127,7 +127,7 @@ $(function(){
 	
 	//example 10
 	$('#example-10').click(function(){
-		$.ThinkBox.alert('你确定吗？', {'dataEle' : this, 'okClick' : function(){alert('已经确定！');this.hide()}});	
+		$.ThinkBox.alert('你确定吗？', {'dataEle' : this, 'okClick' : function(box){alert('已经确定！');box.hide()}});	
 	});
 	
 	//example 11
@@ -359,7 +359,7 @@ $('#example-9-1').click(function(){
     <div class="code">
 <pre>
 $('#example-10').click(function(){
-    $.ThinkBox.alert('你确定吗？', {'okClick' : function(){alert('已经确定！');this.hide()}});	
+    $.ThinkBox.alert('你确定吗？', {'dataEle' : this, 'okClick' : function(box){alert('已经确定！');box.hide()}});	
 });
 </pre>
     </div>

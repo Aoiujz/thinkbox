@@ -149,7 +149,7 @@ $(function(){
 	//example 12
 	$('#example-12').ThinkBox({'event' : 'click', 'title' : 'Example 12'});
 	$('#example-12-1').ThinkBox({'event' : 'click', 'title' : null, 'close' : false});
-	$('#example-12-2').ThinkBox({'event' : 'hover', 'title' : 'Example 12', 'close' : false});
+	$('#example-12-2').ThinkBox({'event' : 'hover', 'title' : 'Example 12', 'close' : false, 'delayShow': 50});
 	$(document).mousedown(function(){
 		$('#example-12,#example-12-1').ThinkBox('hide'); //关闭
 	});
@@ -405,7 +405,7 @@ $('#example-11').click(function(){
 <pre>
 $('#example-12').ThinkBox({'event' : 'click', 'title' : 'Example 12'});
 $('#example-12-1').ThinkBox({'event' : 'click', 'title' : null, 'close' : false});
-$('#example-12-2').ThinkBox({'event' : 'hover', 'title' : 'Example 12', 'close' : false});
+$('#example-12-2').ThinkBox({'event' : 'hover', 'title' : 'Example 12', 'close' : false, 'delayShow': 50});
 $(document).mousedown(function(){
     $('#example-12,#example-12-1').ThinkBox('hide'); //关闭
 });

@@ -36,9 +36,7 @@
 		'afterShow'   : undefined, //显示后的回调方法
 		'afterHide'   : undefined, //隐藏后的回调方法
 		'beforeUnload': undefined, //卸载前的回调方法
-		'afterDrag'   : undefined, //拖动停止后的回调方法
-		'mouseover'   : undefined, //鼠标移入弹出层的回调方法
-		'mouseout'    : undefined  //鼠标移出弹出层的回调方法
+		'afterDrag'   : undefined  //拖动停止后的回调方法
 	};
 	
 	/* 弹出框层叠高度 */
@@ -166,13 +164,13 @@
 			
 			switch(options.show[0]){
 				case 'slideDown':
-					box.stop().slideDown(options.show[1], _);
+					box.stop(true, true).slideDown(options.show[1], _);
 					break;
 				case 'fadeIn':
-					box.stop().fadeIn(options.show[1], _);
+					box.stop(true, true).fadeIn(options.show[1], _);
 					break;
 				default:
-					box.stop().show(options.show[1], _);
+					box.show(options.show[1], _);
 			}
 			
 			visible = true;
@@ -193,13 +191,13 @@
 			
 			switch(options.hide[0]){
 				case 'slideUp':
-					box.stop().slideUp(options.show[1], _);
+					box.stop(true, true).slideUp(options.show[1], _);
 					break;
 				case 'fadeOut':
-					box.stop().fadeOut(options.show[1], _);
+					box.stop(true, true).fadeOut(options.show[1], _);
 					break;
 				default:
-					box.stop().hide(options.show[1], _);
+					box.hide(options.show[1], _);
 			}
 			
 			function _() {
@@ -556,14 +554,18 @@
 						var event = options.event;
 						delete options.event;
 						if(event == 'hover'){
-							var outClose = options.boxoutClose || false, timeout = null;
-							delete options.boxoutClose;
-							options.mouseover = function(){clearTimeout(timeout);timeout = null};
+							var outClose = options.boxoutClose || false, delayShow = options.delayShow || 0, timeout1 = null, timeout2 = null;
+							_delOptions(['boxoutClose', 'delayShow'], options);
+							options.mouseover = function(){if(timeout2){clearTimeout(timeout2);timeout2 = null}};
 							options.mouseout  = function(){this.hide()};
 							self.hover(
-								function(){_.call(self, options)},
-								function(){outClose ? timeout = timeout || setTimeout(function(){timeout = null; self.ThinkBox('hide')}, 50) : self.ThinkBox('hide')}
+								function(){timeout1 = timeout1 || setTimeout(function(){_.call(self, options)}, delayShow)},
+								function(){
+									if(timeout1){clearTimeout(timeout1); timeout1 = null}
+									outClose ? timeout2 = timeout2 || setTimeout(function(){timeout2 = null; self.ThinkBox('hide')}, 50) : self.ThinkBox('hide')
+								}
 							);
+							self.click(function(){if(this.tagName.toLowerCase() === 'a') return false});
 						} else {
 							self.bind(event, function(){
 								_.call(self, options);

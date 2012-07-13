@@ -399,7 +399,7 @@ $('#example-11').click(function(){
     <div class="title">Example-12: 
     	<a id="example-12" href="href.html">自动加载 a 标签的 href 连接并用弹出层展现</a>&nbsp;&nbsp;&nbsp;
     	<a id="example-12-1" href="href.html">不显示标题栏和关闭按钮</a>&nbsp;&nbsp;&nbsp;
-        <a id="example-12-2" href="href.html">hover触发</a>
+        <a id="example-12-2" href="javascript:;" think-href="href.html">hover触发</a>
     </div>
     <div class="code">
 <pre>
@@ -548,14 +548,6 @@ $('#example-13').ThinkBox({'title' : 'Example-13', 'event':'click', 'center':tru
     <div class="title"><b>afterDrag </b>: undefined (function)</div>
     <div class="msg">
     	<p>弹出层拖动停止后的回调方法。</p>
-    </div>
-    <div class="title"><b>mouseover </b>: undefined (function)</div>
-    <div class="msg">
-    	<p>鼠标移入弹出层的回调函数。</p>
-    </div>
-    <div class="title"><b>mouseout </b>: undefined (function)</div>
-    <div class="msg">
-    	<p>鼠标移出弹出层的回调函数。</p>
     </div>
 </div>
 
@@ -743,6 +735,12 @@ $('#example-13').ThinkBox({'title' : 'Example-13', 'event':'click', 'center':tru
                 <td>boolean</td>
                 <td>false</td>
                 <td>鼠标移入弹出框时是否不关闭弹出层（仅 event 为 hover 时有效）</td>
+            </tr>
+            <tr>
+                <td>delayShow</td>
+                <td>int</td>
+                <td>0</td>
+                <td>延时显示弹出框，单位毫秒（仅 event 为 hover 时有效）</td>
             </tr>
         </table>
     </div>

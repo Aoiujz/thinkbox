@@ -565,7 +565,6 @@
 									outClose ? timeout2 = timeout2 || setTimeout(function(){timeout2 = null; self.ThinkBox('hide')}, 50) : self.ThinkBox('hide')
 								}
 							);
-							self.click(function(){if(this.tagName.toLowerCase() === 'a') return false});
 						} else {
 							self.bind(event, function(){
 								_.call(self, options);
@@ -579,7 +578,7 @@
 		});
 		
 		function _(options){
-			var href = this.attr('href');
+			var href = this.attr('think-href') || this.attr('href');
 			if(href.substr(0, 1) == '#'){
 				$.ThinkBox(href, options);
 			} else if(href.substr(0, 7) == 'http://' || href.substr(0, 8) == 'https://'){

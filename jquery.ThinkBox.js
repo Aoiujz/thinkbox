@@ -2,13 +2,13 @@
  +-------------------------------------------------------------------
  * jQuery ThinkBox - 弹出层插件 - http://zjzit.cn/thinkbox 
  +-------------------------------------------------------------------
- * @version    1.0.0beta
- * @since      2012.06.26
+ * @version    1.0.0 beta
+ * @since      2012.08.14
  * @author     麦当苗儿 <zuojiazi.cn@vip.qq.com>
  * @github     https://github.com/Aoiujz/ThinkBox.git
  +-------------------------------------------------------------------
  */
-;(function($){
+(function($){
 	/* 弹出框默认选项 */
 	var defaults = {
 		'title'       : null,     // 弹出框标题
@@ -107,6 +107,9 @@
 		options.close && _setupCloseBtn.call(self, options.close); // 安装关闭按钮
 		box.css('display', 'none').appendTo('body'); //放入body
 		
+		var left = box.find('.box-left');
+		left.append($('<div></div>').css('width', left.width())); //左边添加空DIV防止拖动出浏览器时左边不显示
+		
 		//设置弹出框fixed属性
 		options.fixed && ($.browser.msie && $.browser.version < 7 ? options.fixed = false : box.addClass('fixed'));
 		_setLocate.call(this, options.center, options.x, options.y, options.locate); //设置弹出框显示位置
@@ -133,7 +136,6 @@
 		//动态添加内容
 		this.setContent = function(content){
 			_setContent.call(self, content, options.width, options.height);
-			visible && _setSize.call(box);
 			_setLocate.call(self, options.center, options.x, options.y, options.locate); //设置弹出框显示位置
 			return self;
 		};
@@ -146,12 +148,6 @@
 		//动态改变弹出层内容区域的大小
 		this.setSize = function(width, height){
 			$('.ThinkBox-inner', box).css({'width' : width, 'height' : height})	
-		};
-		
-		//重置弹出框的尺寸
-		this.resize = function(){
-			_setSize.call(box);
-			$(window).resize();
 		};
 		
 		/* 显示弹出框 */
@@ -175,7 +171,6 @@
 			
 			visible = true;
 			_setCurrent.call(self);
-			_setSize.call(box);
 			return this;
 			
 			function _(){
@@ -324,12 +319,6 @@
 		}
 	}
 	
-	/* 设置表格尺寸 */
-	function _setSize(){
-		this.css({'width':'', 'height':''});
-		this.css({'width':this.width(), 'height':this.height()});
-	}
-	
 	/* 安装模态背景 */
 	function _setupModal(style, modalClose){
 		var modal = $('<div class="ThinkBox-modal-blackout"></div>')
@@ -427,7 +416,7 @@
 				'dataType': options.dataType,
 				'cache'   : options.cache,
 				'success' : function(data) {
-					$.isFunction(options.parseData) && (data = options.parseData(data));
+					$.isFunction(options.parseData) && (data = _fire.call(options.dataEle, options.parseData));
 
 					//删除ThinkBox不需要的参数
 					_delOptions(['type', 'cache', 'dataType', 'parseData'], options);

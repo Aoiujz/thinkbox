@@ -127,7 +127,7 @@ $(function(){
 	
 	//example 10
 	$('#example-10').click(function(){
-		$.ThinkBox.alert('你确定吗？', {'dataEle' : this, 'okClick' : function(box){alert('已经确定！');box.hide()}});	
+		$.ThinkBox.alert('你确定吗？', {'dataEle' : this, 'okClick' : function(){alert('已经确定！');this.hide()}});	
 	});
 	
 	//example 11
@@ -359,7 +359,7 @@ $('#example-9-1').click(function(){
     <div class="code">
 <pre>
 $('#example-10').click(function(){
-    $.ThinkBox.alert('你确定吗？', {'dataEle' : this, 'okClick' : function(box){alert('已经确定！');box.hide()}});	
+    $.ThinkBox.alert('你确定吗？', {'dataEle' : this, 'okClick' : function(){alert('已经确定！');this.hide()}});	
 });
 </pre>
     </div>
@@ -524,6 +524,11 @@ $('#example-13').ThinkBox({'title' : 'Example-13', 'event':'click', 'center':tru
     	<p>弹出层隐藏效果参数。</p>
     	<p class="note"> - 此参数第一个元素目前只支持 'hide', 'fadeOut', 'slideUp'。</p>
         <p class="note"> - 此参数第二个元素请参考jQuery中对应的效果参数。</p>
+    </div>
+    <div class="title"><b>button </b>: [] (array)</div>
+    <div class="msg">
+    	<p>弹出层工具栏按钮。</p>
+    	<p class="note"> - 只有定义了按钮才会显示工具栏。</p>
     </div>
     <div class="title"><b>style </b>: 'default' (string)</div>
     <div class="msg">
@@ -731,7 +736,7 @@ $('#example-13').ThinkBox({'title' : 'Example-13', 'event':'click', 'center':tru
                 <td>触发ThinkBox显示的事件</td>
             </tr>
             <tr>
-                <td>boxoutClose</td>
+                <td>boxOutClose</td>
                 <td>boolean</td>
                 <td>false</td>
                 <td>鼠标移入弹出框时是否不关闭弹出层（仅 event 为 hover 时有效）</td>

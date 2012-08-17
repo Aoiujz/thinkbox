@@ -31,6 +31,7 @@
 		'locate'      : ['left', 'top'],       //弹出框位置属性
 		'show'        : ['fadeIn', 'normal'],  //显示效果
 		'hide'        : ['fadeOut', 'normal'], //关闭效果
+		'button'      : [], //工具栏按钮
 		'style'       : 'default', // 弹出框样式
 		'beforeShow'  : undefined, //显示前的回调方法
 		'afterShow'   : undefined, //显示后的回调方法
@@ -222,7 +223,7 @@
 					.attr('type', 'button')
 					.addClass(v[0])
 					.val(v[1])
-					.click(function(){_fire.call(this, v[2], self)})
+					.click(function(){_fire.call(self, v[2])})
 					.appendTo(tools);
 			})
 			$('tr', box).last().before(bar);
@@ -273,8 +274,8 @@
 			options.center ? 
 			_moveToCenter() : 
 			_moveTo(
-				$.isNumeric(options.x) ? options.x : ($.isFunction(options.x) ? options.x.call(box) : 0), 
-				$.isNumeric(options.y) ? options.y : ($.isFunction(options.y) ? options.y.call(box) : 0)
+				$.isNumeric(options.x) ? options.x : ($.isFunction(options.x) ? options.x.call(options.dataEle) : 0), 
+				$.isNumeric(options.y) ? options.y : ($.isFunction(options.y) ? options.y.call(options.dataEle) : 0)
 			);
 		}
 		
@@ -355,8 +356,8 @@
 	}
 	
 	/* 调用回调函数 */
-	function _fire(event, arg){
-		$.isFunction(event) && event.call(this, arg);
+	function _fire(event){
+		$.isFunction(event) && event.call(this);
 	}
 	
 	/* 删除options中不必要的参数 */
@@ -524,20 +525,23 @@
 				default:
 					var options = {'dataEle' : this, 'fixed' : false, 'center': false, 'modal' : false, 'drag' : false};
 					opt = $.isPlainObject(opt) ? opt : {};
-					$.extend(options, {'x' : function(){return self.offset().left}, 'y' : function(){return self.offset().top + self.outerHeight()}}, opt);
+					$.extend(options, {
+						'x' : function(){return $(this).offset().left}, 
+						'y' : function(){return $(this).offset().top + $(this).outerHeight()}
+					}, opt);
 					if(options.event){
 						var event = options.event;
 						delete options.event;
 						if(event == 'hover'){
-							var outClose = options.boxoutClose || false, delayShow = options.delayShow || 0, timeout1 = null, timeout2 = null;
-							_delOptions(['boxoutClose', 'delayShow'], options);
+							var outClose = options.boxOutClose || false, delayShow = options.delayShow || 0, timeout1 = null, timeout2 = null;
+							_delOptions(['boxOutClose', 'delayShow'], options);
 							options.mouseover = function(){if(timeout2){clearTimeout(timeout2);timeout2 = null}};
 							options.mouseout  = function(){this.hide()};
 							self.hover(
 								function(){timeout1 = timeout1 || setTimeout(function(){_.call(self, options)}, delayShow)},
 								function(){
 									if(timeout1){clearTimeout(timeout1); timeout1 = null}
-									outClose ? timeout2 = timeout2 || setTimeout(function(){timeout2 = null; self.ThinkBox('hide')}, 50) : self.ThinkBox('hide')
+									outClose ? timeout2 = timeout2 || setTimeout(function(){timeout2 = null; self.ThinkBox('hide')}, 50) : self.ThinkBox('hide');
 								}
 							);
 						} else {

@@ -403,7 +403,7 @@
 				'dataType': options.dataType,
 				'cache'   : options.cache,
 				'success' : function(data) {
-					$.isFunction(options.parseData) && (data = _fire.call(options.dataEle, options.parseData));
+					$.isFunction(options.parseData) && (data = options.parseData.call(options.dataEle, data));
 
 					//删除ThinkBox不需要的参数
 					_delOptions(['type', 'cache', 'dataType', 'parseData'], options);

@@ -101,7 +101,7 @@
 		
 		_setContent(element || '<div></div>'); //设置内容
 		options.title !== null && _setupTitleBar(); // 安装标题栏
-		options.button && _setupToolsBar();
+		options.button.length && _setupToolsBar();
 		options.close && _setupCloseBtn(); // 安装关闭按钮
 		box.css('display', 'none').appendTo('body'); //放入body
 		

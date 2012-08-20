@@ -3,7 +3,7 @@
  * jQuery ThinkBox - 弹出层插件 - http://zjzit.cn/thinkbox
  +-------------------------------------------------------------------
  * @version    1.0.0 beta
- * @since      2012.08.14
+ * @since      2012.08.20
  * @author     麦当苗儿 <zuojiazi.cn@vip.qq.com>
  * @github     https://github.com/Aoiujz/ThinkBox.git
  +-------------------------------------------------------------------
@@ -104,20 +104,9 @@
 		options.button.length && _setupToolsBar();
 		options.close && _setupCloseBtn(); // 安装关闭按钮
 		box.css('display', 'none').appendTo('body'); //放入body
-		
+
 		var left = box.find('.box-left');
 		left.append($('<div></div>').css('width', left.width())); //左边添加空DIV防止拖动出浏览器时左边不显示
-		
-		//设置弹出框fixed属性
-		options.fixed && ($.browser.msie && $.browser.version < 7 ? options.fixed = false : box.addClass('fixed'));
-		_setLocate(); //设置弹出框显示位置
-		options.resize && $(window).resize(function(){_setLocate()});
-		
-		// 按ESC键关闭弹出框
-		self.escHide = options.escHide;
-		
-		//显示弹出框
-		options.display && _show();
 		
 		//隐藏弹出框
 		this.hide = _hide;
@@ -145,6 +134,17 @@
 		this.setSize = function(width, height){
 			$('.ThinkBox-inner', box).css({'width' : width, 'height' : height})	
 		};
+		
+		//设置弹出框fixed属性
+		options.fixed && ($.browser.msie && $.browser.version < 7 ? options.fixed = false : box.addClass('fixed'));
+		_setLocate(); //设置弹出框显示位置
+		options.resize && $(window).resize(function(){_setLocate()});
+		
+		// 按ESC键关闭弹出框
+		self.escHide = options.escHide;
+		
+		//显示弹出框
+		options.display && _show();
 		
 		/* 显示弹出框 */
 		function _show() {

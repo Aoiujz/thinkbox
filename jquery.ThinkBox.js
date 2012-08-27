@@ -396,7 +396,7 @@
 		load : function(url, opt){
 			var options = {'type' : 'GET', 'dataType' : 'text', 'cache' : false, 'parseData':undefined},self;
 			$.extend(options, opt || {});
-			var parseData = options.parseData, onload = options.onload;
+			var parseData = options.parseData;
 			var ajax = {
 				'type'    : options.type,
 				'dataType': options.dataType,
@@ -405,12 +405,11 @@
 					$.isFunction(parseData) && (data = parseData.call(options.dataEle, data));
 					//设置内容并显示弹出框
 					self.setContent(data);
-					_fire.call(self, onload);
 				}
 			};
 			
 			//删除ThinkBox不需要的参数
-			_delOptions(['type', 'cache', 'dataType', 'parseData', 'onload'], options);
+			_delOptions(['type', 'cache', 'dataType', 'parseData'], options);
 			
 			self = $.ThinkBox('<div class="ThinkBox-load-loading">加载中...</div>', options);
 			if(!self.getContent().children().is('.ThinkBox-load-loading')) return self; //防止发起多次不必要的请求

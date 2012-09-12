@@ -14,6 +14,7 @@
 		'title'       : null,     // 弹出框标题
 		'fixed'       : true,     // 是否使用固定定位(fixed)而不是绝对定位(absolute)，固定定位的对话框不受浏览器滚动条影响。IE6不支持固定定位，其永远表现为绝对定位。
 		'center'      : true,     // 对话框是否屏幕中心显示
+		'clone'       : true,     // 是否对弹出内容克隆
 		'x'           : 0,        // 对话框 x 坐标。 当 center 属性为 true 时此属性无效
 		'y'           : 0,        // 对话框 y 坐标。 当 center 属性为 true 时此属性无效
 		'modal'       : false,    // 对话框是否设置为模态。设置为 true 将显示遮罩背景，禁止其他事件触发
@@ -32,7 +33,8 @@
 		'show'        : ['fadeIn', 'normal'],  //显示效果
 		'hide'        : ['fadeOut', 'normal'], //关闭效果
 		'button'      : [], //工具栏按钮
-		'style'       : 'default', // 弹出框样式
+		'style'       : 'default', //弹出框样式
+		'titleChange' : undefined, //分组标题切换后的回调方法
 		'beforeShow'  : undefined, //显示前的回调方法
 		'afterShow'   : undefined, //显示后的回调方法
 		'afterHide'   : undefined, //隐藏后的回调方法
@@ -126,6 +128,9 @@
 			_setLocate(); //设置弹出框显示位置
 			return self;
 		};
+
+		//动态设置标题
+		this.setTitle = _setTitle;
 		
 		//获取内容区域的尺寸
 		this.getSize = _getSize;
@@ -202,7 +207,7 @@
 		/* 安装标题栏 */
 		function _setupTitleBar() {
 			var bar   = $(titleBar);
-			var title = $('.ThinkBox-title-inner', bar).html('<span>' + options.title + '</span>');
+			var title = $('.ThinkBox-title-inner', bar);
 			if (options.drag) {
 				title.addClass('dragging');
 				title[0].onselectstart = function() {return false}; //禁止选中文字
@@ -211,6 +216,30 @@
 				_drag(title);
 			}
 			$('tr', box).first().after(bar);
+			_setTitle(options.title);
+		}
+
+		/* 设置标题 */
+		function _setTitle(title){
+			var titleInner = $('.ThinkBox-title-inner', box).empty();
+			if($.isArray(title) || $.isPlainObject(title)){
+				$.each(title, function(i, _title){
+					$('<span>' + _title + '</span>').data('key', i)
+						.click(function(event){
+							var _this = $(this);
+							if(!_this.hasClass('selected')){
+								titleInner.find('span.selected').removeClass('selected');
+								_this.addClass('selected');
+								_fire.call(_this, options.titleChange);
+							}
+						})
+						.mousedown(function(event){event.stopPropagation()})
+						.mouseup(function(event){event.stopPropagation()})
+						.appendTo(titleInner);
+				});
+			} else {
+				titleInner.append('<span>' + title + '</span>');
+			}
 		}
 		
 		/* 安装工具栏 */
@@ -253,8 +282,10 @@
 						.mousedown(function(event){event.stopPropagation()})
 						.appendTo($('body'));
 			$(window).resize(function() {
-				modal.css({'width'  : '', 'height' : ''});
-				modal.css({'width'  : $(document).width(), 'height' : $(document).height()});
+				if(modal){
+					modal.css({'width'  : '', 'height' : ''});
+					modal.css({'width'  : $(document).width(), 'height' : $(document).height()});
+				}
 			});
 		}
 		
@@ -262,7 +293,7 @@
 		function _setContent(content) {
 			var content = $('<div/>')
 						.addClass('ThinkBox-content')
-						.append($(content).clone(true, true).show());
+						.append(options.clone ? $(content).clone(true, true).show() : $(content));
 			$('.ThinkBox-content', box).remove(); // 卸载原容器中的内容
 			$('.ThinkBox-inner', box)
 				.css({'width' : options.width, 'height' : options.height}) // 设置弹出框内容的宽和高
@@ -394,37 +425,42 @@
 	$.extend($.ThinkBox, {
 		// 以一个URL加载内容并以ThinBox对话框的形式展现
 		load : function(url, opt){
-			var options = {'type' : 'GET', 'dataType' : 'text', 'cache' : false, 'parseData':undefined},self;
+			var options = {'clone' : false, 'type' : 'GET', 'dataType' : 'text', 'cache' : false, 'parseData':undefined, 'onload': undefined},self;
 			$.extend(options, opt || {});
-			var parseData = options.parseData;
+			var parseData = options.parseData, onload = options.onload, url = url.split(/\s+/);
 			var ajax = {
 				'type'    : options.type,
 				'dataType': options.dataType,
 				'cache'   : options.cache,
 				'success' : function(data) {
+					url[1] && (data = $(data).find(url[1]));
 					$.isFunction(parseData) && (data = parseData.call(options.dataEle, data));
 					//设置内容并显示弹出框
 					self.setContent(data);
+					_fire.call(self, onload);
 				}
 			};
 			
 			//删除ThinkBox不需要的参数
-			_delOptions(['type', 'cache', 'dataType', 'parseData'], options);
+			_delOptions(['type', 'cache', 'dataType', 'parseData', 'onload'], options);
 			
 			self = $.ThinkBox('<div class="ThinkBox-load-loading">加载中...</div>', options);
 			if(!self.getContent().children().is('.ThinkBox-load-loading')) return self; //防止发起多次不必要的请求
 			
-			$.ajax(url, ajax);
+			$.ajax(url[0], ajax);
 			return self;
 		},
 		
 		// 弹出一个iframe
 		'iframe' : function(url, opt){
-			var options = {'width' : 500, 'height' : 400, 'scrolling' : 'no'};
+			var options = {'width' : 500, 'height' : 400, 'scrolling' : 'no', 'onload' : undefined}, self;
 			$.extend(options, opt || {});
-			var html = '<iframe src="' + url + '" width="' + options.width + '" height="' + options.height + '" frameborder="0" scrolling="' + options.scrolling + '"></iframe>';
-			delete options.width, delete options.height, delete options.scrolling; //删除不必要的信息
-			return $.ThinkBox(html, options);
+			var onload = options.onload;
+			var iframe = $('<iframe/>').attr({'width' : options.width, 'height' : options.height, 'frameborder' : 0, 'scrolling' : options.scrolling, 'src' : url})
+				.load(function(){_fire.call(self, onload)});
+			_delOptions(['width', 'height', 'scrolling', 'onload'], options);//删除不必要的信息
+			self = $.ThinkBox(iframe, options);
+			return self;
 		},
 		
 		// 提示框 可以配合ThinkPHP的ajaxReturn

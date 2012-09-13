@@ -149,7 +149,7 @@ $(function(){
 	//example 12
 	$('#example-12').ThinkBox({'event' : 'click', 'title' : 'Example 12'});
 	$('#example-12-1').ThinkBox({'event' : 'click', 'title' : null, 'close' : false});
-	$('#example-12-2').ThinkBox({'event' : 'hover', 'title' : 'Example 12', 'close' : false, 'delayShow': 50});
+	$('#example-12-2').ThinkBox({'event' : 'hover', 'close' : false, 'delayShow': 50});
 	$(document).mousedown(function(){
 		$('#example-12,#example-12-1').ThinkBox('hide'); //关闭
 	});
@@ -399,7 +399,7 @@ $('#example-11').click(function(){
     <div class="title">Example-12: 
     	<a id="example-12" href="href.html">自动加载 a 标签的 href 连接并用弹出层展现</a>&nbsp;&nbsp;&nbsp;
     	<a id="example-12-1" href="href.html">不显示标题栏和关闭按钮</a>&nbsp;&nbsp;&nbsp;
-        <a id="example-12-2" href="javascript:;" think-href="href.html">hover触发</a>
+        <a id="example-12-2" href="javascript:;" think-href="href.html" title="Example-12-2">hover触发</a>
     </div>
     <div class="code">
 <pre>

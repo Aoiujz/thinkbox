@@ -268,12 +268,13 @@
 		
 		/* 安装模态背景 */
 		function _setupModal(){
+			var _doc = $(document);
 			modal = $('<div class="ThinkBox-modal-blackout"></div>')
 						.addClass('ThinkBox-modal-blackout-' + options.style)
 						.css({
 							'zIndex' : zIndex++, 
-							'width'  : $(document).width(), 
-							'height' : $(document).height()
+							'width'  : _doc.width(), 
+							'height' : _doc.height()
 						})
 						.click(function(event){
 							options.modalClose && current && current.hide();
@@ -282,10 +283,7 @@
 						.mousedown(function(event){event.stopPropagation()})
 						.appendTo($('body'));
 			$(window).resize(function() {
-				if(modal){
-					modal.css({'width'  : '', 'height' : ''});
-					modal.css({'width'  : $(document).width(), 'height' : $(document).height()});
-				}
+				modal && modal.css({'width'  : '', 'height' : ''}).css({'width'  : _doc.width(), 'height' : _doc.height()});
 			});
 		}
 		
@@ -425,9 +423,9 @@
 	$.extend($.ThinkBox, {
 		// 以一个URL加载内容并以ThinBox对话框的形式展现
 		load : function(url, opt){
-			var options = {'clone' : false, 'type' : 'GET', 'dataType' : 'text', 'cache' : false, 'parseData':undefined, 'onload': undefined},self;
+			var options = {'clone' : false, 'loading' : '加载中...', 'type' : 'GET', 'dataType' : 'text', 'cache' : false, 'parseData':undefined, 'onload': undefined},self;
 			$.extend(options, opt || {});
-			var parseData = options.parseData, onload = options.onload, url = url.split(/\s+/);
+			var parseData = options.parseData, onload = options.onload, loading = options.loading, url = url.split(/\s+/);
 			var ajax = {
 				'type'    : options.type,
 				'dataType': options.dataType,
@@ -438,13 +436,14 @@
 					//设置内容并显示弹出框
 					self.setContent(data);
 					_fire.call(self, onload);
+					loading || self.show();
 				}
 			};
 			
 			//删除ThinkBox不需要的参数
-			_delOptions(['type', 'cache', 'dataType', 'parseData', 'onload'], options);
+			_delOptions(['type', 'cache', 'dataType', 'parseData', 'onload', 'loading'], options);
 			
-			self = $.ThinkBox('<div class="ThinkBox-load-loading">加载中...</div>', options);
+			self = loading ? $.ThinkBox('<div class="ThinkBox-load-loading">' + loading + '</div>', options) : $.ThinkBox('<div/>', $.extend({}, options, {'display' : false}));
 			if(!self.getContent().children().is('.ThinkBox-load-loading')) return self; //防止发起多次不必要的请求
 			
 			$.ajax(url[0], ajax);
@@ -539,7 +538,7 @@
 		
 		//弹出框内部获取弹出框对象
 		'get' : function(selector){
-			return $(selector).parents('.ThinkBox-wrapper').data('ThinkBox');
+			return $(selector).closest('.ThinkBox-wrapper').data('ThinkBox');
 		}
 	});
 	
@@ -547,17 +546,15 @@
 		if(opt == 'get') return $(this).data('ThinkBox');
 		return this.each(function(){
 			var self = $(this);
+			var box  = self.data('ThinkBox');
 			switch(opt){
 				case 'show':
-					var box = self.data('ThinkBox');
 					box && box.show();
 					break;
 				case 'hide':
-					var box = self.data('ThinkBox');
 					box && box.hide();
 					break;
 				case 'toggle':
-					var box = self.data('ThinkBox');
 					box && box.toggle();
 					break;
 				default:

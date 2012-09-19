@@ -3,7 +3,7 @@
  * jQuery ThinkBox - 弹出层插件 - http://zjzit.cn/thinkbox
  +-------------------------------------------------------------------
  * @version    1.0.0 beta
- * @since      2012.09.13
+ * @since      2012.09.19
  * @author     麦当苗儿 <zuojiazi.cn@gmail.com>
  * @github     https://github.com/Aoiujz/ThinkBox.git
  +-------------------------------------------------------------------
@@ -17,14 +17,14 @@
         'clone'       : true,     // 是否对弹出内容克隆
         'x'           : 0,        // 对话框 x 坐标。 当 center 属性为 true 时此属性无效
         'y'           : 0,        // 对话框 y 坐标。 当 center 属性为 true 时此属性无效
-        'modal'       : false,    // 对话框是否设置为模态。设置为 true 将显示遮罩背景，禁止其他事件触发
+        'modal'       : true,     // 对话框是否设置为模态。设置为 true 将显示遮罩背景，禁止其他事件触发
         'modalClose'  : true,     // 点击模态背景是否关闭弹出框
         'resize'      : true,     // 是否在窗口大小改变时重新定位弹出框位置
         'unload'      : false,    // 隐藏后是否卸载
-        'close'       : '[关闭]',  // 关闭按钮显示文字，留空则不显示关闭按钮
+        'close'       : '[关闭]', // 关闭按钮显示文字，留空则不显示关闭按钮
         'escHide'     : true,     // 按ESC是否关闭弹出框
         'delayClose'  : 0,        // 延时自动关闭弹出框 0表示不自动关闭
-        'drag'        : true,     // 点击标题框是否允许拖动
+        'drag'        : false,    // 点击标题框是否允许拖动
         'display'     : true,     // 是否在创建后立即显示
         'width'       : '',       // 弹出框内容区域宽度   空表示自适应
         'height'      : '',       // 弹出框内容区域高度   空表示自适应
@@ -32,7 +32,7 @@
         'locate'      : ['left', 'top'],       //弹出框位置属性
         'show'        : ['fadeIn', 'normal'],  //显示效果
         'hide'        : ['fadeOut', 'normal'], //关闭效果
-        'button'      : [], //工具栏按钮
+        'button'      : [],        //工具栏按钮
         'style'       : 'default', //弹出框样式
         'titleChange' : undefined, //分组标题切换后的回调方法
         'beforeShow'  : undefined, //显示前的回调方法

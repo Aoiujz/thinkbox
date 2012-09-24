@@ -52,7 +52,7 @@
     padding:0;
 }
 .ThinkBox-default .ThinkBox-title-inner{ /* 标题栏内容 */
-    background: url(../img/title_bg.gif) repeat-x 0 0 #E3E3E3;
+    background: url(title_bg.gif) repeat-x 0 0 #E3E3E3;
     border-bottom: 1px solid #ccc;
     padding-left: 10px;
     text-align: left;
@@ -101,7 +101,7 @@
     font-weight: normal;
     border-radius: 3px;
     margin: 0 6px;
-    background: url(../img/button_bg.png) repeat-x;
+    background: url(button_bg.png) repeat-x;
 }
 .ThinkBox-default .ThinkBox-tools .ok{
     border-color: #227FC0;
@@ -131,7 +131,7 @@
 .ThinkBox-default .ThinkBox-close{
     height: 14px;
     width: 15px;
-    background: url(../img/close_bg.png) no-repeat 0 0;
+    background: url(close_bg.png) no-repeat 0 0;
     position: absolute;
     top: 21px;
     right: 24px;
@@ -156,7 +156,7 @@
 /* 提示框样式 */
 .ThinkBox-default .ThinkBox-tips{
     height: 62px;
-    background-image: url(../img/tips-bg.gif);
+    background-image: url(tips-bg.gif);
     padding: 0 20px 0 70px;;
     background-repeat: no-repeat;
     line-height: 62px;
@@ -176,7 +176,7 @@
 /* 弹出加载框样式 */
 .ThinkBox-default .ThinkBox-loading{
     color: black;
-    background-image: url(../img/tips_loading.gif);
+    background-image: url(tips_loading.gif);
     background-position: 20px 15px;
 }
 /*警告提示信息*/

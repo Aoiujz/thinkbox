@@ -509,11 +509,11 @@
             var options = {'title' : '提示', 'modal' : false, 'modalClose' : false, 'unload' : false},
                 button = ['ok', '确定', undefined];
             $.extend(options, opt || {});
-            (typeof options.okValue != 'undefined') && (button[1] = options.okValue);
-            $.isFunction(options.okClick) && (button[2] = options.okClick);
+            (typeof options.okVal != 'undefined') && (button[1] = options.okVal);
+            $.isFunction(options.ok) && (button[2] = options.ok);
             
             //删除ThinkBox不需要的参数
-            _delOptions(['okValue', 'okClick'], options);
+            _delOptions(['okVal', 'ok'], options);
             
             options.button = [button];
             var html = $('<div/>').addClass('ThinkBox-alert').html(msg);
@@ -525,13 +525,13 @@
             var options = {'title' : '确认', 'modal' : false, 'modalClose' : false},
                 button = [['ok', '确定', undefined],['cancel', '取消', undefined]];
             $.extend(options, opt || {});
-            (typeof options.okValue != 'undefined') && (button[0][1] = options.okValue);
-            (typeof options.cancelValue != 'undefined') && (button[1][1] = options.cancelValue);
-            $.isFunction(options.okClick) && (button[0][2] = options.okClick);
-            $.isFunction(options.cancelClick) && (button[1][2] = options.cancelClick);
+            (typeof options.okVal != 'undefined') && (button[0][1] = options.okVal);
+            (typeof options.cancelVal != 'undefined') && (button[1][1] = options.cancelVal);
+            $.isFunction(options.ok) && (button[0][2] = options.ok);
+            $.isFunction(options.cancel) && (button[1][2] = options.cancel);
 
             //删除ThinkBox不需要的参数
-            _delOptions(['okValue', 'okClick', 'cancelValue', 'cancelClick'], options);
+            _delOptions(['okVal', 'ok', 'cancelVal', 'cancel'], options);
 
             options.button = button;
             var html = $('<div/>').addClass('ThinkBox-confirm').html(msg);

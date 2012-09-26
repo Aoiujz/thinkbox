@@ -3,4 +3,4 @@ ThinkBox
 
 jQuery ThinkBox
 
-http://thinkbox.zjzjit.cn
+http://thinkbox.zjzit.cn

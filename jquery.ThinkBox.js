@@ -10,6 +10,9 @@
  */
 (function($){
 var
+    /* 当前脚本文件名 */
+    __FILE__ = $("script").last().attr("src"),
+    
     /* 弹出层对象 */
     ThinkBox,
 
@@ -107,6 +110,8 @@ ThinkBox = function(element, options){
     var self = this, visible = false, modal = null, options, box;
     //合并配置选项
     options = $.extend({}, defaults, options || {});
+    //加载CSS文件
+    includeCss("/skin/" + options.style + "/style.css");
     //创建弹出层容器
     box = $(wrapper).addClass("ThinkBox-" + options.style).data("ThinkBox", this);
     //缓存弹出层，防止弹出多个
@@ -416,6 +421,19 @@ function _del(opt, options){
     $.each(opt, function() {
         if (this in options) delete options[this];
     });    
+}
+
+//加载指定的CSS文件
+function includeCss(css){
+    var path = __FILE__.slice(0, __FILE__.lastIndexOf("/"));
+    if($("link[href='" + path + css + "']").length) return;
+
+    //加载CSS文件
+    $("<link/>").attr({
+            "href" : path + css,
+            "type" : "text/css", 
+            "rel"  : "stylesheet"
+        }).appendTo("head");
 }
 
 /* 按ESC关闭弹出层 */

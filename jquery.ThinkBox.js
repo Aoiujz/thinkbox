@@ -302,7 +302,7 @@
                 .append(content); // 添加新内容
         }
         
-        /* 设置弹出层初始位置 */
+        /* 设置弹出层位置 */
         function _setLocate(){
             options.center ? 
             _moveToCenter() :
@@ -540,6 +540,7 @@
         
         //弹出层内部获取弹出层对象
         'get' : function(selector){
+            //TODO:通过弹窗内部元素找
             return $(selector).closest('.ThinkBox-wrapper').data('ThinkBox');
         }
     });

@@ -79,24 +79,26 @@ var
         "</div>"].join(""),
     
     /* 弹出层标题栏 */
-    titleBar = ["<tr class=\"ThinkBox-title\">",
-                        "<td class=\"box-title-left\"></td>",       //标题栏左边
-                        "<td class=\"ThinkBox-title-inner\"></td>", //标题栏inner
-                        "<td class=\"box-title-right\"></td>",      //标题栏右边
-                    "</tr>"].join(""),
+    titleBar = [
+        "<tr class=\"ThinkBox-title\">",
+            "<td class=\"box-title-left\"></td>",       //标题栏左边
+            "<td class=\"ThinkBox-title-inner\"></td>", //标题栏inner
+            "<td class=\"box-title-right\"></td>",      //标题栏右边
+        "</tr>"].join(""),
     
     /* 弹出层按钮工具栏 */
-    toolsBar = ["<tr class=\"ThinkBox-tools\">",
-                        "<td class=\"box-tools-left\"></td>",       //工具栏左边
-                        "<td class=\"ThinkBox-tools-inner\"></td>", //工具栏inner
-                        "<td class=\"box-tools-right\"></td>",      //工具栏右边
-                    "</tr>"].join(""),
+    toolsBar = [
+        "<tr class=\"ThinkBox-tools\">",
+            "<td class=\"box-tools-left\"></td>",       //工具栏左边
+            "<td class=\"ThinkBox-tools-inner\"></td>", //工具栏inner
+            "<td class=\"box-tools-right\"></td>",      //工具栏右边
+        "</tr>"].join(""),
 
     /* document和window对象分别对应的jQuery对象 */
     _doc = $(document), _win = $(window),
 
-    /* 浏览器对象 */
-    browser = /(msie) ([\w.]+)/.exec(navigator.userAgent.toLowerCase()) || [];
+    /* IE浏览器对象 */
+    msie = /(msie) ([\w.]+)/.exec(navigator.userAgent.toLowerCase()) || [];
     
 /**
  * 构造方法，用于实例化一个新的弹出层对象
@@ -110,57 +112,59 @@ ThinkBox = function(element, options){
     var self = this, visible = false, modal = null, options, box;
     //合并配置选项
     options = $.extend({}, defaults, options || {});
-    //加载CSS文件
-    includeCss("/skin/" + options.style + "/style.css");
-    //创建弹出层容器
-    box = $(wrapper).addClass("ThinkBox-" + options.style).data("ThinkBox", this);
-    //缓存弹出层，防止弹出多个
-    options.dataEle && $(options.dataEle).data("ThinkBox", this);
-    
-    //给box绑定事件
-    box.hover(
-        function(){_fire.call(self, options.mouseover)},
-        function(){_fire.call(self, options.mouseout)})
-       .mousedown(function(event){_setCurrent(); event.stopPropagation()})
-       .click(function(event){event.stopPropagation()});
-    
-    _setContent(element || "<div></div>"); //设置内容
-    options.title !== null && _setupTitleBar(); // 安装标题栏
-    options.button.length && _setupToolsBar();
-    options.close && _setupCloseBtn(); // 安装关闭按钮
-    box.css("display", "none").appendTo("body"); //放入body
 
-    //左边添加空DIV防止拖动出浏览器时左边不显示
-    box.find(".box-left").append($("<div/>").css("width", box.find(".box-left").width()));
-    
-    /* 弹出层开放API接口 */
-    this.hide = _hide; //隐藏弹出层
-    this.show = _show; //显示弹出层
-    //如果当前显示则隐藏，如果当前隐藏则显示
-    this.toggle     = function(){visible ? self.hide() : self.show()};
-    this.getContent = function(){return $(".ThinkBox-content", box)}; // 获取弹出层内容对象
-    this.setContent = function(content){ //动态添加内容
-        _setContent(content);
+    //加载CSS文件，完成后创建弹出层
+    includeCss("/skin/" + options.style + "/style.css", function(){
+        //创建弹出层容器
+        box = $(wrapper).addClass("ThinkBox-" + options.style).data("ThinkBox", self);
+        //缓存弹出层，防止弹出多个
+        options.dataEle && $(options.dataEle).data("ThinkBox", self);
+        
+        //给box绑定事件
+        box.hover(
+            function(){_fire.call(self, options.mouseover)},
+            function(){_fire.call(self, options.mouseout)})
+           .mousedown(function(event){_setCurrent(); event.stopPropagation()})
+           .click(function(event){event.stopPropagation()});
+        
+        _setContent(element || "<div></div>"); //设置内容
+        options.title !== null && _setupTitleBar(); // 安装标题栏
+        options.button.length && _setupToolsBar();
+        options.close && _setupCloseBtn(); // 安装关闭按钮
+        box.css("display", "none").appendTo("body"); //放入body
+
+        //左边添加空DIV防止拖动出浏览器时左边不显示
+        box.find(".box-left").append($("<div/>").css("width", box.find(".box-left").width()));
+        
+        /* 弹出层开放API接口 */
+        self.hide = _hide; //隐藏弹出层
+        self.show = _show; //显示弹出层
+        //如果当前显示则隐藏，如果当前隐藏则显示
+        self.toggle     = function(){visible ? self.hide() : self.show()};
+        self.getContent = function(){return $(".ThinkBox-content", box)}; // 获取弹出层内容对象
+        self.setContent = function(content){ //动态添加内容
+            _setContent(content);
+            _setLocate(); //设置弹出层显示位置
+            return self;
+        };
+        self.setTitle = _setTitle; //动态设置标题
+        self.getSize  = _getSize;  //获取弹出层的尺寸
+        self.setSize  = function(width, height){ //动态改变弹出层内容区域的大小
+            $(".ThinkBox-inner", box).css({"width" : width, "height" : height});
+        };
+        
+        //设置弹出层fixed属性
+        options.fixed && (
+            msie[0] && msie[1] < 7 ?
+            options.fixed = false : box.css("position", "fixed")
+        );
+
         _setLocate(); //设置弹出层显示位置
-        return self;
-    };
-    this.setTitle = _setTitle; //动态设置标题
-    this.getSize  = _getSize;  //获取内容区域的尺寸
-    this.setSize  = function(width, height){ //动态改变弹出层内容区域的大小
-        $(".ThinkBox-inner", box).css({"width" : width, "height" : height});
-    };
-    
-    //设置弹出层fixed属性
-    options.fixed && (
-        browser[0] && browser[1] < 7 ?
-        options.fixed = false : box.css("position", "fixed")
-    );
-
-    _setLocate(); //设置弹出层显示位置
-    options.resize && _win.resize(function(){_setLocate()}); //窗口大小改变后重设位置
-    
-    self.escHide = options.escHide; // 按ESC键关闭弹出层
-    options.display && _show(); //显示弹出层
+        options.resize && _win.resize(function(){_setLocate()}); //窗口大小改变后重设位置
+        
+        self.escHide = options.escHide; // 按ESC键关闭弹出层
+        options.display && _show(); //显示弹出层
+    });
     
     /* 显示弹出层 */
     function _show() {
@@ -277,7 +281,7 @@ ThinkBox = function(element, options){
     
     /* 安装模态背景 */
     function _setupModal(){
-        if(browser[0]){ //解决IE通过 $(documemt).width()获取到的宽度含有滚动条宽度的BUG
+        if(msie[0]){ //解决IE通过 $(documemt).width()获取到的宽度含有滚动条宽度的BUG
             _doc.width  = function(){return document.documentElement.scrollWidth};
             _doc.height = function(){return document.documentElement.scrollHeight};
         }
@@ -424,12 +428,17 @@ function _del(opt, options){
 }
 
 //加载指定的CSS文件
-function includeCss(css){
+function includeCss(css, onload){
     var path = __FILE__.slice(0, __FILE__.lastIndexOf("/"));
-    if($("link[href='" + path + css + "']").length) return;
+    if($("link[href='" + path + css + "']").length){
+        _fire(onload);
+        return;
+    };
 
     //加载CSS文件
-    $("<link/>").attr({
+    $("<link/>")
+        .load(function(){_fire(onload)})
+        .attr({
             "href" : path + css,
             "type" : "text/css", 
             "rel"  : "stylesheet"

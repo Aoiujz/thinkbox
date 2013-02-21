@@ -28,7 +28,7 @@ var
         "modalClose"  : true,     // 点击模态背景是否关闭弹出层
         "resize"      : true,     // 是否在窗口大小改变时重新定位弹出层位置
         "unload"      : false,    // 隐藏后是否卸载
-        "close"       : "[关闭]", // 关闭按钮显示文字，留空则不显示关闭按钮
+        "close"       : "×", // 关闭按钮显示文字，留空则不显示关闭按钮
         "escHide"     : true,     // 按ESC是否关闭弹出层
         "delayClose"  : 0,        // 延时自动关闭弹出层 0表示不自动关闭
         "drag"        : false,    // 点击标题框是否允许拖动

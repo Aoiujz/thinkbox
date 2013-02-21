@@ -3,17 +3,17 @@
  **********************************************/
  
 /* 默认模态窗口背景样式 */ 
-.ThinkBox-modal-blackout-default{
+.thinkbox-modal-blackout-default{
     background-color: #000;
     opacity: .1;
     filter:alpha(opacity=10);
 } 
 
 /* 默认边框样式 */
-.ThinkBox-default .box-top-left, /* 左上角 */
-.ThinkBox-default .box-top-right, /* 右上角 */
-.ThinkBox-default .box-bottom-right, /* 右下角 */
-.ThinkBox-default .box-bottom-left{ /* 左下角 */
+.thinkbox-default .box-top-left, /* 左上角 */
+.thinkbox-default .box-top-right, /* 右上角 */
+.thinkbox-default .box-bottom-right, /* 右下角 */
+.thinkbox-default .box-bottom-left{ /* 左下角 */
     width: 5px;
     height: 5px;
     padding: 0;
@@ -21,20 +21,20 @@
     opacity:.2;
     filter:alpha(opacity=20);
 }
-.ThinkBox-default .box-top-left{ border-top-left-radius: 5px; }
-.ThinkBox-default .box-top-right{ border-top-right-radius: 5px; }
-.ThinkBox-default .box-bottom-left{ border-bottom-left-radius: 5px; }
-.ThinkBox-default .box-bottom-right{ border-bottom-right-radius: 5px; }
-.ThinkBox-default .box-top, /* 上边 */
-.ThinkBox-default .box-bottom{ /* 下边 */
+.thinkbox-default .box-top-left{ border-top-left-radius: 5px; }
+.thinkbox-default .box-top-right{ border-top-right-radius: 5px; }
+.thinkbox-default .box-bottom-left{ border-bottom-left-radius: 5px; }
+.thinkbox-default .box-bottom-right{ border-bottom-right-radius: 5px; }
+.thinkbox-default .box-top, /* 上边 */
+.thinkbox-default .box-bottom{ /* 下边 */
     height: 5px;
     background-color:#000;
     opacity:.2;
     filter:alpha(opacity=20);
     padding:0
 }
-.ThinkBox-default .box-left,  /* 左边 */
-.ThinkBox-default .box-right{ /* 右边 */
+.thinkbox-default .box-left,  /* 左边 */
+.thinkbox-default .box-right{ /* 右边 */
     width: 5px;
     background-color:#000;
     opacity:.2; 
@@ -43,7 +43,7 @@
 }
 
 /* 默认标题栏样式 */
-.ThinkBox-default .ThinkBox-title{ /* 标题栏内容 */
+.thinkbox-default .thinkbox-title{ /* 标题栏内容 */
     background: #fbfbfb; /* Old browsers */
 	background: -moz-linear-gradient(top,  #fbfbfb 0%, #ebebeb 100%); /* FF3.6+ */
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fbfbfb), color-stop(100%,#ebebeb)); /* Chrome,Safari4+ */
@@ -59,10 +59,10 @@
     height: 36px;
     font-weight: bold;
 }
-.ThinkBox-default .ThinkBox-draging{ /* 拖动时标题栏样式 */
+.thinkbox-default .thinkbox-draging{ /* 拖动时标题栏样式 */
     cursor:move;
 }
-.ThinkBox-default .ThinkBox-title span{ /* 标题样式 */
+.thinkbox-default .thinkbox-title span{ /* 标题样式 */
     font-size:14px;
     color: #333; 
     margin:0;
@@ -70,7 +70,7 @@
 }
 
 /* 默工具栏样式 */
-.ThinkBox-default .ThinkBox-tools{ /* 工具栏内容区域样式 */
+.thinkbox-default .thinkbox-tools{ /* 工具栏内容区域样式 */
     background-color:#fafafa;
     border-top: 1px solid #eee;
     padding: 5px 10px;
@@ -78,7 +78,7 @@
     color: #FF0099;
     font-weight: bold;
 }
-.ThinkBox-default .ThinkBox-button{ /* 工具栏按钮样式 */
+.thinkbox-default .thinkbox-button{ /* 工具栏按钮样式 */
     display: inline-block; 
     height: 24px;
 	line-height: 24px;
@@ -93,7 +93,7 @@
     border-radius: 3px;
     margin-left: 6px;
 }
-.ThinkBox-default .ThinkBox-tools .ok{
+.thinkbox-default .thinkbox-tools .ok{
     border-color: #227FC0;
     color: #FFF;
 	background: #4ca0da; /* Old browsers */
@@ -105,7 +105,7 @@
 	background: linear-gradient(to bottom,  #4ca0da 0%,#227fc0 100%); /* W3C */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4ca0da', endColorstr='#227fc0',GradientType=0 ); /* IE6-9 */
 }
-.ThinkBox-default .ThinkBox-tools .ok:hover{
+.thinkbox-default .thinkbox-tools .ok:hover{
     background: #4297d4; /* Old browsers */
 	background: -moz-linear-gradient(top,  #4297d4 0%, #227fc1 100%); /* FF3.6+ */
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#4297d4), color-stop(100%,#227fc1)); /* Chrome,Safari4+ */
@@ -115,7 +115,7 @@
 	background: linear-gradient(to bottom,  #4297d4 0%,#227fc1 100%); /* W3C */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4297d4', endColorstr='#227fc1',GradientType=0 ); /* IE6-9 */
 }
-.ThinkBox-default .ThinkBox-tools .cancel{
+.thinkbox-default .thinkbox-tools .cancel{
     border-color: #B0B0B0;
     color: #333;
 	background: #fafafa; /* Old browsers */
@@ -127,7 +127,7 @@
 	background: linear-gradient(to bottom,  #fafafa 0%,#fafafa 100%); /* W3C */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fafafa', endColorstr='#fafafa',GradientType=0 ); /* IE6-9 */
 }
-.ThinkBox-default .ThinkBox-tools .cancel:hover{
+.thinkbox-default .thinkbox-tools .cancel:hover{
     background: #f7f7f7; /* Old browsers */
 	background: -moz-linear-gradient(top,  #f7f7f7 0%, #f0f0f0 100%); /* FF3.6+ */
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f7f7f7), color-stop(100%,#f0f0f0)); /* Chrome,Safari4+ */
@@ -138,7 +138,7 @@
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f7f7f7', endColorstr='#f0f0f0',GradientType=0 ); /* IE6-9 */
 }
 /* 默认内容区域样式 */
-.ThinkBox-default .ThinkBox-inner{
+.thinkbox-default .thinkbox-inner{
     background-color:#FFF;
     padding:0;
     vertical-align: top;
@@ -146,7 +146,7 @@
 }
 
 /* 默认关闭按钮样式 */
-.ThinkBox-default .ThinkBox-close{
+.thinkbox-default .thinkbox-close{
     position: absolute;
     top: 11px;
     right: 14px;
@@ -156,21 +156,21 @@
 	color: #999;
 	text-shadow: 0 1px 1px #fff;
 }
-.ThinkBox-default .ThinkBox-close:hover{
+.thinkbox-default .thinkbox-close:hover{
     color: #c00;
 }
 /**********************************************
- ************** ThinkBox 插件样式 **************
+ ************** thinkbox 插件样式 **************
  **********************************************/
 /* 加载外部内容loading样式 */
-.ThinkBox-default .ThinkBox-load-loading{
+.thinkbox-default .thinkbox-load-loading{
     line-height: 30px;
     padding: 20px 10px;
     text-align: center;
     width: 220px;
 }
 /* 提示框样式 */
-.ThinkBox-default .ThinkBox-tips{
+.thinkbox-default .thinkbox-tips{
     height: 62px;
     background-image: url(tips-bg.gif);
     padding: 0 20px 0 70px;;
@@ -181,24 +181,24 @@
     width: auto;
 }
 /* 弹出成功框样式 */
-.ThinkBox-default .ThinkBox-success{
+.thinkbox-default .thinkbox-success{
     color: green;
 }
 /* 弹出错误框样式 */
-.ThinkBox-default .ThinkBox-error{
+.thinkbox-default .thinkbox-error{
     color: red;
     background-position: 0 -62px;
 }
 /* 弹出加载框样式 */
-.ThinkBox-default .ThinkBox-loading{
+.thinkbox-default .thinkbox-loading{
     color: black;
     background-image: url(tips_loading.gif);
     background-position: 20px 15px;
 }
 /*警告提示信息*/
 /*确认提示信息*/
-.ThinkBox-default .ThinkBox-alert,
-.ThinkBox-default .ThinkBox-confirm{
+.thinkbox-default .thinkbox-alert,
+.thinkbox-default .thinkbox-confirm{
     width: 260px; 
     padding: 10px;
     line-height: 20px;

@@ -2,19 +2,19 @@
 <html lang="en-US">
 <head>
 	<meta charset="UTF-8">
-	<title>ThinkBox基本用法</title>
+	<title>thinkbox基本用法</title>
 	<script type="text/javascript" src="../jquery-1.9.1.min.js"></script>
-	<script type="text/javascript" src="../jquery.ThinkBox.js"></script>
+	<script type="text/javascript" src="../jquery.thinkbox.js"></script>
 	<style type="text/css">
 		
 	</style>
 </head>
 <body>
-	<a id="ep1" href="#">$.ThinkBox('&lt;div class="content"&gt;这里是弹出层的内容&lt;/div&gt;')</a>
+	<a id="ep1" href="#">$.thinkbox('&lt;div class="content"&gt;这里是弹出层的内容&lt;/div&gt;')</a>
 	<div style="height:1000px"></div>
 <script type="text/javascript">
 	$('#ep1').click(function(){
-		$.ThinkBox('<div class="content">这里是弹出层的内容</div>',{
+		$.thinkbox('<div class="content">这里是弹出层的内容</div>',{
 			'title' : '标题',
 			'drag'  : true,
 			'button' : [
@@ -25,10 +25,10 @@
 
 		return false;
 	});
-	//$('#ep1').ThinkBox({'event':'click'});
+	//$('#ep1').thinkbox({'event':'click'});
 
 	// $(document).click(function(){
-	// 	$('#ep1').data('ThinkBox').hide()
+	// 	$('#ep1').data('thinkbox').hide()
 	// });
 
 </script>

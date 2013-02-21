@@ -1,11 +1,11 @@
 /**
  +-------------------------------------------------------------------
- * jQuery ThinkBox - 弹出层插件 - http://zjzit.cn/thinkbox
+ * jQuery thinkbox - 弹出层插件 - http://zjzit.cn/thinkbox
  +-------------------------------------------------------------------
  * @version    1.0.0 beta
  * @since      2013.02.05
  * @author     麦当苗儿 <zuojiazi.cn@gmail.com>
- * @github     https://github.com/Aoiujz/ThinkBox.git
+ * @github     https://github.com/Aoiujz/thinkbox.git
  +-------------------------------------------------------------------
  */
 (function($){
@@ -57,7 +57,7 @@ var
     
     /* 弹出层容器 */
     wrapper = [
-        "<div class=\"ThinkBox-wrapper\" style=\"position:absolute;width: auto\">",
+        "<div class=\"thinkbox-wrapper\" style=\"position:absolute;width: auto\">",
             //使用表格，可以做到良好的宽高自适应，而且方便低版本浏览器做圆角样式
             "<table cellspacing=\"0\" cellpadding=\"0\" border=\"0\" style=\"width: auto\">", 
                 "<tr>",
@@ -68,9 +68,9 @@ var
                 "<tr>",
                     "<td class=\"box-left\"></td>",       //左边
                     "<td>",
-                        "<div class=\"ThinkBox-header\"></div>", //弹出层header
-                        "<div class=\"ThinkBox-inner\"></div>", //弹出层body
-                        "<div class=\"ThinkBox-footer\"></div>", //弹出层footer
+                        "<div class=\"thinkbox-header\"></div>", //弹出层header
+                        "<div class=\"thinkbox-inner\"></div>", //弹出层body
+                        "<div class=\"thinkbox-footer\"></div>", //弹出层footer
                     "</td>", //弹出层inner
                     "<td class=\"box-right\"></td>",      //右边
                 "</tr>",
@@ -104,9 +104,9 @@ ThinkBox = function(element, options){
     //加载CSS文件，完成后创建弹出层
     includeCss("/skin/" + options.style + "/style.css", function(){
         //创建弹出层容器
-        box = $(wrapper).addClass("ThinkBox-" + options.style).data("ThinkBox", self);
+        box = $(wrapper).addClass("thinkbox-" + options.style).data("thinkbox", self);
         //缓存弹出层，防止弹出多个
-        options.dataEle && $(options.dataEle).data("ThinkBox", self);
+        options.dataEle && $(options.dataEle).data("thinkbox", self);
         
         //给box绑定事件
         box.hover(
@@ -129,7 +129,7 @@ ThinkBox = function(element, options){
         self.show = _show; //显示弹出层
         //如果当前显示则隐藏，如果当前隐藏则显示
         self.toggle     = function(){visible ? self.hide() : self.show()};
-        self.getContent = function(){return $(".ThinkBox-content", box)}; // 获取弹出层内容对象
+        self.getContent = function(){return $(".thinkbox-content", box)}; // 获取弹出层内容对象
         self.setContent = function(content){ //动态添加内容
             _setContent(content);
             _setLocate(); //设置弹出层显示位置
@@ -138,7 +138,7 @@ ThinkBox = function(element, options){
         self.setTitle = _setTitle; //动态设置标题
         self.getSize  = _getSize;  //获取弹出层的尺寸
         self.setSize  = function(width, height){ //动态改变弹出层内容区域的大小
-            $(".ThinkBox-inner", box).css({"width" : width, "height" : height});
+            $(".thinkbox-inner", box).css({"width" : width, "height" : height});
         };
         
         //设置弹出层fixed属性
@@ -209,18 +209,18 @@ ThinkBox = function(element, options){
     
     /* 安装标题栏 */
     function _setupTitleBar() {
-        var title = $("<div class=\"ThinkBox-title\"></div>");
+        var title = $("<div class=\"thinkbox-title\"></div>");
         if (options.drag) {
-            title.addClass("ThinkBox-draging");
+            title.addClass("thinkbox-draging");
             _drag(title);
         }
-        $(".ThinkBox-header", box).append(title);
+        $(".thinkbox-header", box).append(title);
         _setTitle(options.title);
     }
 
     /* 设置标题 */
     function _setTitle(content){
-        var title = $(".ThinkBox-title", box).empty();
+        var title = $(".thinkbox-title", box).empty();
         if($.isArray(title) || $.isPlainObject(title)){
             for(key in title){
                 $("<span>" + title[key] + "</span>").data("key", key)
@@ -243,9 +243,9 @@ ThinkBox = function(element, options){
     
     /* 安装工具栏 */
     function _setupToolsBar() {
-        var tools = $("<div class=\"ThinkBox-tools\"></div>");
+        var tools = $("<div class=\"thinkbox-tools\"></div>");
         for(key in options.button){
-            button = $("<span/>").addClass("ThinkBox-button " + options.button[key][0])
+            button = $("<span/>").addClass("thinkbox-button " + options.button[key][0])
                 .html(options.button[key][1])
                 .click(function(){_fire.call(self, options.button[key][2])})
                 .hover(function(){
@@ -253,15 +253,15 @@ ThinkBox = function(element, options){
                     function(){$(this).removeClass("hover")})
                 .appendTo(tools);
         }
-        $(".ThinkBox-footer", box).append(tools);
+        $(".thinkbox-footer", box).append(tools);
     }
     
     /* 安装关闭按钮 */
     function _setupCloseBtn(){
-        $("<span/>").addClass("ThinkBox-close").html(options.close)
+        $("<span/>").addClass("thinkbox-close").html(options.close)
             .click(function(event){self.hide();event.stopPropagation()})
             .mousedown(function(event){event.stopPropagation()})
-            .appendTo($(".ThinkBox-header", box));
+            .appendTo($(".thinkbox-header", box));
     }
     
     /* 安装模态背景 */
@@ -270,8 +270,8 @@ ThinkBox = function(element, options){
             _doc.width  = function(){return document.documentElement.scrollWidth};
             _doc.height = function(){return document.documentElement.scrollHeight};
         }
-        modal = $("<div class=\"ThinkBox-modal-blackout\"></div>")
-            .addClass("ThinkBox-modal-blackout-" + options.style)
+        modal = $("<div class=\"thinkbox-modal-blackout\"></div>")
+            .addClass("thinkbox-modal-blackout-" + options.style)
             .css({
                 "zIndex"   : zIndex++, 
                 "width"    : _doc.width(), 
@@ -297,10 +297,10 @@ ThinkBox = function(element, options){
     /* 设置弹出层容器中的内容 */
     function _setContent(content) {
         var content = $("<div/>")
-            .addClass("ThinkBox-content")
+            .addClass("thinkbox-content")
             .append((options.clone ? $(content).clone(true, true) : $(content)).show());
-        $(".ThinkBox-content", box).remove(); // 卸载原容器中的内容
-        $(".ThinkBox-inner", box)
+        $(".thinkbox-content", box).remove(); // 卸载原容器中的内容
+        $(".thinkbox-inner", box)
             .css({"width" : options.width, "height" : options.height}) //设置弹出层内容的宽和高
             .append(content); // 添加新内容
     }
@@ -376,7 +376,7 @@ ThinkBox = function(element, options){
     function _unload(){
         _fire.call(self, options.beforeUnload); //卸载前的回调方法
         box.remove();
-        options.dataEle && $(options.dataEle).removeData("ThinkBox");
+        options.dataEle && $(options.dataEle).removeData("thinkbox");
     }
     
     /* 设置为当前选中的弹出层对象 */
@@ -460,9 +460,9 @@ _doc.mousedown(function(){current = null}).keypress(function(event){
  * options 弹出层选项
  +----------------------------------------------------------
  */
-$.ThinkBox = function(element, options){
+$.thinkbox = function(element, options){
     if($.isPlainObject(options) && options.dataEle){
-        var data = $(options.dataEle).data("ThinkBox");
+        var data = $(options.dataEle).data("thinkbox");
         if(data) return options.display === false ? data : data.show();
     }
     return new ThinkBox(element, options);
@@ -473,7 +473,7 @@ $.ThinkBox = function(element, options){
  * 弹出层内置扩展
  +----------------------------------------------------------
  */
-$.extend($.ThinkBox, {
+$.extend($.thinkbox, {
     // 以一个URL加载内容并以ThinBox弹出层的形式展现
     "load" : function(url, opt){
         var options = {
@@ -509,8 +509,8 @@ $.extend($.ThinkBox, {
         _del(["data", "type", "cache", "dataType", "parseData", "onload", "loading"], options);
         
         self = loading ? //显示loading信息
-            $.ThinkBox("<div class=\"ThinkBox-load-loading\">" + loading + "</div>", options) : 
-            $.ThinkBox("<div/>", $.extend({}, options, {"display" : false}));
+            $.thinkbox("<div class=\"thinkbox-load-loading\">" + loading + "</div>", options) : 
+            $.thinkbox("<div/>", $.extend({}, options, {"display" : false}));
         
         $.ajax(url[0], ajax);
         return self;
@@ -535,7 +535,7 @@ $.extend($.ThinkBox, {
             "src"         : url})
             .load(function(){_fire.call(self, onload)});
         _del(["width", "height", "scrolling", "onload"], options);//删除不必要的信息
-        self = $.ThinkBox(iframe, options);
+        self = $.thinkbox(iframe, options);
         return self;
     },
     
@@ -554,9 +554,9 @@ $.extend($.ThinkBox, {
             case 0: type = "error"; break;
             case 1: type = "success"; break;
         }
-        html = "<div class=\"ThinkBox-tips ThinkBox-" + type + "\">" + msg + "</div>";
+        html = "<div class=\"thinkbox-tips thinkbox-" + type + "\">" + msg + "</div>";
         $.extend(options, opt || {});
-        return $.ThinkBox(html, options)    ;
+        return $.thinkbox(html, options)    ;
     },
 
     // 成功提示框
@@ -591,8 +591,8 @@ $.extend($.ThinkBox, {
             "hide"       : ["slideUp", "slow"]
         }, html;
         $.extend(options, opt || {});
-        html = $("<div/>").addClass("ThinkBox-msg").html(msg);
-        return $.ThinkBox(html, options);
+        html = $("<div/>").addClass("thinkbox-msg").html(msg);
+        return $.thinkbox(html, options);
     },
     
     //提示框
@@ -611,8 +611,8 @@ $.extend($.ThinkBox, {
         _del(["okVal", "ok"], options);
         
         options.button = [button];
-        var html = $("<div/>").addClass("ThinkBox-alert").html(msg);
-        return $.ThinkBox(html, options);
+        var html = $("<div/>").addClass("thinkbox-alert").html(msg);
+        return $.thinkbox(html, options);
     }, 
     
     //确认框
@@ -629,21 +629,21 @@ $.extend($.ThinkBox, {
         _del(["okVal", "ok", "cancelVal", "cancel"], options);
 
         options.button = button;
-        var html = $("<div/>").addClass("ThinkBox-confirm").html(msg);
-        return $.ThinkBox(html, options);
+        var html = $("<div/>").addClass("thinkbox-confirm").html(msg);
+        return $.thinkbox(html, options);
     },
     
     //弹出层内部获取弹出层对象
     "get" : function(selector){
         //TODO:通过弹窗内部元素找
-        return $(selector).closest(".ThinkBox-wrapper").data("ThinkBox");
+        return $(selector).closest(".thinkbox-wrapper").data("thinkbox");
     }
 });
 
-$.fn.ThinkBox = function(opt){
-    if(opt == "get") return $(this).data("ThinkBox");
+$.fn.thinkbox = function(opt){
+    if(opt == "get") return $(this).data("thinkbox");
     return this.each(function(){
-        var self = $(this), box = self.data("ThinkBox"), options, event,
+        var self = $(this), box = self.data("thinkbox"), options, event,
             delayClose, delayShow, timeout1, timeout2;
         switch(opt){
             case "show":
@@ -703,9 +703,9 @@ $.fn.ThinkBox = function(opt){
                                 timeout2 = timeout2 || 
                                 setTimeout(function(){
                                         timeout2 = null;
-                                        self.ThinkBox("hide")
+                                        self.thinkbox("hide")
                                 }, 50) :
-                                self.ThinkBox("hide");
+                                self.thinkbox("hide");
                             }
                         );
                     } else {
@@ -723,11 +723,11 @@ $.fn.ThinkBox = function(opt){
     function _(options){
         var href = this.attr("think-href") || this.attr("href");
         if(href.substr(0, 1) == "#"){
-            $.ThinkBox(href, options);
+            $.thinkbox(href, options);
         } else if(href.substr(0, 7) == "http://" || href.substr(0, 8) == "https://"){
-            $.ThinkBox.iframe(href, options);
+            $.thinkbox.iframe(href, options);
         } else {
-            $.ThinkBox.load(href, options);
+            $.thinkbox.load(href, options);
         }
     }
 }

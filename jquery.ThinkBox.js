@@ -67,7 +67,11 @@ var
                 "</tr>",
                 "<tr>",
                     "<td class=\"box-left\"></td>",       //左边
-                    "<td class=\"ThinkBox-inner\"></td>", //弹出层inner
+                    "<td>",
+                        "<div class=\"ThinkBox-header\"></div>", //弹出层header
+                        "<div class=\"ThinkBox-inner\"></div>", //弹出层body
+                        "<div class=\"ThinkBox-footer\"></div>", //弹出层footer
+                    "</td>", //弹出层inner
                     "<td class=\"box-right\"></td>",      //右边
                 "</tr>",
                 "<tr>",
@@ -77,22 +81,6 @@ var
                 "</tr>",
             "</table>",
         "</div>"].join(""),
-    
-    /* 弹出层标题栏 */
-    titleBar = [
-        "<tr class=\"ThinkBox-title\">",
-            "<td class=\"box-title-left\"></td>",       //标题栏左边
-            "<td class=\"ThinkBox-title-inner\"></td>", //标题栏inner
-            "<td class=\"box-title-right\"></td>",      //标题栏右边
-        "</tr>"].join(""),
-    
-    /* 弹出层按钮工具栏 */
-    toolsBar = [
-        "<tr class=\"ThinkBox-tools\">",
-            "<td class=\"box-tools-left\"></td>",       //工具栏左边
-            "<td class=\"ThinkBox-tools-inner\"></td>", //工具栏inner
-            "<td class=\"box-tools-right\"></td>",      //工具栏右边
-        "</tr>"].join(""),
 
     /* document和window对象分别对应的jQuery对象 */
     _doc = $(document), _win = $(window),
@@ -122,19 +110,19 @@ ThinkBox = function(element, options){
         
         //给box绑定事件
         box.hover(
-            function(){_fire.call(self, options.mouseover)},
-            function(){_fire.call(self, options.mouseout)})
+                function(){_fire.call(self, options.mouseover)},
+                function(){_fire.call(self, options.mouseout)})
            .mousedown(function(event){_setCurrent(); event.stopPropagation()})
            .click(function(event){event.stopPropagation()});
         
         _setContent(element || "<div></div>"); //设置内容
         options.title !== null && _setupTitleBar(); // 安装标题栏
-        options.button.length && _setupToolsBar();
+        options.button.length && _setupToolsBar();// 安装工具栏
         options.close && _setupCloseBtn(); // 安装关闭按钮
         box.css("display", "none").appendTo("body"); //放入body
 
         //左边添加空DIV防止拖动出浏览器时左边不显示
-        box.find(".box-left").append($("<div/>").css("width", box.find(".box-left").width()));
+        $(".box-left", box).append($("<div/>").css("width", $(".box-left", box).width()));
         
         /* 弹出层开放API接口 */
         self.hide = _hide; //隐藏弹出层
@@ -221,44 +209,41 @@ ThinkBox = function(element, options){
     
     /* 安装标题栏 */
     function _setupTitleBar() {
-        var bar = $(titleBar), title = $(".ThinkBox-title-inner", bar);
+        var title = $("<div class=\"ThinkBox-title\"></div>");
         if (options.drag) {
             title.addClass("ThinkBox-draging");
-            title[0].onselectstart = function() {return false}; //禁止选中文字
-            title[0].unselectable = "on"; // 禁止获取焦点
-            title[0].style.MozUserSelect = "none"; // 禁止火狐选中文字
             _drag(title);
         }
-        $("tr", box).first().after(bar);
+        $(".ThinkBox-header", box).append(title);
         _setTitle(options.title);
     }
 
     /* 设置标题 */
-    function _setTitle(title){
-        var titleInner = $(".ThinkBox-title-inner", box).empty();
+    function _setTitle(content){
+        var title = $(".ThinkBox-title", box).empty();
         if($.isArray(title) || $.isPlainObject(title)){
             for(key in title){
                 $("<span>" + title[key] + "</span>").data("key", key)
                     .click(function(event){
                         var _this = $(this);
                         if(!_this.hasClass("selected")){
-                            titleInner.find("span.selected").removeClass("selected");
+                            title.find("span.selected").removeClass("selected");
                             _this.addClass("selected");
                             _fire.call(_this, options.titleChange);
                         }
                     })
                     .mousedown(function(event){event.stopPropagation()})
                     .mouseup(function(event){event.stopPropagation()})
-                    .appendTo(titleInner);
+                    .appendTo(title);
             }
         } else {
-            titleInner.append("<span>" + title + "</span>");
+            title.append("<span>" + content + "</span>");
         }
     }
     
     /* 安装工具栏 */
     function _setupToolsBar() {
-        var bar = $(toolsBar), tools = $(".ThinkBox-tools-inner", bar), button  = null;
+        var tools = $("<div class=\"ThinkBox-tools\"></div>");
         for(key in options.button){
             button = $("<span/>").addClass("ThinkBox-button " + options.button[key][0])
                 .html(options.button[key][1])
@@ -268,7 +253,7 @@ ThinkBox = function(element, options){
                     function(){$(this).removeClass("hover")})
                 .appendTo(tools);
         }
-        $("tr", box).last().before(bar);
+        $(".ThinkBox-footer", box).append(tools);
     }
     
     /* 安装关闭按钮 */
@@ -276,7 +261,7 @@ ThinkBox = function(element, options){
         $("<span/>").addClass("ThinkBox-close").html(options.close)
             .click(function(event){self.hide();event.stopPropagation()})
             .mousedown(function(event){event.stopPropagation()})
-            .appendTo($(".ThinkBox-inner", box));
+            .appendTo($(".ThinkBox-header", box));
     }
     
     /* 安装模态背景 */
@@ -347,9 +332,11 @@ ThinkBox = function(element, options){
                 offset.left -= _win.scrollLeft();
                 offset.top -= _win.scrollTop();
             }
+            _unselect(box[0]); //禁止选中文字
             draging = [event.pageX - offset.left, event.pageY - offset.top];
         }).mouseup(function() {
             draging = null;
+            _onselect(box[0]); //允许选中文字
             _fire.call(self, options.afterDrag); //拖动后的回调函数
         });
     }
@@ -425,6 +412,22 @@ function _del(opt, options){
     $.each(opt, function() {
         if (this in options) delete options[this];
     });    
+}
+
+/* 禁止选中文字 */
+function _unselect(element){
+    element.onselectstart = function() {return false}; //ie
+    element.unselectable = "on"; // ie
+    element.style.MozUserSelect = "none"; // firefox
+    element.style.WebkitUserSelect = "none"; // chrome
+}
+
+/* 允许选中文字 */
+function _onselect(element){
+    element.onselectstart = function() {return true}; //ie
+    element.unselectable = "off"; // ie
+    element.style.MozUserSelect = "auto"; // firefox
+    element.style.WebkitUserSelect = "auto"; // chrome
 }
 
 //加载指定的CSS文件

@@ -43,15 +43,7 @@
 }
 
 /* 默认标题栏样式 */
-.ThinkBox-default .box-title-left,  /* 标题栏左边 */
-.ThinkBox-default .box-title-right{ /* 标题栏右边 */
-    width: 10px;
-    background-color:#000;
-    opacity:0.3; 
-    filter:alpha(opacity=30);
-    padding:0;
-}
-.ThinkBox-default .ThinkBox-title-inner{ /* 标题栏内容 */
+.ThinkBox-default .ThinkBox-title{ /* 标题栏内容 */
     background: url(title_bg.gif) repeat-x 0 0 #E3E3E3;
     border-bottom: 1px solid #ccc;
     padding-left: 10px;
@@ -63,7 +55,7 @@
 .ThinkBox-default .ThinkBox-draging{ /* 拖动时标题栏样式 */
     cursor:move;
 }
-.ThinkBox-default .ThinkBox-title-inner span{ /* 标题样式 */
+.ThinkBox-default .ThinkBox-title span{ /* 标题样式 */
     font-size:14px;
     color: #333; 
     margin:0;
@@ -71,15 +63,7 @@
 }
 
 /* 默工具栏样式 */
-.ThinkBox-default .box-tools-left, /* 工具栏左边 */
-.ThinkBox-default .box-tools-right{ /* 工具栏右边 */
-    width: 10px;
-    background-color:#000;
-    opacity:0.3; 
-    filter:alpha(opacity=30);
-    padding:0;
-}
-.ThinkBox-default .ThinkBox-tools-inner{ /* 工具栏内容区域样式 */
+.ThinkBox-default .ThinkBox-tools{ /* 工具栏内容区域样式 */
     background-color:#fafafa;
     border-top: 1px solid #eee;
     padding: 6px 10px;
@@ -142,6 +126,7 @@
 .ThinkBox-default .ThinkBox-close:hover{
     background-position: 0 -15px;
 }
+
 
 /**********************************************
  ************** ThinkBox 插件样式 **************

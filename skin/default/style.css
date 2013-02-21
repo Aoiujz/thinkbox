@@ -10,10 +10,10 @@
 } 
 
 /* 默认边框样式 */
-.thinkbox-default .box-top-left, /* 左上角 */
-.thinkbox-default .box-top-right, /* 右上角 */
-.thinkbox-default .box-bottom-right, /* 右下角 */
-.thinkbox-default .box-bottom-left{ /* 左下角 */
+.thinkbox-default .thinkbox-top-left, /* 左上角 */
+.thinkbox-default .thinkbox-top-right, /* 右上角 */
+.thinkbox-default .thinkbox-bottom-right, /* 右下角 */
+.thinkbox-default .thinkbox-bottom-left{ /* 左下角 */
     width: 5px;
     height: 5px;
     padding: 0;
@@ -21,20 +21,20 @@
     opacity:.2;
     filter:alpha(opacity=20);
 }
-.thinkbox-default .box-top-left{ border-top-left-radius: 5px; }
-.thinkbox-default .box-top-right{ border-top-right-radius: 5px; }
-.thinkbox-default .box-bottom-left{ border-bottom-left-radius: 5px; }
-.thinkbox-default .box-bottom-right{ border-bottom-right-radius: 5px; }
-.thinkbox-default .box-top, /* 上边 */
-.thinkbox-default .box-bottom{ /* 下边 */
+.thinkbox-default .thinkbox-top-left{ border-top-left-radius: 5px; }
+.thinkbox-default .thinkbox-top-right{ border-top-right-radius: 5px; }
+.thinkbox-default .thinkbox-bottom-left{ border-bottom-left-radius: 5px; }
+.thinkbox-default .thinkbox-bottom-right{ border-bottom-right-radius: 5px; }
+.thinkbox-default .thinkbox-top, /* 上边 */
+.thinkbox-default .thinkbox-bottom{ /* 下边 */
     height: 5px;
     background-color:#000;
     opacity:.2;
     filter:alpha(opacity=20);
     padding:0
 }
-.thinkbox-default .box-left,  /* 左边 */
-.thinkbox-default .box-right{ /* 右边 */
+.thinkbox-default .thinkbox-left,  /* 左边 */
+.thinkbox-default .thinkbox-right{ /* 右边 */
     width: 5px;
     background-color:#000;
     opacity:.2; 
@@ -78,7 +78,7 @@
     color: #FF0099;
     font-weight: bold;
 }
-.thinkbox-default .thinkbox-button{ /* 工具栏按钮样式 */
+.thinkbox-default .thinkbox-tools .thinkbox-button{ /* 工具栏按钮样式 */
     display: inline-block; 
     height: 24px;
 	line-height: 24px;
@@ -93,7 +93,7 @@
     border-radius: 3px;
     margin-left: 6px;
 }
-.thinkbox-default .thinkbox-tools .ok{
+.thinkbox-default .thinkbox-tools .thinkbox-button-ok{
     border-color: #227FC0;
     color: #FFF;
 	background: #4ca0da; /* Old browsers */
@@ -105,7 +105,7 @@
 	background: linear-gradient(to bottom,  #4ca0da 0%,#227fc0 100%); /* W3C */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4ca0da', endColorstr='#227fc0',GradientType=0 ); /* IE6-9 */
 }
-.thinkbox-default .thinkbox-tools .ok:hover{
+.thinkbox-default .thinkbox-tools .thinkbox-button-ok:hover{
     background: #4297d4; /* Old browsers */
 	background: -moz-linear-gradient(top,  #4297d4 0%, #227fc1 100%); /* FF3.6+ */
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#4297d4), color-stop(100%,#227fc1)); /* Chrome,Safari4+ */
@@ -115,7 +115,7 @@
 	background: linear-gradient(to bottom,  #4297d4 0%,#227fc1 100%); /* W3C */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4297d4', endColorstr='#227fc1',GradientType=0 ); /* IE6-9 */
 }
-.thinkbox-default .thinkbox-tools .cancel{
+.thinkbox-default .thinkbox-tools .thinkbox-button-cancel{
     border-color: #B0B0B0;
     color: #333;
 	background: #fafafa; /* Old browsers */
@@ -127,7 +127,7 @@
 	background: linear-gradient(to bottom,  #fafafa 0%,#fafafa 100%); /* W3C */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fafafa', endColorstr='#fafafa',GradientType=0 ); /* IE6-9 */
 }
-.thinkbox-default .thinkbox-tools .cancel:hover{
+.thinkbox-default .thinkbox-tools .thinkbox-button-cancel:hover{
     background: #f7f7f7; /* Old browsers */
 	background: -moz-linear-gradient(top,  #f7f7f7 0%, #f0f0f0 100%); /* FF3.6+ */
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f7f7f7), color-stop(100%,#f0f0f0)); /* Chrome,Safari4+ */
@@ -138,7 +138,7 @@
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f7f7f7', endColorstr='#f0f0f0',GradientType=0 ); /* IE6-9 */
 }
 /* 默认内容区域样式 */
-.thinkbox-default .thinkbox-inner{
+.thinkbox-default .thinkbox-body{
     background-color:#FFF;
     padding:0;
     vertical-align: top;
@@ -148,7 +148,7 @@
 /* 默认关闭按钮样式 */
 .thinkbox-default .thinkbox-close{
     position: absolute;
-    top: 11px;
+    top: 13px;
     right: 14px;
 	font-size: 20px;
     cursor: pointer;
@@ -181,16 +181,16 @@
     width: auto;
 }
 /* 弹出成功框样式 */
-.thinkbox-default .thinkbox-success{
+.thinkbox-default .thinkbox-tips-success{
     color: green;
 }
 /* 弹出错误框样式 */
-.thinkbox-default .thinkbox-error{
+.thinkbox-default .thinkbox-tips-error{
     color: red;
     background-position: 0 -62px;
 }
 /* 弹出加载框样式 */
-.thinkbox-default .thinkbox-loading{
+.thinkbox-default .thinkbox-tips-loading{
     color: black;
     background-image: url(tips_loading.gif);
     background-position: 20px 15px;

@@ -66,11 +66,9 @@ var
                 "</tr>",
                 "<tr>",
                     "<td class=\"thinkbox-left\"></td>",       //左边
-                    "<td>",
-                        "<div class=\"thinkbox-head\"></div>", //弹出层head
+                    "<td class=\"thinkbox-inner\">", //弹出层inner
                         "<div class=\"thinkbox-body\"></div>", //弹出层body
-                        "<div class=\"thinkbox-foot\"></div>", //弹出层foot
-                    "</td>", //弹出层inner
+                    "</td>",
                     "<td class=\"thinkbox-right\"></td>",      //右边
                 "</tr>",
                 "<tr>",
@@ -96,7 +94,7 @@ var
  */
 ThinkBox = function(element, options){
     //初始化变量
-    var self = this, visible = false, modal = null, options, box;
+    var self = this, visible = false, modal = null, options, box, blw;
     //合并配置选项
     options = $.extend({}, defaults, options || {});
 
@@ -121,8 +119,8 @@ ThinkBox = function(element, options){
         box.css("display", "none").appendTo("body"); //放入body
 
         //左边添加空DIV防止拖动出浏览器时左边不显示
-        $(".thinkbox-left", box)
-            .append($("<div/>").css("width", $(".thinkbox-left", box).width()));
+        blw = $(".thinkbox-left", box).width();
+        blw && $(".thinkbox-left", box).append($("<div/>").css("width", blw));
         
         /* 弹出层开放API接口 */
         self.hide = _hide; //隐藏弹出层
@@ -185,7 +183,7 @@ ThinkBox = function(element, options){
     };
 
     /* 隐藏弹出层 */
-    function _hide() {
+    function _hide(data) {
         if(!visible) return self;
         modal && modal.fadeOut("normal", function(){$(this).remove();modal = null});
         //影藏效果
@@ -203,7 +201,7 @@ ThinkBox = function(element, options){
         
         function _() {
             visible = false;
-            _fire.call(self, options.afterHide); //隐藏后的回调方法
+            _fire.call(self, options.afterHide, data); //隐藏后的回调方法
             options.unload && _unload();
         }
     }
@@ -215,7 +213,7 @@ ThinkBox = function(element, options){
             title.addClass("thinkbox-draging");
             _drag(title);
         }
-        $(".thinkbox-head", box).append(title);
+        $(".thinkbox-inner", box).prepend(title);
         _setTitle(options.title);
     }
 
@@ -231,19 +229,19 @@ ThinkBox = function(element, options){
         for(key in options.button){
             switch(key){
                 case "ok":
-                    _(key, options.button[key], function(){self.hide()});
+                    _(key, options.button[key], function(){self.hide(true)});
                     break;
                 case "submit":
                     _(key, options.button[key], function(){box.find("form").submit()});
                     break;
                 default:
-                    _("cancel", options.button[key], function(){self.hide()});
+                    _("cancel", options.button[key], function(){self.hide(false)});
             }
         }
-        $(".thinkbox-foot", box).append(tools);
+        $(".thinkbox-inner", box).append(tools);
 
         function _(key, title, fun){
-            var button = $("<span class=\"thinkbox-button thinkbox-button-" + key + "\"></span>")
+            var button = $("<span class=\"thinkbox-button-" + key + "\"></span>")
                 .html(title)
                 .click(function(){fun()})
                 .appendTo(tools);
@@ -255,7 +253,7 @@ ThinkBox = function(element, options){
         $("<div/>").addClass("thinkbox-close").html(options.close)
             .click(function(event){self.hide();event.stopPropagation()})
             .mousedown(function(event){event.stopPropagation()})
-            .appendTo($(".thinkbox-head", box));
+            .appendTo($(".thinkbox-" + (options.title ? "title" : "inner"), box));
     }
     
     /* 安装模态背景 */
@@ -393,8 +391,8 @@ function viewport(){
 }
 
 /* 调用回调函数 */
-function _fire(event){
-    $.isFunction(event) && event.call(this);
+function _fire(event, data){
+    $.isFunction(event) && event.call(this, data);
 }
 
 /* 删除options中不必要的参数 */
@@ -536,7 +534,7 @@ $.extend($.thinkbox, {
             "escHide"    : false,
             "unload"     : true,
             "close"      : false,
-            "delayClose" : 1000
+            "delayClose" : 0
         }, html;
         
         //数字type转换为字符串type

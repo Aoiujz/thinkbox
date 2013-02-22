@@ -4,10 +4,17 @@
  
 /* 默认模态窗口背景样式 */ 
 .thinkbox-modal-blackout-default{
-    background-color: #000;
-    opacity: .1;
-    filter:alpha(opacity=10);
+    background-color: #fff;
+    opacity: .5;
+    filter:alpha(opacity=50);
 } 
+
+/* 默认弹出层样式 */
+.thinkbox-default{
+    border-radius : 5px;
+    background-color: #FFF;
+    box-shadow: 0 0 5px rgba(0,0,0,.2);
+}
 
 /* 默认边框样式 */
 .thinkbox-default .thinkbox-top-left, /* 左上角 */
@@ -20,6 +27,8 @@
     background-color:#000;
     opacity:.2;
     filter:alpha(opacity=20);
+    font-size: 0;
+    line-height: 0;
 }
 .thinkbox-default .thinkbox-top-left{ border-top-left-radius: 5px; }
 .thinkbox-default .thinkbox-top-right{ border-top-right-radius: 5px; }
@@ -31,7 +40,9 @@
     background-color:#000;
     opacity:.2;
     filter:alpha(opacity=20);
-    padding:0
+    padding:0;
+    font-size: 0;
+    line-height: 0;
 }
 .thinkbox-default .thinkbox-left,  /* 左边 */
 .thinkbox-default .thinkbox-right{ /* 右边 */
@@ -39,11 +50,13 @@
     background-color:#000;
     opacity:.2; 
     filter:alpha(opacity=20);
-    padding:0
+    padding:0;
+    font-size: 0;
+    line-height: 0;
 }
 
 /* 默认标题栏样式 */
-.thinkbox-default .thinkbox-title{ /* 标题栏内容 */
+.thinkbox-default .thinkbox-title{
     background: #fbfbfb; /* Old browsers */
 	background: -moz-linear-gradient(top,  #fbfbfb 0%, #ebebeb 100%); /* FF3.6+ */
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fbfbfb), color-stop(100%,#ebebeb)); /* Chrome,Safari4+ */
@@ -71,7 +84,7 @@
 }
 
 /* 默工具栏样式 */
-.thinkbox-default .thinkbox-tools{ /* 工具栏内容区域样式 */
+.thinkbox-default .thinkbox-tools{
     background-color:#fafafa;
     border-top: 1px solid #eee;
     padding: 5px 10px;
@@ -79,7 +92,7 @@
     color: #FF0099;
     font-weight: bold;
 }
-.thinkbox-default .thinkbox-tools .thinkbox-button{ /* 工具栏按钮样式 */
+.thinkbox-default .thinkbox-tools span{ /* 工具栏按钮样式 */
     display: inline-block; 
     height: 24px;
 	line-height: 24px;
@@ -140,17 +153,15 @@
 }
 /* 默认内容区域样式 */
 .thinkbox-default .thinkbox-body{
-    background-color:#FFF;
     padding:0;
     vertical-align: top;
-	padding: 12px;
 }
 
 /* 默认关闭按钮样式 */
 .thinkbox-default .thinkbox-close{
     position: absolute;
-    top: 16px;
-    right: 14px;
+    top: 10px;
+    right: 10px;
 	font-size: 20px;
     cursor: pointer;
     overflow: hidden;
@@ -158,9 +169,16 @@
 	font-family: '宋体';
 	font-size: 16px;
 	text-shadow: 0 1px 1px #fff;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
 }
 .thinkbox-default .thinkbox-close:hover{
     color: #c00;
+}
+.thinkbox-default .thinkbox-title .thinkbox-close{
+    top: 17px;
+    right: 15px;
 }
 /**********************************************
  ************** thinkbox 插件样式 **************

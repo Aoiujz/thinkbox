@@ -6,7 +6,10 @@
 	<script type="text/javascript" src="../jquery-1.9.1.min.js"></script>
 	<script type="text/javascript" src="../jquery.thinkbox.js"></script>
 	<style type="text/css">
-		
+		.content{
+			width: 220px;
+			height: 60px;
+		}
 	</style>
 </head>
 <body>
@@ -17,10 +20,13 @@
 		$.thinkbox('<div class="content">这里是弹出层的内容</div>',{
 			'title' : 'ThinkBox弹出层',
 			'drag'  : true,
-			//"style" : "qmail",
-			"button" : {'ok':'确定'}
+			"style" : "qmail",
+			"button" : {'ok':'确定', "cancel" : "取消"},
+			"afterHide" : function(data){
+				alert(data)
+			}
 		})
-
+		//$.thinkbox.success("提交成功", {"style":"qmail"});
 		return false;
 	});
 	//$('#ep1').thinkbox({'event':'click'});

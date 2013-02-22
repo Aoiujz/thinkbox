@@ -41,7 +41,6 @@ var
         "hide"        : ["fadeOut", "normal"], //关闭效果
         "button"      : false,     //工具栏按钮 false则不创建工具栏
         "style"       : "default", //弹出层样式
-        "titleChange" : undefined, //分组标题切换后的回调方法
         "beforeShow"  : undefined, //显示前的回调方法
         "afterShow"   : undefined, //显示后的回调方法
         "afterHide"   : undefined, //隐藏后的回调方法
@@ -130,6 +129,7 @@ ThinkBox = function(element, options){
         self.show = _show; //显示弹出层
         //如果当前显示则隐藏，如果当前隐藏则显示
         self.toggle     = function(){visible ? self.hide() : self.show()};
+        self.find       = function(selector){return $(selector, box)}; //查找弹出层中的子元素
         self.getContent = function(){return $(".thinkbox-body", box).html()}; // 获取弹出层内容
         self.setContent = function(content){ //设置弹出层内容
             _setContent(content);

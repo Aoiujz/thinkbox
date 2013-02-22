@@ -594,7 +594,7 @@ $.extend($.thinkbox, {
             "unload"     : false
         }, button = {"ok" : "确定"};
         $.extend(options, opt || {});
-        options.ok && button.ok = options.ok;
+        options.ok && (button.ok = options.ok);
         
         //删除ThinkBox不需要的参数
         _del(["ok"], options);
@@ -609,8 +609,8 @@ $.extend($.thinkbox, {
         var options = {"title" : "确认", "modal" : false, "modalClose" : false},
             button  = {"ok" : "确定", "cancel" : "取消"};
         $.extend(options, opt || {});
-        options.ok && button.ok = options.ok;
-        options.cancel && button.cancel = options.cancel;
+        options.ok && (button.ok = options.ok);
+        options.cancel && (button.cancel = options.cancel);
 
         //删除ThinkBox不需要的参数
         _del(["ok", "cancel"], options);

@@ -10,15 +10,15 @@
 	</style>
 </head>
 <body>
-	<a id="ep1" href="#">$.thinkbox('&lt;div class="content"&gt;这里是弹出层的内容&lt;/div&gt;')</a>
+	<a id="ep1" href="#" style="background-color:#BCC2CD; color:#354B66; font-weight:700;">$.thinkbox('&lt;div class="content"&gt;这里是弹出层的内容&lt;/div&gt;')</a>
 	<div style="height:1000px"></div>
 <script type="text/javascript">
 	$('#ep1').click(function(){
 		$.thinkbox('<div class="content">这里是弹出层的内容</div>',{
-			'title' : '标题',
+			'title' : 'ThinkBox弹出层',
 			'drag'  : true,
-			"style" : "qmail",
-			'button' : {"ok" : "完成","cancel":"取消"}
+			//"style" : "qmail",
+			"button" : {'ok':'确定'}
 		})
 
 		return false;

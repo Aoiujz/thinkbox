@@ -149,12 +149,14 @@
 /* 默认关闭按钮样式 */
 .thinkbox-default .thinkbox-close{
     position: absolute;
-    top: 13px;
+    top: 16px;
     right: 14px;
 	font-size: 20px;
     cursor: pointer;
     overflow: hidden;
 	color: #999;
+	font-family: '宋体';
+	font-size: 16px;
 	text-shadow: 0 1px 1px #fff;
 }
 .thinkbox-default .thinkbox-close:hover{

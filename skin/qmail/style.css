@@ -2,24 +2,47 @@
  **************** 默认皮肤样式 ****************
  **********************************************/
  
-/* 默认模态窗口背景样式 */ 
+/* 模态窗口背景样式 */ 
 .thinkbox-modal-blackout-qmail{
-    background-color: #000;
-    opacity: .1;
-    filter:alpha(opacity=10);
+    background-color: #fff;
+    opacity: .5;
+    filter:alpha(opacity=50);
 } 
-
-/* 默认边框样式 */
+/*弹出层样式*/
+.thinkbox-qmail{
+	border: 1px solid #B8B8B8;
+	border-radius : 5px;
+	background-color: #fff;
+	box-shadow: 0 0 5px rgba(0,0,0,.2);
+}
+/* 弹出层头部 */
+.thinkbox-qmail .thinkbox-head{
+	min-height: 5px;
+	border-radius: 5px 5px 0 0;
+}
+/* 弹出层内容 */
+.thinkbox-qmail .thinkbox-body{
+    background-color:#FFF;
+    padding:0;
+    vertical-align: top;
+	padding: 12px;
+}
+/* 弹出层页脚 */
+.thinkbox-qmail .thinkbox-foot{
+	min-height: 5px;
+	border-radius: 0 0 5px 5px;
+}
+/* 边框样式 */
 .thinkbox-qmail .thinkbox-top-left, /* 左上角 */
 .thinkbox-qmail .thinkbox-top-right, /* 右上角 */
 .thinkbox-qmail .thinkbox-bottom-right, /* 右下角 */
 .thinkbox-qmail .thinkbox-bottom-left{ /* 左下角 */
-    width: 1px;
-    height: 1px;
+    width: 0;
+    height: 0;
     padding: 0;
     background-color:#000;
-    opacity:.2;
-    filter:alpha(opacity=20);
+    opacity:0;
+    filter:alpha(opacity=0);
 }
 .thinkbox-qmail .thinkbox-top-left{ border-top-left-radius: 5px; }
 .thinkbox-qmail .thinkbox-top-right{ border-top-right-radius: 5px; }
@@ -27,24 +50,31 @@
 .thinkbox-qmail .thinkbox-bottom-right{ border-bottom-right-radius: 5px; }
 .thinkbox-qmail .thinkbox-top, /* 上边 */
 .thinkbox-qmail .thinkbox-bottom{ /* 下边 */
-    height: 1px;
+    height: 0;
     background-color:#000;
-    opacity:.2;
-    filter:alpha(opacity=20);
+    opacity:0;
+    filter:alpha(opacity=0);
     padding:0
 }
 .thinkbox-qmail .thinkbox-left,  /* 左边 */
 .thinkbox-qmail .thinkbox-right{ /* 右边 */
-    width: 1px;
+    width: 0;
     background-color:#000;
-    opacity:.2; 
-    filter:alpha(opacity=20);
+    opacity:0; 
+    filter:alpha(opacity=0);
     padding:0
 }
-
-/* 默认标题栏样式 */
+/* 标题栏样式 */
 .thinkbox-qmail .thinkbox-title{ /* 标题栏内容 */
-    background: #fbfbfb; /* Old browsers */
+    padding-left: 10px;
+    text-align: left;
+    line-height: 36px;
+    height: 36px;
+	border-bottom: 1px solid #ccc;
+	border-radius: 5px 5px 0 0;
+    font-weight: bold;
+    font-family: "微软雅黑";
+	background: #fbfbfb; /* Old browsers */
 	background: -moz-linear-gradient(top,  #fbfbfb 0%, #ebebeb 100%); /* FF3.6+ */
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fbfbfb), color-stop(100%,#ebebeb)); /* Chrome,Safari4+ */
 	background: -webkit-linear-gradient(top,  #fbfbfb 0%,#ebebeb 100%); /* Chrome10+,Safari5.1+ */
@@ -52,13 +82,6 @@
 	background: -ms-linear-gradient(top,  #fbfbfb 0%,#ebebeb 100%); /* IE10+ */
 	background: linear-gradient(to bottom,  #fbfbfb 0%,#ebebeb 100%); /* W3C */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fbfbfb', endColorstr='#ebebeb',GradientType=0 ); /* IE6-9 */
-    border-bottom: 1px solid #ccc;
-    padding-left: 10px;
-    text-align: left;
-    line-height: 36px;
-    height: 36px;
-    font-weight: bold;
-    font-family: "微软雅黑";
 }
 .thinkbox-qmail .thinkbox-draging{ /* 拖动时标题栏样式 */
     cursor:move;
@@ -70,10 +93,11 @@
     padding:0;
 }
 
-/* 默工具栏样式 */
+/* 工具栏样式 */
 .thinkbox-qmail .thinkbox-tools{ /* 工具栏内容区域样式 */
-    background-color:#fafafa;
+	background-color:#fafafa;
     border-top: 1px solid #eee;
+	border-radius: 0 0 5px 5px;
     padding: 5px 10px;
     text-align: right;
     color: #FF0099;
@@ -138,23 +162,17 @@
 	background: linear-gradient(to bottom,  #f7f7f7 0%,#f0f0f0 100%); /* W3C */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f7f7f7', endColorstr='#f0f0f0',GradientType=0 ); /* IE6-9 */
 }
-/* 默认内容区域样式 */
-.thinkbox-qmail .thinkbox-body{
-    background-color:#FFF;
-    padding:0;
-    vertical-align: top;
-	padding: 12px;
-}
 
 /* 默认关闭按钮样式 */
 .thinkbox-qmail .thinkbox-close{
     position: absolute;
-    top: 13px;
-    right: 14px;
-	font-size: 20px;
+    top: 12px;
+    right: 10px;
+	font-size: 16px;
     cursor: pointer;
     overflow: hidden;
 	color: #999;
+	font-family: '宋体';
 	text-shadow: 0 1px 1px #fff;
 }
 .thinkbox-qmail .thinkbox-close:hover{

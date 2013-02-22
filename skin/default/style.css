@@ -58,6 +58,7 @@
     line-height: 36px;
     height: 36px;
     font-weight: bold;
+    font-family: "微软雅黑";
 }
 .thinkbox-default .thinkbox-draging{ /* 拖动时标题栏样式 */
     cursor:move;

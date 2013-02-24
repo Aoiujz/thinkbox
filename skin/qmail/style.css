@@ -95,7 +95,6 @@
 	border-radius: 0 0 5px 5px;
     padding: 5px 10px;
     text-align: right;
-    color: #FF0099;
     font-weight: bold;
 }
 .thinkbox-qmail .thinkbox-tools span{ /* 工具栏按钮样式 */
@@ -113,7 +112,8 @@
     border-radius: 3px;
     margin-left: 6px;
 }
-.thinkbox-qmail .thinkbox-tools .thinkbox-button-ok{
+.thinkbox-qmail .thinkbox-tools .thinkbox-button-ok,
+.thinkbox-qmail .thinkbox-tools .thinkbox-button-submit{
     border-color: #227FC0;
     color: #FFF;
 	background: #4ca0da; /* Old browsers */
@@ -125,7 +125,8 @@
 	background: linear-gradient(to bottom,  #4ca0da 0%,#227fc0 100%); /* W3C */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4ca0da', endColorstr='#227fc0',GradientType=0 ); /* IE6-9 */
 }
-.thinkbox-qmail .thinkbox-tools .thinkbox-button-ok:hover{
+.thinkbox-qmail .thinkbox-tools .thinkbox-button-ok:hover,
+.thinkbox-qmail .thinkbox-tools .thinkbox-button-submit:hover{
     background: #4297d4; /* Old browsers */
 	background: -moz-linear-gradient(top,  #4297d4 0%, #227fc1 100%); /* FF3.6+ */
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#4297d4), color-stop(100%,#227fc1)); /* Chrome,Safari4+ */

@@ -21,14 +21,22 @@
 			'title' : 'ThinkBox弹出层',
 			'drag'  : true,
 			"style" : "qmail",
-			"button" : {'ok':'确定', "cancel" : "取消"},
-			"afterHide" : function(data){
-				alert(data)
-			}
+			"dataEle" : this,
+			//"modal" : false,
+			"unload":true,
+			"button" : {'ok':'确定', "cancel" : "取消", "submit" : "提交"}
 		})
-		//$.thinkbox.success("提交成功", {"style":"qmail"});
+
+		//$.thinkbox.alert("提交成功", {"style":"qmail","ok":"确认"});
 		return false;
 	});
+
+	classa = function(){
+		this.a = [1];
+	}
+
+
+
 	//$('#ep1').thinkbox({'event':'click'});
 
 	// $(document).click(function(){

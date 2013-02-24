@@ -2,7 +2,7 @@
  +-------------------------------------------------------------------
  * jQuery thinkbox - 弹出层插件 - http://zjzit.cn/thinkbox
  +-------------------------------------------------------------------
- * @version    1.0.0 beta
+ * @version    1.0.0 beta2
  * @since      2013.02.05
  * @author     麦当苗儿 <zuojiazi.cn@gmail.com>
  * @github     https://github.com/Aoiujz/thinkbox.git
@@ -50,9 +50,25 @@ var
     
     /* 弹出层层叠高度 */
     zIndex = 2013,
-    
-    /* 当前选中的弹出层对象 */
-    current = null,
+
+    /* 页面创建了的弹出层列表 */
+    list = {
+        "length"  : 0,
+        "current" : null,
+        "del" : function(key){
+            delete this[key];
+            this.length--;
+        },
+        "get" : function(i){
+            return (i != undefined) ? 
+            this[this.current][i] : 
+            this[this.current];
+        },
+        "push" : function(val, opt){
+            this[val.key] = [val, opt];
+            this.length++; return this;
+        }
+    },
     
     /* 弹出层容器 */
     wrapper = [
@@ -84,299 +100,9 @@ var
 
     /* IE浏览器对象 */
     msie = /(msie) ([\w.]+)/.exec(navigator.userAgent.toLowerCase()) || [];
-    
-/**
- * 构造方法，用于实例化一个新的弹出层对象
- +----------------------------------------------------------
- * element 弹出层内容元素
- * options 弹出层选项
- +----------------------------------------------------------
- */
-ThinkBox = function(element, options){
-    //初始化变量
-    var self = this, visible = false, modal = null, options, box, blw;
-    //合并配置选项
-    options = $.extend({}, defaults, options || {});
 
-    //加载CSS文件，完成后创建弹出层
-    includeCss("/skin/" + options.style + "/style.css", function(){
-        //创建弹出层容器
-        box = $(wrapper).addClass("thinkbox-" + options.style).data("thinkbox", self);
-        //缓存弹出层，防止弹出多个
-        options.dataEle && $(options.dataEle).data("thinkbox", self);
-        
-        //给box绑定事件
-        box.hover(
-                function(){_fire.call(self, options.mouseover)},
-                function(){_fire.call(self, options.mouseout)})
-           .mousedown(function(event){_setCurrent(); event.stopPropagation()})
-           .click(function(event){event.stopPropagation()});
-        
-        _setContent(element || "<div></div>"); //设置内容
-        options.title !== null && _setupTitleBar(); // 安装标题栏
-        options.button && _setupToolsBar();// 安装工具栏
-        options.close && _setupCloseBtn(); // 安装关闭按钮
-        box.css("display", "none").appendTo("body"); //放入body
-
-        //左边添加空DIV防止拖动出浏览器时左边不显示
-        blw = $(".thinkbox-left", box).width();
-        blw && $(".thinkbox-left", box).append($("<div/>").css("width", blw));
-        
-        /* 弹出层开放API接口 */
-        self.hide = _hide; //隐藏弹出层
-        self.show = _show; //显示弹出层
-        //如果当前显示则隐藏，如果当前隐藏则显示
-        self.toggle     = function(){visible ? self.hide() : self.show()};
-        self.find       = function(selector){return $(selector, box)}; //查找弹出层中的子元素
-        self.getContent = function(){return $(".thinkbox-body", box).html()}; // 获取弹出层内容
-        self.setContent = function(content){ //设置弹出层内容
-            _setContent(content);
-            _setLocate(); //设置弹出层显示位置
-            return self;
-        };
-        self.setTitle = _setTitle; //动态设置标题
-        self.getSize  = _getSize;  //获取弹出层的尺寸
-        self.setSize  = function(width, height){ //动态改变弹出层内容区域的大小
-            $(".thinkbox-body", box).css({"width" : width, "height" : height});
-        };
-        
-        //设置弹出层fixed属性
-        options.fixed && (
-            msie[0] && msie[1] < 7 ?
-            options.fixed = false : box.css("position", "fixed")
-        );
-
-        _setLocate(); //设置弹出层显示位置
-        options.resize && _win.resize(function(){_setLocate()}); //窗口大小改变后重设位置
-        
-        self.escHide = options.escHide; // 按ESC键关闭弹出层
-        options.display && _show(); //显示弹出层
-    });
-    
-    /* 显示弹出层 */
-    function _show() {
-        if(visible) return self;
-        options.modal && _setupModal(); // 安装模态背景
-        _fire.call(self, options.beforeShow); //调用显示之前回调函数
-        //显示效果
-        switch(options.show[0]){
-            case "slideDown":
-                box.stop(true, true).slideDown(options.show[1], _);
-                break;
-            case "fadeIn":
-                box.stop(true, true).fadeIn(options.show[1], _);
-                break;
-            default:
-                box.show(options.show[1], _);
-        }
-        
-        visible = true;
-        _setCurrent();
-        return self;
-        
-        function _(){
-            options.delayClose && 
-            $.isNumeric(options.delayClose) && 
-            setTimeout(_hide, options.delayClose);
-            _fire.call(self, options.afterShow);
-        }
-    };
-
-    /* 隐藏弹出层 */
-    function _hide(data) {
-        if(!visible) return self;
-        modal && modal.fadeOut("normal", function(){$(this).remove();modal = null});
-        //影藏效果
-        switch(options.hide[0]){
-            case "slideUp":
-                box.stop(true, true).slideUp(options.hide[1], _);
-                break;
-            case "fadeOut":
-                box.stop(true, true).fadeOut(options.hide[1], _);
-                break;
-            default:
-                box.hide(options.hide[1], _);
-        }
-        return self;
-        
-        function _() {
-            visible = false;
-            _fire.call(self, options.afterHide, data); //隐藏后的回调方法
-            options.unload && _unload();
-        }
-    }
-    
-    /* 安装标题栏 */
-    function _setupTitleBar() {
-        var title = $("<div class=\"thinkbox-title\"></div>");
-        if (options.drag) {
-            title.addClass("thinkbox-draging");
-            _drag(title);
-        }
-        $(".thinkbox-inner", box).prepend(title);
-        _setTitle(options.title);
-    }
-
-    /* 设置标题 */
-    function _setTitle(content){
-        var title = $(".thinkbox-title", box).empty();
-        title.append("<span>" + content + "</span>");
-    }
-    
-    /* 安装工具栏 */
-    function _setupToolsBar() {
-        var tools = $("<div class=\"thinkbox-tools\"></div>");
-        for(key in options.button){
-            switch(key){
-                case "ok":
-                    _(key, options.button[key], function(){self.hide(true)});
-                    break;
-                case "submit":
-                    _(key, options.button[key], function(){box.find("form").submit()});
-                    break;
-                default:
-                    _("cancel", options.button[key], function(){self.hide(false)});
-            }
-        }
-        $(".thinkbox-inner", box).append(tools);
-
-        function _(key, title, fun){
-            var button = $("<span class=\"thinkbox-button-" + key + "\"></span>")
-                .html(title)
-                .click(function(){fun()})
-                .appendTo(tools);
-        }
-    }
-    
-    /* 安装关闭按钮 */
-    function _setupCloseBtn(){
-        $("<div/>").addClass("thinkbox-close").html(options.close)
-            .click(function(event){self.hide();event.stopPropagation()})
-            .mousedown(function(event){event.stopPropagation()})
-            .appendTo($(".thinkbox-" + (options.title ? "title" : "inner"), box));
-    }
-    
-    /* 安装模态背景 */
-    function _setupModal(){
-        if(msie[0]){ //解决IE通过 $(documemt).width()获取到的宽度含有滚动条宽度的BUG
-            _doc.width  = function(){return document.documentElement.scrollWidth};
-            _doc.height = function(){return document.documentElement.scrollHeight};
-        }
-        modal = $("<div class=\"thinkbox-modal-blackout-" + options.style + "\"></div>")
-            .css({
-                "zIndex"   : zIndex++, 
-                "width"    : _doc.width(), 
-                "height"   : _doc.height(),
-                "position" : "absolute",
-                "left"     : 0,
-                "top"      : 0
-            })
-            .click(function(event){
-                options.modalClose && current && current.hide();
-                event.stopPropagation();
-            })
-            .mousedown(function(event){event.stopPropagation()})
-            .appendTo($("body"));
-        //窗口大小改变时改变背景大小
-        _win.resize(function() {
-            modal && 
-            modal.css({"width"  : "", "height" : ""})
-                 .css({"width"  : _doc.width(), "height" : _doc.height()});
-        });
-    }
-    
-    /* 设置弹出层容器中的内容 */
-    function _setContent(content) {
-        var content = (options.clone ? $(content).clone(true, true) : $(content)).show();
-        $(".thinkbox-body", box).empty() // 清空原容器中的内容
-            .css({"width" : options.width, "height" : options.height}) //设置弹出层内容的宽和高
-            .append(content); // 添加新内容
-    }
-    
-    /* 设置弹出层位置 */
-    function _setLocate(){
-        options.center ? 
-        _moveToCenter() :
-        _moveTo(
-            $.isNumeric(options.x) ? 
-                options.x : 
-                ($.isFunction(options.x) ? options.x.call($(options.dataEle)) : 0), 
-            $.isNumeric(options.y) ? 
-                options.y : 
-                ($.isFunction(options.y) ? options.y.call($(options.dataEle)) : 0)
-        );
-    }
-    
-    /* 拖动弹出层 */
-    function _drag(title){
-        var draging = null;
-        _doc.mousemove(function(event){
-            draging && 
-            box.css({left: event.pageX - draging[0], top: event.pageY - draging[1]});
-        });
-        title.mousedown(function(event) {
-            var offset = box.offset();
-            if(options.fixed){
-                offset.left -= _win.scrollLeft();
-                offset.top -= _win.scrollTop();
-            }
-            _unselect(box[0]); //禁止选中文字
-            draging = [event.pageX - offset.left, event.pageY - offset.top];
-        }).mouseup(function() {
-            draging = null;
-            _onselect(box[0]); //允许选中文字
-            _fire.call(self, options.afterDrag); //拖动后的回调函数
-        });
-    }
-    
-    /* 移动弹出层到屏幕中心 */
-    function _moveToCenter() {
-        var size     = _getSize(),
-            view     = viewport(),
-            overflow = box.css("position") == "fixed" ? [0, 0] : [view.left, view.top],
-            x        = overflow[0] + view.width / 2,
-            y        = overflow[1] + view.height / 2;
-        _moveTo(x - size[0] / 2, y - size[1] / 2);
-    }
-    
-    /* 移动弹出层到指定的坐标 */
-    function _moveTo(x, y) {
-        $.isNumeric(x) && 
-            (options.locate[0] == "left" ? box.css({"left" : x}) : box.css({"right" : x}));
-        $.isNumeric(y) && 
-            (options.locate[1] == "top" ? box.css({"top" : y}) : box.css({"bottom" : y}));
-    }
-    
-    /* 获取弹出层的尺寸 */
-    function _getSize(){
-        var size = [0, 0];
-        if(visible) //获取显示的弹出层尺寸
-            size = [box.width(), box.height()];
-        else { //获取隐藏的弹出层尺寸
-            box.css({"visibility" : "hidden", "display" : "block"});
-            var size = [box.width(), box.height()];
-            box.css("display", "none").css("visibility", "visible");
-        }
-        return size;
-    }
-    
-    /* 卸载弹出层容器 */
-    function _unload(){
-        _fire.call(self, options.beforeUnload); //卸载前的回调方法
-        box.remove();
-        options.dataEle && $(options.dataEle).removeData("thinkbox");
-    }
-    
-    /* 设置为当前选中的弹出层对象 */
-    function _setCurrent(){
-        current = self;
-        _toTop.call(box);
-    }
-    
-}; //END ThinkBox
-
-/* 调整弹出层Z轴到最上层 */
-function _toTop(){
+/* 调整弹出层zIndex */
+function toTop(){
     this.css({"zIndex": zIndex++});
 }
 
@@ -391,19 +117,28 @@ function viewport(){
 }
 
 /* 调用回调函数 */
-function _fire(event, data){
+function fire(event, data){
     $.isFunction(event) && event.call(this, data);
 }
 
 /* 删除options中不必要的参数 */
-function _del(opt, options){
-    $.each(opt, function() {
-        if (this in options) delete options[this];
-    });    
+function del(keys, options){
+    if($.isArray(keys)){ //删除多个
+        for(i in keys){
+            _(keys[i]);
+        }
+    } else { //删除一个
+        _(keys);
+    }
+    //从options中删除一个指定的元素
+    function _(key){
+        if(key in options) delete options[key];
+    }
 }
 
 /* 禁止选中文字 */
-function _unselect(element){
+function unselect(){
+    var element = $("body")[0];
     element.onselectstart = function() {return false}; //ie
     element.unselectable = "on"; // ie
     element.style.MozUserSelect = "none"; // firefox
@@ -411,24 +146,25 @@ function _unselect(element){
 }
 
 /* 允许选中文字 */
-function _onselect(element){
+function onselect(){
+    var element = $("body")[0];
     element.onselectstart = function() {return true}; //ie
     element.unselectable = "off"; // ie
-    element.style.MozUserSelect = "auto"; // firefox
-    element.style.WebkitUserSelect = "auto"; // chrome
+    element.style.MozUserSelect = ""; // firefox
+    element.style.WebkitUserSelect = ""; // chrome
 }
 
 //加载指定的CSS文件
 function includeCss(css, onload){
     var path = __FILE__.slice(0, __FILE__.lastIndexOf("/"));
     if($("link[href='" + path + css + "']").length){
-        _fire(onload);
+        fire(onload);
         return;
     };
 
     //加载CSS文件
     $("<link/>")
-        .load(function(){_fire(onload)})
+        .load(function(){fire(onload)})
         .attr({
             "href" : path + css,
             "type" : "text/css", 
@@ -436,9 +172,354 @@ function includeCss(css, onload){
         }).appendTo("head");
 }
 
+/* 设置为当前选中的弹出层对象 */
+function setCurrent(){
+    list.current = this.key;
+    toTop.call(this.box);
+}
+
+/* 卸载弹出层容器 */
+function unload(){
+    var options = list[this.key][1];
+    fire.call(this, options.beforeUnload); //卸载前的回调方法
+    this.box.remove();
+    this.modal.remove();
+    _win.off(".thinkbox-" + this.key);
+    list.del(this.key);
+    options.dataEle && $(options.dataEle).removeData("thinkbox");
+}
+
+/* 安装模态背景 */
+function setupModal(){
+    var self = this, options = list[this.key][1];
+
+    //存在隐藏的遮罩层则直接显示
+    if(this.modal){
+        this.modal.show();
+        return;
+    }
+
+    //解决IE通过 $(documemt).width()获取到的宽度含有滚动条宽度的BUG
+    if(msie[0]){
+        _doc.width  = function(){return document.documentElement.scrollWidth};
+        _doc.height = function(){return document.documentElement.scrollHeight};
+    }
+
+    this.modal = $("<div class=\"thinkbox-modal-blackout-" + options.style + "\"></div>")
+        .css({
+            "zIndex"   : zIndex++, 
+            "width"    : _doc.width(), 
+            "height"   : _doc.height(),
+            "position" : "absolute",
+            "left"     : 0,
+            "top"      : 0
+        })
+        .click(function(event){
+            options.modalClose && list.current && list.get(0).hide();
+            event.stopPropagation();
+        })
+        .mousedown(function(event){event.stopPropagation()})
+        .appendTo($("body"));
+
+    //窗口大小改变时改变背景大小
+    _win.on("resize.thinkbox-" + this.key, function() {
+        self.modal.hide().css({"width" : _doc.width(), "height" : _doc.height()}).show();
+    });
+}
+
+/* 安装标题栏 */
+function setupTitleBar() {
+    var options = list[this.key][1];
+        title = $("<div class=\"thinkbox-title\"></div>");
+    if (options.drag) {
+        title.addClass("thinkbox-draging");
+        drag.call(this, title);
+    }
+    $(".thinkbox-inner", this.box).prepend(title);
+    this.setTitle(options.title);
+}
+
+/* 拖动弹出层 */
+function drag(title){
+    var draging = null, options = list[this.key][1], box = this.box, self = this;
+    _doc.mousemove(function(event){
+        draging && 
+        box.css({left: event.pageX - draging[0], top: event.pageY - draging[1]});
+    });
+    title.mousedown(function(event) {
+        var offset = box.offset();
+        if(options.fixed){
+            offset.left -= _win.scrollLeft();
+            offset.top -= _win.scrollTop();
+        }
+        unselect(); //禁止选中文字
+        draging = [event.pageX - offset.left, event.pageY - offset.top];
+    }).mouseup(function() {
+        draging = null;
+        onselect(); //允许选中文字
+        fire.call(self, options.afterDrag); //拖动后的回调函数
+    });
+}
+
+/* 安装工具栏 */
+function setupToolsBar() {
+    var options = list[this.key][1], self = this, options = list[this.key][1],
+        tools = $("<div class=\"thinkbox-tools\"></div>");
+    for(key in options.button){
+        switch(key){
+            case "ok":
+                _(key, options.button[key], function(){
+                    self.hide(true);
+                });
+                break;
+            case "submit":
+                _(key, options.button[key], function(){
+                    this.box.find("form").submit();
+                });
+                break;
+            default:
+                _("cancel", options.button[key], function(){
+                    self.hide(false);
+                });
+        }
+    }
+    this.box.find(".thinkbox-inner").append(tools);
+
+    function _(key, title, fun){
+        var button = $("<span class=\"thinkbox-button-" + key + "\"></span>")
+            .html(title)
+            .click(function(){fun()})
+            .appendTo(tools);
+    }
+}
+
+/* 安装关闭按钮 */
+function setupCloseBtn(){
+    var options = list[this.key][1], self = this;
+    $("<div/>").addClass("thinkbox-close").html(options.close)
+        .click(function(event){
+            self.hide();
+            event.stopPropagation();
+        })
+        .mousedown(function(event){
+            event.stopPropagation();
+        })
+        .appendTo($(".thinkbox-" + (options.title ? "title" : "inner"), this.box));
+}
+
+/**
+ * 构造方法，用于实例化一个新的弹出层对象
+ +----------------------------------------------------------
+ * element 弹出层内容元素
+ * options 弹出层选项
+ +----------------------------------------------------------
+ */
+ThinkBox = function(element, options){
+    //初始化变量
+    var self = this, options, box, blw;
+    //合并配置选项
+    options  = $.extend({}, defaults, options || {});
+    this.key = zIndex; //给当前弹出层指定编号
+
+    //加载CSS文件，完成后创建弹出层
+    includeCss("/skin/" + options.style + "/style.css", function(){
+        //创建弹出层容器
+        self.box = box = $(wrapper)
+            .addClass("thinkbox-" + options.style)
+            .data("thinkbox", self);
+
+        //缓存弹出层，防止弹出多个
+        options.dataEle && $(options.dataEle).data("thinkbox", self);
+
+        //记录弹出层列表
+        list.push(self, options);
+        
+        //给box绑定事件
+        //鼠标按下记录当前弹出层对象
+        box.mousedown(function(event){
+                setCurrent.call(self);
+                event.stopPropagation();
+            })
+            //鼠标点击阻止事件冒泡
+           .click(function(event){
+                event.stopPropagation();
+            });
+        
+        options.title !== null && setupTitleBar.call(self); // 安装标题栏
+        options.button && setupToolsBar.call(self);// 安装工具栏
+        options.close && setupCloseBtn.call(self); // 安装关闭按钮
+        box.css("display", "none").appendTo("body"); //放入body
+
+        //左边添加空DIV防止拖动出浏览器时左边不显示
+        blw = $(".thinkbox-left", box).width();
+        blw && $(".thinkbox-left", box).append($("<div/>").css("width", blw));
+        
+        //设置弹出层fixed属性
+        options.fixed && (
+            msie[0] && msie[1] < 7 ?
+            options.fixed = false : box.css("position", "fixed")
+        );
+
+        self.setContent(element || "<div></div>"); //设置内容
+
+        //窗口大小改变后重设位置
+        options.resize && _win.resize(function(){self.resetLocate()});
+
+        options.display && self.show(); //显示弹出层
+    });
+    
+}; //END ThinkBox
+
+/**
+ * 给ThinkBox添加原型方法，对外提供API接口
+ */
+ThinkBox.prototype = {
+    /* 显示弹出层 */
+    "show" : function(){
+        var self = this, options = list[this.key][1], box = this.box;
+        if(box.is(":visible")) return this;
+        options.modal && setupModal.call(this); // 安装模态背景
+        fire.call(this, options.beforeShow); //调用显示之前回调函数
+        //显示效果
+        switch(options.show[0]){
+            case "slideDown":
+                box.stop(true, true).slideDown(options.show[1], _);
+                break;
+            case "fadeIn":
+                box.stop(true, true).fadeIn(options.show[1], _);
+                break;
+            default:
+                box.show(options.show[1], _);
+        }
+        
+        setCurrent.call(this);
+        return this;
+        
+        function _(){
+            options.delayClose && 
+            $.isNumeric(options.delayClose) && 
+            setTimeout(self.hide, options.delayClose);
+            fire.call(self, options.afterShow);
+        }
+    },
+
+    /* 关闭弹出层 data 为传递给关闭后回调函数的额外数据 */
+    "hide" : function(data){
+        var self = this, box = this.box, options = list[this.key][1];
+        if(!box.is(":visible")) return this;
+
+        //隐藏遮罩层
+        this.modal && this.modal.fadeOut();
+        
+        //影藏效果
+        switch(options.hide[0]){
+            case "slideUp":
+                box.stop(true, true).slideUp(options.hide[1], _);
+                break;
+            case "fadeOut":
+                box.stop(true, true).fadeOut(options.hide[1], _);
+                break;
+            default:
+                box.hide(options.hide[1], _);
+        }
+        return this;
+        
+        function _() {
+            fire.call(self, options.afterHide, data); //隐藏后的回调方法
+            options.unload && unload.call(self);
+        }
+    },
+
+    /* 显示或隐藏弹出层 */
+    "toggle" : function(){
+        return this.box.is(":visible") ? self.hide() : self.show();
+    },
+
+    /* 在弹出层内容中查找 */
+    "find" : function(selector){
+        var content = $(".thinkbox-body", this.box);
+        return selector ? $(selector, content) : content.children();
+    },
+
+    /* 获取弹出层内容html */
+    "getContent" : function(){
+        return $(".thinkbox-body", this.box).html()
+    },
+
+    /* 设置弹出层内容 */
+    "setContent" : function(content){ //设置弹出层内容
+        var options = list[this.key][1];
+            content = (options.clone ? $(content).clone(true, true) : $(content)).show();
+        $(".thinkbox-body", this.box).empty() // 清空原容器中的内容
+            .css({"width" : options.width, "height" : options.height}) //设置弹出层内容的宽和高
+            .append(content); // 添加新内容
+        this.resetLocate(); //设置弹出层显示位置
+        return this;
+    },
+
+    /* 设置弹出层内容区域大小 */
+    "setSize" : function(width, height){
+        $(".thinkbox-body", this.box).css({"width" : width, "height" : height});
+        return this;
+    },
+
+    /* 移动弹出层到屏幕中间 */
+    "moveToCenter" : function() {
+        var size     = this.getSize(),
+            view     = viewport(),
+            overflow = this.box.css("position") == "fixed" ? [0, 0] : [view.left, view.top],
+            x        = overflow[0] + view.width / 2,
+            y        = overflow[1] + view.height / 2;
+        this.moveTo(x - size[0] / 2, y - size[1] / 2);
+    },
+
+    /* 移动弹出层到指定坐标 */
+    "moveTo" : function (x, y) {
+        var box = this.box, options = list[this.key][1];
+        $.isNumeric(x) && 
+            (options.locate[0] == "left" ? box.css({"left" : x}) : box.css({"right" : x}));
+        $.isNumeric(y) && 
+            (options.locate[1] == "top" ? box.css({"top" : y}) : box.css({"bottom" : y}));
+    },
+
+    /* 获取弹出层尺寸 */
+    "getSize" : function (){
+        var size = [0, 0], box = this.box;
+        if(box.is(":visible")) //获取显示的弹出层尺寸
+            size = [box.width(), box.height()];
+        else { //获取隐藏的弹出层尺寸
+            box.css({"visibility" : "hidden", "display" : "block"});
+            var size = [box.width(), box.height()];
+            box.css("display", "none").css("visibility", "visible");
+        }
+        return size;
+    },
+
+    /* 设置弹出层标题 */
+    "setTitle" : function(title){
+        $(".thinkbox-title", this.box).empty().append("<span>" + title + "</span>");
+        return this;
+    },
+
+    /* 重置弹出层位置 */
+    "resetLocate" : function(){
+        var options = list[this.key][1];
+        options.center ? 
+        this.moveToCenter() :
+        this.moveTo(
+            $.isNumeric(options.x) ? 
+                options.x : 
+                ($.isFunction(options.x) ? options.x.call($(options.dataEle)) : 0), 
+            $.isNumeric(options.y) ? 
+                options.y : 
+                ($.isFunction(options.y) ? options.y.call($(options.dataEle)) : 0)
+        );
+    }
+}
+
 /* 按ESC关闭弹出层 */
-_doc.mousedown(function(){current = null}).keypress(function(event){
-    current && current.escHide && event.keyCode == 27 && current.hide();
+_doc.mousedown(function(){list.current = null}).keydown(function(event){
+    list.current && list.get(1).escHide && event.keyCode == 27 && list.get(0).hide();
 });
 
 /**
@@ -488,13 +569,13 @@ $.extend($.thinkbox, {
                 url[1] && (data = $(data).find(url[1]));
                 $.isFunction(parseData) && (data = parseData.call(options.dataEle, data));
                 self.setContent(data); //设置内容并显示弹出层
-                _fire.call(self, onload); //调用onload回调函数
+                fire.call(self, onload); //调用onload回调函数
                 loading || self.show(); //没有loading状态则直接显示弹出层
             }
         };
         
         //删除ThinkBox不需要的参数
-        _del(["data", "type", "cache", "dataType", "parseData", "onload", "loading"], options);
+        del(["data", "type", "cache", "dataType", "parseData", "onload", "loading"], options);
         
         self = loading ? //显示loading信息
             $.thinkbox("<div class=\"thinkbox-load-loading\">" + loading + "</div>", options) : 
@@ -521,8 +602,8 @@ $.extend($.thinkbox, {
             "frameborder" : 0,
             "scrolling"   : options.scrolling,
             "src"         : url})
-            .load(function(){_fire.call(self, onload)});
-        _del(["width", "height", "scrolling", "onload"], options);//删除不必要的信息
+            .load(function(){fire.call(self, onload)});
+        del(["width", "height", "scrolling", "onload"], options);//删除不必要的信息
         self = $.thinkbox(iframe, options);
         return self;
     },
@@ -593,9 +674,9 @@ $.extend($.thinkbox, {
         }, button = {"ok" : "确定"};
         $.extend(options, opt || {});
         options.ok && (button.ok = options.ok);
-        
+
         //删除ThinkBox不需要的参数
-        _del(["ok"], options);
+        del("ok", options);
         
         options.button = button;
         var html = $("<div/>").addClass("thinkbox-alert").html(msg);
@@ -611,7 +692,7 @@ $.extend($.thinkbox, {
         options.cancel && (button.cancel = options.cancel);
 
         //删除ThinkBox不需要的参数
-        _del(["ok", "cancel"], options);
+        del(["ok", "cancel"], options);
 
         options.button = button;
         var html = $("<div/>").addClass("thinkbox-confirm").html(msg);
@@ -628,8 +709,7 @@ $.extend($.thinkbox, {
 $.fn.thinkbox = function(opt){
     if(opt == "get") return $(this).data("thinkbox");
     return this.each(function(){
-        var self = $(this), box = self.data("thinkbox"), options, event,
-            delayClose, delayShow, timeout1, timeout2;
+        var self = $(this), box = self.data("thinkbox"), options, event;
         switch(opt){
             case "show":
                 box && box.show();
@@ -642,12 +722,12 @@ $.fn.thinkbox = function(opt){
                 break;
             default:
                 options = {
-                    "title" : self.attr("title"),
+                    "title"   : self.attr("title"),
                     "dataEle" : this,
-                    "fixed" : false, 
-                    "center": false,
-                    "modal" : false,
-                    "drag" : false
+                    "fixed"   : false, 
+                    "center"  : false,
+                    "modal"   : false,
+                    "drag"    : false
                 };
                 opt = $.isPlainObject(opt) ? opt : {};
                 $.extend(options, {
@@ -655,50 +735,10 @@ $.fn.thinkbox = function(opt){
                     "y" : function(){return $(this).offset().top + $(this).outerHeight()}
                 }, opt);
                 if(options.event){
-                    event = options.event;
-                    delete options.event;
-                    if(event == "hover"){
-                        //初始化变量
-                        delayClose  = options.boxOutClose || false;
-                        delayShow   = options.delayShow || 0;
-                        timeout1    = null;
-                        timeout2    = null;
-
-                        _del(["boxOutClose", "delayShow"], options);
-                        options.mouseover = function(){
-                            if(timeout2){
-                                clearTimeout(timeout2);
-                                timeout2 = null
-                            }
-                        };
-                        options.mouseout = function(){this.hide()};
-                        self.hover(
-                            function(){
-                                timeout1 = timeout1 || 
-                                setTimeout(function(){
-                                    _.call(self, options);
-                                }, delayShow)
-                            },
-                            function(){
-                                if(timeout1){
-                                    clearTimeout(timeout1);
-                                    timeout1 = null
-                                }
-                                delayClose ? 
-                                timeout2 = timeout2 || 
-                                setTimeout(function(){
-                                    timeout2 = null;
-                                    self.thinkbox("hide");
-                                }, 50) :
-                                self.thinkbox("hide");
-                            }
-                        );
-                    } else {
-                        self.bind(event, function(){
-                            _.call(self, options);
-                            return false;
-                        });
-                    }
+                    self.on(event, function(){
+                        _.call(self, options);
+                        return false;
+                    });
                 } else {
                     _.call(self, options);
                 }

@@ -82,8 +82,10 @@ var
                 "</tr>",
                 "<tr>",
                     "<td class=\"thinkbox-left\"></td>",       //左边
-                    "<td class=\"thinkbox-inner\">", //弹出层inner
-                        "<div class=\"thinkbox-body\"></div>", //弹出层body
+                    "<td class=\"thinkbox-wrap\">", 
+						"<div class=\"thinkbox-inner\">", //弹出层inner
+							"<div class=\"thinkbox-body\"></div>", //弹出层body
+						"</div>",
                     "</td>",
                     "<td class=\"thinkbox-right\"></td>",      //右边
                 "</tr>",

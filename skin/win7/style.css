@@ -1,0 +1,100 @@
+/* 锁屏层样式 */ 
+.thinkbox-modal-blackout-win7{
+    background-color: #fff;
+    opacity: 0;
+    filter:alpha(opacity=0);
+}
+/*弹出层样式*/
+.thinkbox-win7{
+	
+}
+/*弹出层边框*/
+.thinkbox-win7 .thinkbox-top-left,.thinkbox-win7 .thinkbox-top-right,
+.thinkbox-win7 .thinkbox-left,.thinkbox-win7 .thinkbox-right,
+.thinkbox-win7 .thinkbox-bottom-left,.thinkbox-win7 .thinkbox-bottom-right{
+	width: 9px;
+}
+.thinkbox-win7 .thinkbox-top-left,.thinkbox-win7 .thinkbox-top,.thinkbox-win7 .thinkbox-top-right,
+.thinkbox-win7 .thinkbox-bottom-left,.thinkbox-win7 .thinkbox-bottom,.thinkbox-win7 .thinkbox-bottom-right{
+	height: 9px;
+}
+.thinkbox-win7 .thinkbox-top-left,.thinkbox-win7 .thinkbox-top-right,
+.thinkbox-win7 .thinkbox-bottom-left,.thinkbox-win7 .thinkbox-bottom-right{
+	background: url(./img3.png) no-repeat;
+}
+.thinkbox-win7 .thinkbox-left,.thinkbox-win7 .thinkbox-right{
+	background: url(./img1.png) repeat-y;
+}
+.thinkbox-win7 .thinkbox-top,.thinkbox-win7 .thinkbox-bottom{
+	background: url(./img2.png) repeat-x;
+}
+.thinkbox-win7 .thinkbox-top-left{
+	background-position: 0 0;
+}
+.thinkbox-win7 .thinkbox-top-right{
+	background-position: 100% 0;
+}
+.thinkbox-win7 .thinkbox-bottom-left{
+	background-position: 0 100%;
+}
+.thinkbox-win7 .thinkbox-bottom-right{
+	background-position: 100% 100%;
+}
+.thinkbox-win7 .thinkbox-left{
+	background-position: 0 0;
+}
+.thinkbox-win7 .thinkbox-right{
+	background-position: 100% 100%;
+}
+.thinkbox-win7 .thinkbox-top{
+	background-position: 0 0;
+}
+.thinkbox-win7 .thinkbox-bottom{
+	background-position: 100% 100%;
+}
+/*弹出层头部*/
+.thinkbox-win7 .thinkbox-title{
+	height: 40px;
+	line-height: 40px;
+	position: relative;
+	background: url(./img4.png) repeat 0 0;
+}
+/*弹出层内容*/
+.thinkbox-win7 .thinkbox-body{
+	border: 1px solid #5D6C7A;
+	box-shadow: 0 0 1px #fff;
+	background-color: #fff;
+}
+/*弹出层工具*/
+.thinkbox-win7 .thinkbox-tools{
+	border: 1px solid #5D6C7A;
+	border-top: 0;
+	box-shadow: 0 0 1px #fff;
+	background-color: #F0F0F0;
+	margin-top: -2px;
+	padding: 12px;
+	text-align: right;
+}
+/*关闭按钮*/
+.thinkbox-win7 .thinkbox-close{
+	width: 46px;
+	height: 17px;
+	background: url(./img5.png) no-repeat -79px -19px;
+	position: absolute;
+	top: -6px;
+	right: 0;
+	line-height: 9;
+	overflow: hidden;
+	border: 1px solid #68844E;
+	border-top: 0;
+	box-shadow: 0 0 1px rgba(255,255,255,.8);
+}
+/*最大化按钮*/
+
+/*复位按钮*/
+
+/*最小化按钮*/
+/*弹出层拖拽*/
+.thinkbox-win7 .thinkbox-draging{ 
+	cursor: move;
+}

@@ -398,7 +398,10 @@ ThinkBox.prototype = {
         function _(){
             options.delayClose && 
             $.isNumeric(options.delayClose) && 
-            setTimeout(self.hide, options.delayClose);
+            setTimeout(function(){
+                self.hide();
+            }, options.delayClose);
+            //调用显示后的回调方法
             fire.call(self, options.afterShow);
         }
     },
@@ -615,7 +618,7 @@ $.extend($.thinkbox, {
             "escHide"    : false,
             "unload"     : true,
             "close"      : false,
-            "delayClose" : 0
+            "delayClose" : 1000
         }, html;
         
         //数字type转换为字符串type

@@ -1,0 +1,160 @@
+/* 锁屏层样式 */ 
+.thinkbox-modal-blackout-elegant{
+    background-color: #fff;
+    opacity: 0;
+    filter:alpha(opacity=0);
+}
+/*弹出层样式*/
+.thinkbox-elegant{
+	border: 1px solid #C8ECFA;
+}
+/*弹出层边框*/
+.thinkbox-elegant .thinkbox-top-left,.thinkbox-elegant .thinkbox-top-right,
+.thinkbox-elegant .thinkbox-left,.thinkbox-elegant .thinkbox-right,
+.thinkbox-elegant .thinkbox-bottom-left,.thinkbox-elegant .thinkbox-bottom-right,
+.thinkbox-elegant .thinkbox-top-left,.thinkbox-elegant .thinkbox-top,.thinkbox-elegant .thinkbox-top-right,
+.thinkbox-elegant .thinkbox-bottom-left,.thinkbox-elegant .thinkbox-bottom,.thinkbox-elegant .thinkbox-bottom-right{
+	background-color: #EBEBEB;
+}
+.thinkbox-elegant .thinkbox-top-left,.thinkbox-elegant .thinkbox-top-right,
+.thinkbox-elegant .thinkbox-left,.thinkbox-elegant .thinkbox-right,
+.thinkbox-elegant .thinkbox-bottom-left,.thinkbox-elegant .thinkbox-bottom-right{
+	width: 7px;
+}
+.thinkbox-elegant .thinkbox-top-left,.thinkbox-elegant .thinkbox-top,.thinkbox-elegant .thinkbox-top-right,
+.thinkbox-elegant .thinkbox-bottom-left,.thinkbox-elegant .thinkbox-bottom,.thinkbox-elegant .thinkbox-bottom-right{
+	height: 7px;
+}
+/*弹出层内部*/
+.thinkbox-elegant .thinkbox-inner{
+	border: 1px solid #C6D3DF;
+	background-color: #FFFFFF;
+}
+/*弹出层头部*/
+.thinkbox-elegant .thinkbox-title{
+	height: 25px;
+	line-height: 25px;
+	background-color: #F9FAFB;
+	border-bottom: 1px solid #E7EDF1;
+	padding: 0 12px;
+}
+/*弹出层标题*/
+.thinkbox-elegant .thinkbox-title span{
+	font-size: 12px;
+	color: #5E667B;
+}
+/*弹出层内容*/
+.thinkbox-elegant .thinkbox-body{
+	padding: 12px;
+}
+/*弹出层工具*/
+.thinkbox-elegant .thinkbox-tools{
+	padding: 6px;
+	background-color: #fafafa;
+	border-top: 1px solid #EBEBEB;
+}
+/*关闭按钮*/
+.thinkbox-elegant .thinkbox-close{
+	position: absolute;
+	top: 9px; 
+	right: 20px;
+	color: #5E667B;
+	cursor: pointer;
+}
+.thinkbox-elegant .thinkbox-close:hover{
+	color: #c00;
+}
+/*弹出层拖拽*/
+.thinkbox-elegant .thinkbox-draging{ 
+	
+}
+/*工具确定按钮*/
+.thinkbox-elegant .thinkbox-button-ok{
+	font-size: 12px;
+	display: inline-block; 
+	height: 22px;
+	line-height: 22px;
+	padding: 0 12px;
+	border: 1px solid #DB7900;
+	color: #fff;
+	cursor: pointer;
+	margin: 0 6px;
+	background: #ffa94d; /* Old browsers */
+	background: -moz-linear-gradient(top,  #ffa94d 0%, #ff8a28 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffa94d), color-stop(100%,#ff8a28)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #ffa94d 0%,#ff8a28 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #ffa94d 0%,#ff8a28 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #ffa94d 0%,#ff8a28 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #ffa94d 0%,#ff8a28 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffa94d', endColorstr='#ff8a28',GradientType=0 ); /* IE6-9 */
+}
+.thinkbox-elegant .thinkbox-button-ok:hover{
+	background: #ffbb4d; /* Old browsers */
+	background: -moz-linear-gradient(top,  #ffbb4d 0%, #ffa21f 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffbb4d), color-stop(100%,#ffa21f)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #ffbb4d 0%,#ffa21f 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #ffbb4d 0%,#ffa21f 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #ffbb4d 0%,#ffa21f 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #ffbb4d 0%,#ffa21f 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffbb4d', endColorstr='#ffa21f',GradientType=0 ); /* IE6-9 */
+}
+/*工具取消按钮*/
+.thinkbox-elegant .thinkbox-button-cancel{
+	font-size: 12px;
+	display: inline-block; 
+	height: 22px;
+	line-height: 22px;
+	padding: 0 12px;
+	border: 1px solid #AEAEAE;
+	color: #333;
+	cursor: pointer;
+	margin: 0 6px;
+	background: #f3f3f3; /* Old browsers */
+	background: -moz-linear-gradient(top,  #f3f3f3 0%, #e3e3e3 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f3f3f3), color-stop(100%,#e3e3e3)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #f3f3f3 0%,#e3e3e3 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #f3f3f3 0%,#e3e3e3 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #f3f3f3 0%,#e3e3e3 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #f3f3f3 0%,#e3e3e3 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f3f3f3', endColorstr='#e3e3e3',GradientType=0 ); /* IE6-9 */
+}
+.thinkbox-elegant .thinkbox-button-cancel:hover{
+	background: #ededed; /* Old browsers */
+	background: -moz-linear-gradient(top,  #ededed 0%, #d5d5d5 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ededed), color-stop(100%,#d5d5d5)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #ededed 0%,#d5d5d5 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #ededed 0%,#d5d5d5 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #ededed 0%,#d5d5d5 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #ededed 0%,#d5d5d5 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ededed', endColorstr='#d5d5d5',GradientType=0 ); /* IE6-9 */
+}
+/*工具提交按钮*/
+.thinkbox-elegant .thinkbox-button-submit{
+	font-size: 12px;
+	display: inline-block; 
+	height: 22px;
+	line-height: 22px;
+	padding: 0 12px;
+	border: 1px solid #DB7900;
+	color: #fff;
+	cursor: pointer;
+	margin: 0 6px;
+	background: #ffa94d; /* Old browsers */
+	background: -moz-linear-gradient(top,  #ffa94d 0%, #ff8a28 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffa94d), color-stop(100%,#ff8a28)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #ffa94d 0%,#ff8a28 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #ffa94d 0%,#ff8a28 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #ffa94d 0%,#ff8a28 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #ffa94d 0%,#ff8a28 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffa94d', endColorstr='#ff8a28',GradientType=0 ); /* IE6-9 */
+}
+.thinkbox-elegant .thinkbox-button-submit:hover{
+	background: #ffbb4d; /* Old browsers */
+	background: -moz-linear-gradient(top,  #ffbb4d 0%, #ffa21f 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffbb4d), color-stop(100%,#ffa21f)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #ffbb4d 0%,#ffa21f 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #ffbb4d 0%,#ffa21f 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #ffbb4d 0%,#ffa21f 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #ffbb4d 0%,#ffa21f 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffbb4d', endColorstr='#ffa21f',GradientType=0 ); /* IE6-9 */
+}

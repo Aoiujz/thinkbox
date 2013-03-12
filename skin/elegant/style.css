@@ -172,11 +172,11 @@
 }
 /* 提示框样式 */
 .thinkbox-elegant .thinkbox-tips{
-    height: 62px;
+    height: 36px;
     background-image: url(tips-bg.gif);
     padding: 0 20px 0 70px;;
     background-repeat: no-repeat;
-    line-height: 62px;
+    line-height: 36px;
     font-size: 14px;
     font-weight: 700;
     width: auto;
@@ -195,7 +195,7 @@
 .thinkbox-elegant .thinkbox-tips-loading{
     color: black;
     background-image: url(tips_loading.gif);
-    background-position: 20px 15px;
+    background-position: 20px 3px;
 }
 /*警告提示信息*/
 /*确认提示信息*/

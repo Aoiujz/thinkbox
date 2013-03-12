@@ -4,7 +4,7 @@
  +-------------------------------------------------------------------
  * @version    1.0.0 beta2
  * @since      2013.02.05
- * @author     麦当苗儿 <zuojiazi.cn@gmail.com>
+ * @author     麦当苗儿 <zuojiazi.cn@gmail.com> <http://www.zjzit.cn>
  * @github     https://github.com/Aoiujz/thinkbox.git
  +-------------------------------------------------------------------
  */
@@ -118,7 +118,8 @@ function viewport(){
 
 /* 调用回调函数 */
 function fire(event, data){
-    $.isFunction(event) && event.call(this, data);
+    if($.isFunction(event))
+        return event.call(this, data);
 }
 
 /* 删除options中不必要的参数 */
@@ -371,7 +372,7 @@ ThinkBox = function(element, options){
 }; //END ThinkBox
 
 /**
- * 给ThinkBox添加原型方法，对外提供API接口
+ * 注册ThinkBox开放API接口
  */
 ThinkBox.prototype = {
     /* 显示弹出层 */
@@ -554,14 +555,14 @@ $.extend($.thinkbox, {
             "type"      : "GET",
             "dataType"  : "text",
             "cache"     : false,
-            "parseData" : undefined,
             "onload"    : undefined
-        }, self, ajax, parseData, onload, loading, url = url.split(/\s+/);
+        }, self, ajax, onload, loading, url = url.split(/\s+/);
         $.extend(options, opt || {}); //合并配置项
+
         //保存一些参数
-        parseData = options.parseData;
         onload    = options.onload;
         loading   = options.loading;
+
         //组装AJAX请求参数
         ajax = {
             "data"     : options.data,
@@ -570,18 +571,20 @@ $.extend($.thinkbox, {
             "cache"    : options.cache,
             "success"  : function(data) {
                 url[1] && (data = $(data).find(url[1]));
-                $.isFunction(parseData) && (data = parseData.call(options.dataEle, data));
+                if($.isFunction(onload))
+                    data = fire.call(self, onload, data); //调用onload回调函数
                 self.setContent(data); //设置内容并显示弹出层
-                fire.call(self, onload); //调用onload回调函数
                 loading || self.show(); //没有loading状态则直接显示弹出层
             }
         };
         
         //删除ThinkBox不需要的参数
-        del(["data", "type", "cache", "dataType", "parseData", "onload", "loading"], options);
+        del(["data", "type", "cache", "dataType", "onload", "loading"], options);
         
-        self = loading ? //显示loading信息
+        self = loading ? 
+            //显示loading信息
             $.thinkbox("<div class=\"thinkbox-load-loading\">" + loading + "</div>", options) : 
+            //不显示loading信息则创建后不显示弹出层
             $.thinkbox("<div/>", $.extend({}, options, {"display" : false}));
         
         $.ajax(url[0], ajax);

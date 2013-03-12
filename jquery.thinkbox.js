@@ -547,6 +547,19 @@ $.thinkbox = function(element, options){
  +----------------------------------------------------------
  */
 $.extend($.thinkbox, {
+    /**
+     * 设置弹出层默认参数
+     * @param  {string} name  配置名称
+     * @param  {string} value 配置的值
+     */
+    "defaults" : function(name, value){
+        if($.isPlainObject(name)){
+            $.extend(defaults, name);
+        } else {
+            defaults[name] = value;
+        }
+    },
+
     // 以一个URL加载内容并以ThinBox弹出层的形式展现
     "load" : function(url, opt){
         var options = {

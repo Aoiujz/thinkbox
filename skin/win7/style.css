@@ -1,8 +1,8 @@
 /* 锁屏层样式 */ 
 .thinkbox-modal-blackout-win7{
     background-color: #fff;
-    opacity: 0;
-    filter:alpha(opacity=0);
+    opacity: .2;
+    filter:alpha(opacity=20);
 }
 /*弹出层样式*/
 .thinkbox-win7{

@@ -15,17 +15,24 @@
 </head>
 <body style="background: url(../skin/win7/tp.jpg) repeat 0 0;">
 	<a id="ep1" href="#" style="background-color:#BCC2CD; color:#354B66; font-weight:700;">$.thinkbox('&lt;div class="content"&gt;这里是弹出层的内容&lt;/div&gt;')</a>
+	<select name="" id="">
+		<option value="">1</option>
+		<option value="">2</option>
+		<option value="">3</option>
+		<option value="">4</option>
+		<option value="">5</option>
+	</select>
 	<div style="height:1000px"></div>
 <script type="text/javascript">
 	$('#ep1').click(function(){
-		$.thinkbox.defaults('style', 'win7');
+		$.thinkbox.defaults('style', 'ta');
 		$.thinkbox('<div class="content">这里是弹出层的内容</div>',{
 			'title' : ' ',
 			'drag'  : true,
 			"dataEle" : this,
 			//"modal" : false,
 			"unload":true,
-			"button" : {'ok':'确定', "cancel" : "取消", "submit" : "提交"}
+			"button" : {'ok':'确 定', "cancel" : "取 消", "submit" : "提 交"}
 		})
 
 		//$.thinkbox.loading("提交成功");

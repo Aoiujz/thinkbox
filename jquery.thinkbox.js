@@ -275,7 +275,7 @@ function setupToolsBar() {
                 break;
             case "submit":
                 _(key, options.button[key], function(){
-                    this.box.find("form").submit();
+                    self.box.find("form").submit();
                 });
                 break;
             default:

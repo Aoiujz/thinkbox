@@ -3,7 +3,7 @@
  * jQuery thinkbox - 弹出层插件 - http://zjzit.cn/thinkbox
  +-------------------------------------------------------------------
  * @version    1.0.0 beta2
- * @since      2013.02.05
+ * @since      2013.05.10
  * @author     麦当苗儿 <zuojiazi.cn@gmail.com> <http://www.zjzit.cn>
  * @github     https://github.com/Aoiujz/thinkbox.git
  +-------------------------------------------------------------------

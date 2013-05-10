@@ -265,7 +265,7 @@ function drag(title){
 /* 安装工具栏 */
 function setupToolsBar() {
     var options = list[this.key][1], self = this, options = list[this.key][1],
-        tools = $("<div class=\"thinkbox-tools\"></div>");
+        tools = $("<div class=\"thinkbox-tools\"><span class=\"thinkbox-status\"></span></div>");
     for(key in options.button){
         switch(key){
             case "ok":
@@ -287,7 +287,7 @@ function setupToolsBar() {
     this.box.find(".thinkbox-inner").append(tools);
 
     function _(key, title, fun){
-        var button = $("<span class=\"thinkbox-button-" + key + "\"></span>")
+        var button = $("<button class=\"thinkbox-button-" + key + "\"></button>")
             .html(title)
             .click(function(){fun()})
             .appendTo(tools);
@@ -518,6 +518,12 @@ ThinkBox.prototype = {
                 options.y : 
                 ($.isFunction(options.y) ? options.y.call($(options.dataEle)) : 0)
         );
+    },
+
+    /* 设置状态栏数据 */
+    "setStarts" : function(html, classname){
+        var classname = classname ? "thinkbox-status-" + classname : "";
+        $(".thinkbox-status", this.box).addClass(classname).html(html);
     }
 }
 
